@@ -15,7 +15,8 @@ class Test(models.Model):
     is_public = models.BooleanField(default=False)
 
 class BaseItem(me.EmbeddedDocument):
-    question_text = me.StringField(required=True, max_length=500)
+    text = me.StringField(required=True, max_length=500)
+    type = me.StringField(required=True, max_length=50)
     meta = {"allow_inheritance": True}
 
 class TestItem(me.Document):

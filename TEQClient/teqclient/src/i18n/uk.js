@@ -14,5 +14,6 @@ export const uk = {
   signIn: "Увійти",
   signUp: "Зареєструватися",
   account: "Акаунт",
-  createTest: "Створити тест"
+  createTest: "Створити тест",
+  logout: "Вийти"
 };

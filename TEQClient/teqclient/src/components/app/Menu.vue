@@ -18,7 +18,9 @@ window.addEventListener("auth", (data) => {
         <li class="menu-item">
           <LanguageSelect />
         </li>
-        <li class="menu-item active"><a href="#home">{{ $t("home") }}</a></li>
+        <li class="menu-item active">
+          <LocalizedLink to="/">{{ $t("home") }}</LocalizedLink>
+        </li>
         <li class="menu-item"><a href="#featured-books" class="nav-link">{{ $t("publicTests") }}</a></li>
         <li class="menu-item"><a href="#popular-books" class="nav-link">{{ $t("savedTests") }}</a></li>
         <li class="menu-item"><a href="#special-offer" class="nav-link">{{ $t("contacts") }}</a></li>
@@ -31,7 +33,9 @@ window.addEventListener("auth", (data) => {
 
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">{{ $t("account") }}</a></li>
-              <li><a class="dropdown-item" href="#">{{ $t("createTest") }}</a></li>
+              <li>
+                <LocalizedLink class="dropdown-item" to="/editor">{{ $t("createTest") }}</LocalizedLink>
+              </li>
               <li><a class="dropdown-item" href="#">{{ $t("myTests") }}</a></li>
               <li>
                 <hr class="dropdown-divider">

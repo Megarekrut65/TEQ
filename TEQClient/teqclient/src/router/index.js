@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import i18n, { defaultLocale } from "@/i18n";
+import { ifAuthenticated } from "@/js/utility/auth.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +21,13 @@ const router = createRouter({
           path: "auth",
           name: "auth",
           component: () => import("../views/AuthView.vue")
+        },
+        {
+          path: "editor",
+          name: "editor",
+          component: () => import("../views/TestEditorView.vue"),
+          beforeEnter: ifAuthenticated
+
         }
       ]
     },

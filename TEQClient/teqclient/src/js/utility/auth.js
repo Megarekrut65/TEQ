@@ -1,5 +1,6 @@
 import { loginApi, registerApi } from "@/js/api/user.js";
 import { getToken } from "@/js/utility/token.js";
+import i18n from "@/i18n/index.js";
 
 const userKey = "user";
 
@@ -47,7 +48,7 @@ export const ifAuthenticated = (to, from, next) => {
     return;
   }
 
-  next({ name: "login" });
+  next({ name: "auth", params: { locale: i18n.getLocale() } });
 };
 
 export const logout = () => {

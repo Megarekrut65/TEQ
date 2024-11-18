@@ -8,8 +8,8 @@ import Header from "@/components/app/Header.vue";
 <template>
   <AlertWindow />
   <Header />
-  
-  <section id="featured-books" class="py-5 my-5">
+
+  <section>
     <div class="container page">
       <RouterView />
     </div>

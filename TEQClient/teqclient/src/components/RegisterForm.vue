@@ -27,6 +27,11 @@ const onSubmit = () => {
       loading.value = false;
     });
 };
+
+const dontMatch = () => {
+  return formData.value.repeatPassword !== ""
+    && formData.value.password !== formData.value.repeatPassword;
+};
 </script>
 
 <template>
@@ -66,7 +71,10 @@ const onSubmit = () => {
       </div>
 
       <div>
-        <label class="form-label" for="re-password">{{ $t("rePassword") }}</label>
+        <label
+          :class="{'form-label':true, 'text-danger':dontMatch()}"
+          :title="dontMatch()?$t('dontMatch'):''"
+          for="re-password">{{ $t("rePassword") }}</label>
         <input
           v-model.trim="formData.repeatPassword"
           type="password"
@@ -76,7 +84,10 @@ const onSubmit = () => {
         />
       </div>
 
-      <button class="btn btn-outline-accent" type="submit">{{ $t("signUp") }}</button>
+      <button class="btn btn-outline-accent" type="submit"
+              :disabled="dontMatch()">
+        {{ $t("signUp") }}
+      </button>
 
     </form>
   </FormWrapper>

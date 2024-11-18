@@ -1,6 +1,7 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from mainapp.models.test import Test, TestItem
+from mainapp.permitions import IsTestOwner
 from mainapp.serializers.test import TestSerializer, ItemSerializer
 
 
@@ -14,6 +15,6 @@ class TestCreateAPIView(CreateAPIView):
         TestItem(id=test.id).save()
 
 
-class ItemView(CreateAPIView):
+class ItemCreateAPIView(CreateAPIView):
     serializer_class = ItemSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsTestOwner]

@@ -4,7 +4,7 @@ from mongoengine import DoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from mainapp.models.test import Test, TestItem, SingleAnswerItem, Choice
+from mainapp.models.test import Test, TestItem, ChoiceAnswerItem, Choice, TextAnswerItem
 from mainapp.serializers.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 from mainapp.serializers.user import UserProfileSerializer
 
@@ -66,14 +66,20 @@ class ItemSerializer(CamelCaseSerializer):
         test_item = TestItem.objects.get(id=self.validated_data["test_id"])
 
         item = None
-        if self.validated_data["type"] == self.SINGLE:
-            item = SingleAnswerItem(
+        if self.validated_data["type"] in [self.SINGLE, self.MULTIPLE]:
+            item = ChoiceAnswerItem(
                 type=self.validated_data["type"],
                 text=self.validated_data["text"],
                 choices=[
                     Choice(text=choice["text"], is_correct=choice["is_correct"])
                     for choice in self.validated_data["choices"]
                 ]
+            )
+        elif self.validated_data["type"] == self.TEXT:
+            item = TextAnswerItem(
+                type=self.validated_data["type"],
+                text=self.validated_data["text"],
+                correct_answer=self.validated_data["correct_answer"]
             )
 
         test_item.items.append(item)

@@ -14,6 +14,10 @@ class Test(models.Model):
     description = models.TextField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
 
+class TestMember(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+
 class BaseItem(me.EmbeddedDocument):
     text = me.StringField(required=True, max_length=500)
     type = me.StringField(required=True, max_length=50)
@@ -28,13 +32,8 @@ class Choice(me.EmbeddedDocument):
     is_correct = me.BooleanField(default=False)
 
 
-class SingleAnswerItem(BaseItem):
+class ChoiceAnswerItem(BaseItem):
     choices = me.EmbeddedDocumentListField(Choice, required=True)
-
-
-class MultipleAnswerItem(BaseItem):
-    choices = me.EmbeddedDocumentListField(Choice, required=True)
-
 
 class TextAnswerItem(BaseItem):
     correct_answer = me.StringField(max_length=5000, default="")

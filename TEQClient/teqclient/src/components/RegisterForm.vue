@@ -1,6 +1,10 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { register } from "@/js/utility/auth.js";
+import { errorAlert } from "@/js/utility/utility.js";
+import LoadingWindow from "@/components/LoadingWindow.vue";
 
 const formData = ref({
   fullname: "",
@@ -9,11 +13,24 @@ const formData = ref({
   repeatPassword: ""
 });
 
+const router = useRouter();
+
+const loading = ref(false);
+
 const onSubmit = () => {
+  register(formData.value)
+    .then(() => {
+      router.push("/");
+    })
+    .catch(errorAlert)
+    .finally(() => {
+      loading.value = false;
+    });
 };
 </script>
 
 <template>
+  <LoadingWindow v-if="loading" />
   <FormWrapper :title="$t('singUp')">
     <form @submit.prevent="onSubmit">
       <div>

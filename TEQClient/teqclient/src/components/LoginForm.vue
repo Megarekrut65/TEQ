@@ -1,17 +1,36 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { login } from "@/js/utility/auth.js";
+import { errorAlert } from "@/js/utility/utility.js";
+import LoadingWindow from "@/components/LoadingWindow.vue";
 
 const formData = ref({
   email: "",
   password: ""
 });
 
+const router = useRouter();
+
+const loading = ref(false);
+
 const onSubmit = () => {
+  loading.value = true;
+  
+  login(formData.value)
+    .then(() => {
+      router.push("/");
+    })
+    .catch(errorAlert)
+    .finally(() => {
+      loading.value = false;
+    });
 };
 </script>
 
 <template>
+  <LoadingWindow v-if="loading" />
   <FormWrapper :title="$t('singIn')">
     <form @submit.prevent="onSubmit">
       <div>

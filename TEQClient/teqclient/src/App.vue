@@ -1,10 +1,11 @@
 <script setup>
 import { RouterView } from "vue-router";
 import Menu from "@/components/Menu.vue";
-import LanguageSelect from "@/components/l10n/LanguageSelect.vue";
+import AlertWindow from "@/components/AlertWindow.vue";
 </script>
 
 <template>
+  <AlertWindow />
   <div id="header-wrap">
     <header id="header">
       <div class="container-fluid">

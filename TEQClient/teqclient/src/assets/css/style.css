@@ -1143,10 +1143,9 @@ fieldset[disabled] a.btn {
     display: block;
     padding: 0.5rem 1rem;
     text-decoration: none;
-    transition:
-        color 0.15s ease-in-out,
-        background-color 0.15s ease-in-out,
-        border-color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1294,12 +1293,11 @@ fieldset[disabled] a.btn {
     border-radius: 0;
     box-shadow: none;
     overflow-anchor: none;
-    transition:
-        color 0.15s ease-in-out,
-        background-color 0.15s ease-in-out,
-        border-color 0.15s ease-in-out,
-        box-shadow 0.15s ease-in-out,
-        border-radius 0.15s ease;
+    transition: color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out,
+    border-radius 0.15s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1473,7 +1471,6 @@ button {
     font-size: 1em;
     font-weight: 600;
     border: none;
-    height: 65px;
     cursor: pointer;
     text-transform: uppercase;
 }
@@ -1560,25 +1557,6 @@ button {
     transform: scale(1.1);
 }
 
-/*--- Pattern Overlay
------------------------------------------------*/
-.pattern-overlay {
-    background-image: url(images/pattern1.png);
-    background-repeat: no-repeat;
-    background-position: top right;
-}
-
-.leaf-pattern-overlay {
-    background-image: url(images/leaf.png);
-    background-repeat: no-repeat;
-    background-position: bottom left;
-}
-
-.corner-pattern-overlay {
-    background-image: url(images/pattern2.png);
-    background-repeat: no-repeat;
-    background-position: top right;
-}
 
 /*--- Page Title
 -----------------------------------------------*/
@@ -1747,6 +1725,10 @@ img.post-image {
     align-items: baseline;
 }
 
+#header-wrap {
+    height: var(--header-height);
+}
+
 #header-wrap .action-menu span.opennav.openicon {
     cursor: pointer;
 }
@@ -1832,7 +1814,7 @@ img.post-image {
 #header {
     padding: 20px 0;
     border-bottom: 1px solid #e0e0e0;
-    background-color: #f3f2ec;
+    background-color: #faf4d0;
 }
 
 #header .menu-list a {
@@ -2300,10 +2282,11 @@ span.prev-price {
 /*----- Footer Section
 --------------------------------------------------------------*/
 footer#footer {
-    padding-bottom: 80px;
+    padding-bottom: 40px;
+    padding-top: 40px;
     margin-top: 100px;
-    margin-bottom: 60px;
     border-bottom: 1px solid #e0e0e0;
+    background-color: #faf4d0;
 }
 
 #footer .footer-item {
@@ -2417,6 +2400,7 @@ footer#footer {
 .form-title {
     color: black;
 }
+
 .product-item figcaption > p {
     margin: 0;
 }

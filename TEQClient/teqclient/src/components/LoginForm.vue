@@ -17,7 +17,7 @@ const loading = ref(false);
 
 const onSubmit = () => {
   loading.value = true;
-  
+
   login(formData.value)
     .then(() => {
       router.push("/");
@@ -31,7 +31,7 @@ const onSubmit = () => {
 
 <template>
   <LoadingWindow v-if="loading" />
-  <FormWrapper :title="$t('singIn')">
+  <FormWrapper :title="$t('signIn')">
     <form @submit.prevent="onSubmit">
       <div>
         <label class="form-label" for="email">{{ $t("email") }}</label>
@@ -55,7 +55,7 @@ const onSubmit = () => {
         />
       </div>
 
-      <button class="btn btn-outline-accent" type="submit">{{ $t("singIn") }}</button>
+      <button class="btn btn-outline-accent" type="submit">{{ $t("signIn") }}</button>
 
     </form>
   </FormWrapper>

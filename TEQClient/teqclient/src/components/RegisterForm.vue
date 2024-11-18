@@ -31,7 +31,7 @@ const onSubmit = () => {
 
 <template>
   <LoadingWindow v-if="loading" />
-  <FormWrapper :title="$t('singUp')">
+  <FormWrapper :title="$t('signUp')">
     <form @submit.prevent="onSubmit">
       <div>
         <label class="form-label" for="fullname">{{ $t("fullname") }}</label>
@@ -76,7 +76,7 @@ const onSubmit = () => {
         />
       </div>
 
-      <button class="btn btn-outline-accent" type="submit">{{ $t("singUp") }}</button>
+      <button class="btn btn-outline-accent" type="submit">{{ $t("signUp") }}</button>
 
     </form>
   </FormWrapper>

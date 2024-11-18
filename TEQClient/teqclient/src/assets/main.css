@@ -6,3 +6,9 @@
 .page {
     min-height: 50vh;
 }
+
+.logo-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -18,11 +18,10 @@ window.addEventListener("auth", (data) => {
         <li class="menu-item">
           <LanguageSelect />
         </li>
-        <li class="menu-item active"><a href="#home">Home</a></li>
-        <li class="menu-item"><a href="#featured-books" class="nav-link">Featured</a></li>
-        <li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>
-        <li class="menu-item"><a href="#special-offer" class="nav-link">Offer</a></li>
-        <li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
+        <li class="menu-item active"><a href="#home">{{ $t("home") }}</a></li>
+        <li class="menu-item"><a href="#featured-books" class="nav-link">{{ $t("publicTests") }}</a></li>
+        <li class="menu-item"><a href="#popular-books" class="nav-link">{{ $t("savedTests") }}</a></li>
+        <li class="menu-item"><a href="#special-offer" class="nav-link">{{ $t("contacts") }}</a></li>
         <li v-if="user" class="nav-item dropdown">
           <div class="dropdown">
             <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -31,7 +30,9 @@ window.addEventListener("auth", (data) => {
             </a>
 
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Account</a></li>
+              <li><a class="dropdown-item" href="#">{{ $t("account") }}</a></li>
+              <li><a class="dropdown-item" href="#">{{ $t("createTest") }}</a></li>
+              <li><a class="dropdown-item" href="#">{{ $t("myTests") }}</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>

@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from "vue-router";
 import Menu from "@/components/Menu.vue";
+import LanguageSelect from "@/components/l10n/LanguageSelect.vue";
 </script>
 
 <template>
@@ -8,51 +9,51 @@ import Menu from "@/components/Menu.vue";
     <header id="header">
       <div class="container-fluid">
         <div class="row">
-
           <div class="col-md-2">
             <div class="main-logo">
-              <RouterView href="index.html"><img src="@/assets/images/main-logo.png" alt="logo"></RouterView>
+              <RouterView href="index.html"
+              ><img src="@/assets/images/main-logo.png" alt="logo"
+              /></RouterView>
             </div>
-
           </div>
 
           <div class="col-md-10">
-
-          <Menu/>
-
+            <Menu />
           </div>
-
         </div>
       </div>
     </header>
-
-  </div><!--header-wrap-->
+  </div>
+  <!--header-wrap-->
 
   <section id="featured-books" class="py-5 my-5">
     <div class="container page">
-  <RouterView />
+      <RouterView />
     </div>
   </section>
 
   <footer id="footer">
     <div class="container">
       <div class="row">
-
         <div class="col-md-4">
-
           <div class="footer-item">
             <div class="company-brand">
-              <img src="@/assets/images/main-logo.png" alt="logo" class="footer-logo">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus
-                nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames
-                semper erat ac in suspendisse iaculis.</p>
+              <img
+                src="@/assets/images/main-logo.png"
+                alt="logo"
+                class="footer-logo"
+              />
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis
+                sed ptibus liberolectus nonet psryroin. Amet sed lorem posuere sit
+                iaculis amet, ac urna. Adipiscing fames semper erat ac in
+                suspendisse iaculis.
+              </p>
             </div>
           </div>
-
         </div>
 
         <div class="col-md-2">
-
           <div class="footer-menu">
             <h5>About Us</h5>
             <ul class="menu-list">
@@ -73,10 +74,8 @@ import Menu from "@/components/Menu.vue";
               </li>
             </ul>
           </div>
-
         </div>
         <div class="col-md-2">
-
           <div class="footer-menu">
             <h5>Discover</h5>
             <ul class="menu-list">
@@ -97,10 +96,8 @@ import Menu from "@/components/Menu.vue";
               </li>
             </ul>
           </div>
-
         </div>
         <div class="col-md-2">
-
           <div class="footer-menu">
             <h5>My account</h5>
             <ul class="menu-list">
@@ -118,10 +115,8 @@ import Menu from "@/components/Menu.vue";
               </li>
             </ul>
           </div>
-
         </div>
         <div class="col-md-2">
-
           <div class="footer-menu">
             <h5>Help</h5>
             <ul class="menu-list">
@@ -139,12 +134,9 @@ import Menu from "@/components/Menu.vue";
               </li>
             </ul>
           </div>
-
         </div>
-
       </div>
       <!-- / row -->
-
     </div>
   </footer>
 
@@ -152,10 +144,8 @@ import Menu from "@/components/Menu.vue";
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-
           <div class="copyright">
             <div class="row">
-
               <div class="col-md-6">
                 <p>© 2024</p>
               </div>
@@ -178,11 +168,11 @@ import Menu from "@/components/Menu.vue";
                   </ul>
                 </div>
               </div>
-
             </div>
-          </div><!--grid-->
-
-        </div><!--footer-bottom-content-->
+          </div>
+          <!--grid-->
+        </div>
+        <!--footer-bottom-content-->
       </div>
     </div>
   </div>

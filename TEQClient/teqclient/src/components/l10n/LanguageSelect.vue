@@ -24,27 +24,31 @@ const updateLocale = () => {
 
 </script>
 <template>
-  <div class="dropdown show">
-    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false">
+  <div class="dropdown">
+    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i :class="`${locale.flag} flag-icon m-0`" v-bind="updateLocale()"></i>
     </a>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item menu-row" href="#">
-        <div><i :class="`${locale.flag} flag-icon`"></i></div>
-        <div class="item-margin">{{ locale.name }}</div>
-        <div><i class="fa fa-check text-success"></i></div>
-      </a>
-      <div class="dropdown-divider"></div>
+    <ul class="dropdown-menu">
+      <li>
+        <a class="dropdown-item menu-row" href="#">
+          <div><i :class="`${locale.flag} flag-icon`"></i></div>
+          <div class="item-margin">{{ locale.name }}</div>
+          <div><i class="fa fa-check text-success"></i></div>
+        </a>
+      </li>
 
-      <a v-for="(data, index) in locales" :key="index" @click="onLanguageChanged(index)" class="dropdown-item" href="#">
-        <i
-          :class="`${data.flag} flag-icon`"></i>
-        {{ data.name }}
-      </a>
-
-    </div>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li v-for="(data, index) in locales" :key="index" @click="onLanguageChanged(index)">
+        <a class="dropdown-item" href="#">
+          <i
+            :class="`${data.flag} flag-icon`"></i>
+          {{ data.name }}
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 

@@ -28,19 +28,22 @@ window.addEventListener("auth", (data) => {
           <div class="dropdown">
             <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                aria-expanded="false">
-              {{ user.fullname }}
+              <i class="fa-solid fa-user"></i> {{ user.email }}
             </a>
 
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">{{ $t("account") }}</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fa-regular fa-user"></i> {{ $t("account") }}</a></li>
               <li>
-                <LocalizedLink class="dropdown-item" to="/editor">{{ $t("createTest") }}</LocalizedLink>
+                <LocalizedLink class="dropdown-item" to="/editor"><i class="fa-solid fa-file-circle-plus"></i>
+                  {{ $t("createTest") }}
+                </LocalizedLink>
               </li>
-              <li><a class="dropdown-item" href="#">{{ $t("myTests") }}</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fa-solid fa-newspaper"></i> {{ $t("myTests") }}</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#" @click="logout">{{ $t("logout") }}</a></li>
+              <li><a class="dropdown-item" href="#" @click="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                {{ $t("logout") }}</a></li>
             </ul>
           </div>
         </li>

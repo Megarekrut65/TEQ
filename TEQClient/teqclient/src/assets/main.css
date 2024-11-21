@@ -1,7 +1,6 @@
 @import "./css/normalize.css";
 @import "./css/vendor.css";
 @import "./css/style.css";
-@import "./css/icomoon.css";
 
 .page {
     min-height: 50vh;

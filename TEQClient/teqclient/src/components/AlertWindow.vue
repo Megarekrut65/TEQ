@@ -9,7 +9,7 @@ const alerts = computed(() => alertBus.alerts);
   <div class="alert-window">
     <div v-for="alert in alerts" :key="alert" :class="`alert alert-${alert.alert}`" role="alert">
       <div>{{ alert.msg }}</div>
-      <i class="icon-close icon-btn" @click="() => alertBus.closeAlert(alert)"></i>
+      <i class="fa-solid fa-xmark icon-btn" @click="() => alertBus.closeAlert(alert)"></i>
     </div>
   </div>
 </template>

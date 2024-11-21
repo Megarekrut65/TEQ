@@ -15,10 +15,7 @@
                 class="footer-logo"
               />
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis
-                sed ptibus liberolectus nonet psryroin. Amet sed lorem posuere sit
-                iaculis amet, ac urna. Adipiscing fames semper erat ac in
-                suspendisse iaculis.
+                {{ $t("appDescription") }}
               </p>
             </div>
           </div>

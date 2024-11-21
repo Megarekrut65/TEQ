@@ -19,3 +19,7 @@ export const errorToString = (err) => {
 export const errorAlert = (err) => {
   alertBus.addAlert(errorToString(err), "danger", 0);
 };
+
+
+export const truncate = (str, length = 20) =>
+  str && str.length > length ? str.slice(0, length) + "..." : str;

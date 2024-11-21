@@ -34,11 +34,15 @@ window.addEventListener("auth", (data) => {
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#"><i class="fa-regular fa-user"></i> {{ $t("account") }}</a></li>
               <li>
-                <LocalizedLink class="dropdown-item" to="/editor"><i class="fa-solid fa-file-circle-plus"></i>
+                <LocalizedLink class="dropdown-item" to="/editor/new"><i class="fa-solid fa-file-circle-plus"></i>
                   {{ $t("createTest") }}
                 </LocalizedLink>
               </li>
-              <li><a class="dropdown-item" href="#"><i class="fa-solid fa-newspaper"></i> {{ $t("myTests") }}</a></li>
+              <li>
+                <LocalizedLink class="dropdown-item" to="/tests/my"><i class="fa-solid fa-newspaper"></i>
+                  {{ $t("myTests") }}
+                </LocalizedLink>
+              </li>
               <li>
                 <hr class="dropdown-divider">
               </li>

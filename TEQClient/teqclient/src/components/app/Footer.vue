@@ -1,5 +1,6 @@
 <script setup>
 
+import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 </script>
 
 <template>
@@ -46,7 +47,7 @@
                 <a href="#">{{ $t("createTest") }}</a>
               </li>
               <li class="menu-item">
-                <a href="#">{{ $t("myTests") }}</a>
+                <LocalizedLink to="tests/my">{{ $t("myTests") }}</LocalizedLink>
               </li>
             </ul>
           </div>

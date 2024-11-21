@@ -31,7 +31,6 @@ class Choice(me.EmbeddedDocument):
     text = me.StringField(required=True, max_length=200)
     is_correct = me.BooleanField(default=False)
 
-
 class ChoiceAnswerItem(BaseItem):
     choices = me.EmbeddedDocumentListField(Choice, required=True)
 

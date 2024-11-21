@@ -12,11 +12,19 @@ from mainapp.serializers.user import UserProfileSerializer
 
 class TestSerializer(CamelCaseModelSerializer):
     owner = UserProfileSerializer(read_only=True)
+    items = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "is_public"]
-        read_only_fields = ["id", "owner", "created_date"]
+        fields = ["id", "owner", "created_date", "title", "description", "is_public", "items"]
+        read_only_fields = ["id", "created_date"]
+
+    def get_items(self, obj):
+        item = TestItem.objects.filter(id=obj.id).first()
+        if item:
+            return item.items
+
+        return []
 
 
 class ChoiceSerializer(CamelCaseSerializer):

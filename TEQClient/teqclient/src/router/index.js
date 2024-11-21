@@ -23,9 +23,23 @@ const router = createRouter({
           component: () => import("../views/AuthView.vue")
         },
         {
-          path: "editor",
+          path: "editor/:testId",
           name: "editor",
           component: () => import("../views/TestEditorView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
+          path: "editor/new",
+          name: "new-editor",
+          component: () => import("../views/NewTestEditorView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
+          path: "tests/my",
+          name: "my-tests",
+          component: () => import("../views/MyTestsView.vue"),
           beforeEnter: ifAuthenticated
 
         }

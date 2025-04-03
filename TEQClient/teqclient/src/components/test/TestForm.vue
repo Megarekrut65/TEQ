@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 import { testCreateApi, testUpdateApi } from "@/js/api/test.js";
 import { errorAlert } from "@/js/utility/utility.js";
+import TestItem from "@/components/test/TestItem.vue";
 
 const props = defineProps({
   instance: {
@@ -89,6 +90,8 @@ const onSubmit = () => {
 
     </form>
   </FormWrapper>
+  <TestItem></TestItem>
+
 </template>
 
 <style scoped>

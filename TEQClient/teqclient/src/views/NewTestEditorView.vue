@@ -1,6 +1,6 @@
 <script setup>
 
-import TestForm from "@/components/TestForm.vue";
+import TestForm from "@/components/test/TestForm.vue";
 </script>
 
 <template>

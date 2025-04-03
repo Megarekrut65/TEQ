@@ -1,13 +1,11 @@
-from tkinter.constants import MULTIPLE
-
 from mongoengine import DoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from mainapp.item_types import ITEM_TYPES, TEXT, SINGLE, MULTIPLE
 from mainapp.models.test import Test, TestItem, ChoiceAnswerItem, Choice, TextAnswerItem
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
-
 
 
 class TestSerializer(CamelCaseModelSerializer):
@@ -32,14 +30,9 @@ class ChoiceSerializer(CamelCaseSerializer):
     is_correct = serializers.BooleanField(default=False)
 
 class ItemSerializer(CamelCaseSerializer):
-    SINGLE = "SINGLE"
-    MULTIPLE = "MULTIPLE"
-    TEXT = "TEXT"
-    TYPES = [SINGLE, MULTIPLE, TEXT]
-
     test_id = serializers.UUIDField()
     text = serializers.CharField(max_length=500)
-    type = serializers.ChoiceField(choices=TYPES)
+    type = serializers.ChoiceField(choices=ITEM_TYPES)
     choices = ChoiceSerializer(many=True, required=False)
     correct_answer = serializers.CharField(max_length=5000, required=False, allow_null=True)
 
@@ -48,15 +41,15 @@ class ItemSerializer(CamelCaseSerializer):
         choices = data.get("choices", [])
         count = len(choices)
 
-        if question_type == self.TEXT:
+        if question_type == TEXT:
             if count > 0:
-                raise ValidationError(f"For '{self.TEXT}' type questions, no choices are allowed.")
+                raise ValidationError(f"For '{TEXT}' type questions, no choices are allowed.")
             return data
 
         if count < 2:
             raise ValidationError("At least two choices are required.")
 
-        if question_type == self.SINGLE:
+        if question_type == SINGLE:
             correct = len([choice for choice in choices if choice["is_correct"]])
             if correct != 1:
                 raise ValidationError("Exactly one choice must be marked as correct.")
@@ -74,7 +67,7 @@ class ItemSerializer(CamelCaseSerializer):
         test_item = TestItem.objects.get(id=self.validated_data["test_id"])
 
         item = None
-        if self.validated_data["type"] in [self.SINGLE, self.MULTIPLE]:
+        if self.validated_data["type"] in [SINGLE, MULTIPLE]:
             item = ChoiceAnswerItem(
                 type=self.validated_data["type"],
                 text=self.validated_data["text"],
@@ -83,7 +76,7 @@ class ItemSerializer(CamelCaseSerializer):
                     for choice in self.validated_data["choices"]
                 ]
             )
-        elif self.validated_data["type"] == self.TEXT:
+        elif self.validated_data["type"] == TEXT:
             item = TextAnswerItem(
                 type=self.validated_data["type"],
                 text=self.validated_data["text"],

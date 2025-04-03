@@ -1,6 +1,6 @@
 <script setup>
 
-import TestForm from "@/components/TestForm.vue";
+import TestForm from "@/components/test/TestForm.vue";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { testGetApi } from "@/js/api/test.js";

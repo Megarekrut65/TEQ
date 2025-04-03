@@ -1,21 +1,21 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.db import models
 
-from mainapp.models.user import UserProfile
 import mongoengine as me
 
 
 class Test(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
 
 class TestMember(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
 class BaseItem(me.EmbeddedDocument):

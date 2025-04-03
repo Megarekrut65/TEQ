@@ -19,7 +19,7 @@ class TestCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        test = serializer.save(owner=self.request.user.userprofile)
+        test = serializer.save(owner=self.request.user)
         TestItem(id=test.id).save()
 
 class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):

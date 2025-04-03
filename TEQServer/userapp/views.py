@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
-from mainapp.models.user import UserProfile
-from mainapp.serializers.user import UserLoginSerializer, UserRegistrationSerializer, UserProfileSerializer
+from userapp.models import UserProfile
+from userapp.serializers import UserLoginSerializer, UserRegistrationSerializer, UserProfileSerializer
 
 
 def get_user_data(request, user):

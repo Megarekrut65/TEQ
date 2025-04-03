@@ -5,8 +5,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from mainapp.models.test import Test, TestItem, ChoiceAnswerItem, Choice, TextAnswerItem
-from mainapp.serializers.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
-from mainapp.serializers.user import UserProfileSerializer
+from userapp.serializers import UserProfileSerializer
+from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
 
 

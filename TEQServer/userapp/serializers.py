@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from mainapp.models.user import UserProfile
-from mainapp.serializers.case_serializers import CamelCaseSerializer
+from userapp.models import UserProfile
+from utility.case_serializers import CamelCaseSerializer
 
 
 class UserRegistrationSerializer(CamelCaseSerializer):
@@ -29,8 +29,9 @@ class UserLoginSerializer(CamelCaseSerializer):
     password = serializers.CharField(write_only=True)
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(source="user.username", read_only=True)
+    email = serializers.CharField(source="username", read_only=True)
+    fullname = serializers.CharField(source="userprofile.fullname", read_only=True)
 
     class Meta:
-        model = UserProfile
+        model = User
         fields = ["id", "fullname", "email"]

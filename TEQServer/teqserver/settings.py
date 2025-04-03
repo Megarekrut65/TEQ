@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+
+import decouple
+import dj_database_url
 import mongoengine
 
 
@@ -25,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)jic32ax=2zgfd+a+73s=%+hz6f^@p25mt3o*!zn-awnt17_5g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if decouple.config("MODE")=="production" else True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp.apps.MainappConfig',
+    'userapp.apps.UserappConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders'
@@ -90,15 +94,12 @@ REST_FRAMEWORK = {
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(decouple.config("SQL_DATABASE_URL"))
 }
 
 #For test items
-mongoengine.connect(db="teq", host="localhost", port=27017, username="mongouser", password="hrufherf23")
-
+mongoengine.connect(host=decouple.config("NOSQL_DATABASE_URL"))
+print(decouple.config("NOSQL_DATABASE_URL"))
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

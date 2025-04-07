@@ -2,58 +2,43 @@ import { sendAsync } from "@/js/utility/request.js";
 import { API } from "@/js/api/api.js";
 import { getToken } from "@/js/utility/token.js";
 
-export const itemCreateApi = ({ testId, text, type, choices, correct_answer }) => {
+export const itemCreateApi = ({ testId, text, type, choices, correctAnswer=null }) => {
   const request = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     },
-    body: JSON.stringify({ testId, text, type, choices, correct_answer })
+    body: JSON.stringify({ testId, text, type, choices, correctAnswer })
   };
-  return sendAsync(API + "test/item/", request);
+
+  console.log({ testId, text, type, choices, correctAnswer })
+  return sendAsync(API + "item/", request);
 };
-/*
-const testGetDeleteApi = (testId, method) => {
+
+export const itemDeleteApi = (testId, index) => {
   const request = {
-    method: method,
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     }
   };
-  return sendAsync(API + `test/${testId}/`, request);
+  return sendAsync(API + `item/${index}/${testId}/`, request);
 };
 
-export const testGetApi = (testId) => {
-  return testGetDeleteApi(testId, "GET");
-};
 
-export const testDeleteApi = (testId) => {
-  return testGetDeleteApi(testId, "DELETE");
-};
-
-export const testUpdateApi = (testId, { title, description, isPublic }) => {
+export const itemUpdateApi = (testId, index, { text, type, choices, correctAnswer=null }) => {
   const request = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     },
-    body: JSON.stringify({ title, description, isPublic })
+    body: JSON.stringify({testId, text, type, choices, correctAnswer })
   };
 
-  return sendAsync(API + `test/${testId}/`, request);
+  return sendAsync(API + `item/${index}/${testId}`, request);
 };
 
-export const testListApi = () => {
-  const request = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${getToken()}`
-    }
-  };
 
-  return sendAsync(API + `tests/`, request);
-};*/

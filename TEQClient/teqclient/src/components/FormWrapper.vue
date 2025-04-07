@@ -2,7 +2,7 @@
 defineProps({
     title: {
         type: String,
-        required: true,
+        required: false
     },
     bgColor: {
         type: String,
@@ -13,7 +13,7 @@ defineProps({
 
 <template>
     <div class="card">
-        <div :class="`card-header bg-${bgColor} main-style`">
+        <div v-if="title" :class="`card-header bg-${bgColor} main-style`">
             <h4 class="form-title">{{ title }}</h4>
         </div>
         <div class="card-body">

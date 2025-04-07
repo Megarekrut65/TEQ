@@ -6,6 +6,8 @@ import LoadingWindow from "@/components/LoadingWindow.vue";
 import { testCreateApi, testUpdateApi } from "@/js/api/test.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import TestItem from "@/components/test/TestItem.vue";
+import { itemCreateApi } from "@/js/api/item.js";
+import { defaultAnswer } from "@/js/data-types.js";
 
 const props = defineProps({
   instance: {
@@ -27,6 +29,13 @@ const props = defineProps({
 });
 
 const formData = ref(props.instance);
+
+const addNewAnswer = () => {
+  itemCreateApi(defaultAnswer(formData.value.id))
+    .then(res=>{
+      formData.value.items.push(res);
+  }).catch(errorAlert);
+};
 
 const router = useRouter();
 
@@ -90,7 +99,15 @@ const onSubmit = () => {
 
     </form>
   </FormWrapper>
-  <TestItem></TestItem>
+  <div v-if="mode!=='create'">
+    <div class="mt-3">
+      <TestItem v-for="(item, index) in formData.items" :key="index" :index="index+1"  :instance="item" :test-id="formData.id"/>
+    </div>
+    <div class="d-flex justify-content-center">
+      <img src="@/assets/images/plus.png" class="btn-img" alt="plus" @click="addNewAnswer">
+    </div>
+  </div>
+
 
 </template>
 

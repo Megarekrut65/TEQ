@@ -16,3 +16,17 @@ input[type="checkbox"]:checked {
     background-color: #c5a992;
     border-color: #c5a992;
 }
+.card{
+    border: None;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.btn-img{
+    width: 120px;
+}
+
+.btn-img:hover{
+    border: 1px #c5a992 solid;
+    border-radius: 50%;
+    cursor: pointer;
+}

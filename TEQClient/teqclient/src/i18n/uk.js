@@ -33,5 +33,17 @@ export const uk = {
   submit: "Підтвердити",
   cancel: "Відмінити",
   noTests: "Тести відсутні",
-  createOne: "Створити"
+  createOne: "Створити",
+
+  testId: "ID тесту",
+  text: "Текст",
+  type: "Тип",
+  singleChoice: "Один варіант",
+  multipleChoice: "Кілька варіантів",
+  textAnswer: "Текстова відповідь",
+  choices: "Варіанти",
+  correct: "Правильна",
+  choiceText: "Введіть відповідь...",
+  questionText:"Введіть запитання..."
+
 };

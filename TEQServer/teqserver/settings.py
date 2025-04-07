@@ -99,7 +99,7 @@ DATABASES = {
 
 #For test items
 mongoengine.connect(host=decouple.config("NOSQL_DATABASE_URL"))
-print(decouple.config("NOSQL_DATABASE_URL"))
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

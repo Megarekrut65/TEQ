@@ -1,123 +1,88 @@
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import LoadingWindow from "@/components/LoadingWindow.vue";
-import { errorAlert } from "@/js/utility/utility.js";
-import { itemCreateApi } from "@/js/api/item.js";
-import FormWrapper from "@/components/FormWrapper.vue";  // Example API calls for create/update
+import FormWrapper from "@/components/FormWrapper.vue";
+import { itemUpdateApi } from "@/js/api/item.js";
+import { errorAlert } from "@/js/utility/utility.js";  // Example API calls for create/update
 
 const props = defineProps({
+  index:{
+    type: Number,
+    required: true
+  },
+  testId:{
+    type: String,
+    required: true
+  },
   instance: {
     type: Object,
-    required: false,
-    default: () => {
-      return {
-        testId: "",
-        text: "",
-        type: "SINGLE",  // Default type to 'SINGLE'
-        choices: [{ text: "", is_correct: false }],
-        correctAnswer: "",
-      };
-    },
-  },
-  mode: {
-    type: String,
-    required: false,
-    default: "create",
-  },
+    required: true
+  }
 });
 
 const formData = ref(props.instance);
 const loading = ref(false);
-const router = useRouter();
 
-const createItem = () => {
-  return itemCreateApi(formData.value).then((res) => {
-    router.push({ name: "itemEditor", params: { itemId: res.id } });
-  });
-};
-
-const updateItem = () => {
-  return itemCreateApi(props.instance.id, formData.value).then((res) => {
-    formData.value = res;
-  });
-};
-
-const api = props.mode === "create" ? createItem : updateItem;
-
-const onSubmit = () => {
-  loading.value = true;
-
-  api().catch(errorAlert).finally(() => {
-    loading.value = false;
-  });
+const onUpdate = ()=>{
+  itemUpdateApi(props.testId, props.index-1, formData.value).then(res=>{
+    console.log(res);
+  }).catch(errorAlert);
 };
 
 const addChoice = () => {
-  formData.value.choices.push({ text: "", is_correct: false });
+  formData.value.choices.push({ text: "", isCorrect: false });
+  onUpdate();
 };
+
 
 </script>
 
 <template>
   <LoadingWindow v-if="loading" />
-  <FormWrapper :title="$t(mode) + ' ' + $t('item')">
+  <FormWrapper class="mb-3">
     <form @submit.prevent="onSubmit">
       <div>
-        <label class="form-label" for="testId">{{ $t("testId") }}</label>
-        <input
-          v-model.trim="formData.testId"
-          type="text"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <div>
-        <label class="form-label" for="text">{{ $t("text") }}</label>
+        <label class="form-label" for="text">{{index}}. {{ formData.text }}</label>
         <input
           v-model.trim="formData.text"
           type="text"
           class="form-control"
+          :placeholder="$t('questionText')"
+          @change="onUpdate"
           required
         />
       </div>
 
       <div>
         <label class="form-label" for="type">{{ $t("type") }}</label>
-        <select v-model="formData.type" class="form-select" required>
+        <select v-model="formData.type" class="form-select" required @change="onUpdate">
           <option value="SINGLE">{{ $t("singleChoice") }}</option>
           <option value="MULTIPLE">{{ $t("multipleChoice") }}</option>
           <option value="TEXT">{{ $t("textAnswer") }}</option>
         </select>
       </div>
 
-      <!-- Choices Field (for Single and Multiple types) -->
       <div v-if="formData.type === 'SINGLE' || formData.type === 'MULTIPLE'" class="mb-3">
-        <label class="form-label">{{ $t("choices") }}</label>
-        <div
-          v-for="(choice, index) in formData.choices"
-          :key="index"
-          class="input-group mb-2"
-        >
-          <input
-            v-model="choice.text"
-            type="text"
-            class="form-control"
-            placeholder="Choice Text"
-          />
-          <div class="input-group-text">
-            <input
-              type="checkbox"
-              v-model="choice.is_correct"
-            />
-            Correct
+        <label class="form-label">{{ $t("choices") }} <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span></label>
+
+        <div class="row" v-for="choice in formData.choices" :key="choice">
+          <div class="col-4 col-md-3 col-lg-2">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault"
+                     v-model="choice.isCorrect" @change="onUpdate">
+              <label class="form-check-label" for="switchCheckDefault">{{$t('correct')}}</label>
+            </div>
           </div>
+
+          <div class="col-8 col-md-9 col-lg-10">
+            <input type="text" class="form-control" v-model.trim="choice.text" :placeholder="$t('choiceText')" @change="onUpdate">
+          </div>
+
         </div>
-        <button type="button" class="btn btn-link" @click="addChoice">{{ $t("addChoice") }}</button>
+
+
       </div>
 
-      <!-- Correct Answer Field (for Text type) -->
       <div v-if="formData.type === 'TEXT'" class="mb-3">
         <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
         <textarea
@@ -126,8 +91,6 @@ const addChoice = () => {
           rows="3"
         ></textarea>
       </div>
-
-      <button class="btn btn-outline-accent" type="submit">{{ $t(mode) }}</button>
     </form>
   </FormWrapper>
 </template>

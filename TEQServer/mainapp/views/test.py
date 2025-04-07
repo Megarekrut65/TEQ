@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.test import Test, TestItem
@@ -25,7 +25,7 @@ class TestCreateAPIView(CreateAPIView):
 class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsTestOwner]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -35,7 +35,6 @@ class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
         serializer = self.get_serializer(instance)
         data = serializer.data
-        data["items"] = item.items
 
         return JsonResponse(data, status=status.HTTP_200_OK)
 
@@ -43,3 +42,29 @@ class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class ItemCreateAPIView(CreateAPIView):
     serializer_class = ItemSerializer
     permission_classes = [IsTestOwner]
+
+class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [IsTestOwner]
+    queryset = TestItem.objects.all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["index"] = self.kwargs["index"]
+        return context
+
+    def get_object(self):
+        return TestItem.objects.get(pk=self.kwargs["pk"])
+
+    def destroy(self, request, *args, **kwargs):
+        test_id = self.kwargs["test_id"]
+        test = TestItem.objects.get(id=test_id)
+
+        index = self.kwargs["index"]
+
+        if index >= len(test.items):
+            return JsonResponse({"detail": "Index out of range"}, status=status.HTTP_400_BAD_REQUEST)
+
+        test.items.remove(test.items[index])
+
+        return JsonResponse({"detail": "Item removed"}, status=status.HTTP_200_OK)

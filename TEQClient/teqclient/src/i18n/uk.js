@@ -40,10 +40,11 @@ export const uk = {
   type: "Тип",
   singleChoice: "Один варіант",
   multipleChoice: "Кілька варіантів",
-  textAnswer: "Текстова відповідь",
+  textAnswer: "Повна відповідь",
   choices: "Варіанти",
   correct: "Правильна",
   choiceText: "Введіть відповідь...",
-  questionText:"Введіть запитання..."
+  questionText:"Введіть запитання...",
+  correctAnswer:"Правильна відповідь"
 
 };

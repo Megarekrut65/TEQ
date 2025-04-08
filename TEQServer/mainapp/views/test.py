@@ -57,7 +57,7 @@ class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return TestItem.objects.get(pk=self.kwargs["pk"])
 
     def destroy(self, request, *args, **kwargs):
-        test_id = self.kwargs["test_id"]
+        test_id = self.kwargs["pk"]
         test = TestItem.objects.get(id=test_id)
 
         index = self.kwargs["index"]
@@ -66,5 +66,6 @@ class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             return JsonResponse({"detail": "Index out of range"}, status=status.HTTP_400_BAD_REQUEST)
 
         test.items.remove(test.items[index])
+        test.save()
 
         return JsonResponse({"detail": "Item removed"}, status=status.HTTP_200_OK)

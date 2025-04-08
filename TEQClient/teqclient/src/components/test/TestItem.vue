@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from "vue";
-import LoadingWindow from "@/components/LoadingWindow.vue";
 import FormWrapper from "@/components/FormWrapper.vue";
 import { itemUpdateApi } from "@/js/api/item.js";
 import { errorAlert } from "@/js/utility/utility.js";  // Example API calls for create/update
@@ -14,19 +12,25 @@ const props = defineProps({
     type: String,
     required: true
   },
-  instance: {
-    type: Object,
+  onItemRemoved:{
+    type: Function,
     required: true
   }
 });
 
-const formData = ref(props.instance);
-const loading = ref(false);
+const formData = defineModel({required:true});
+
+const allowUncheck = (item)=>{
+  if(formData.value.type !== "SINGLE" || !item.isCorrect) return true;
+
+  const found =  formData.value.choices.find(choice=>choice !== item && choice.isCorrect);
+  console.log(found);
+
+  return found !== undefined;
+};
 
 const onUpdate = ()=>{
-  itemUpdateApi(props.testId, props.index-1, formData.value).then(res=>{
-    console.log(res);
-  }).catch(errorAlert);
+  itemUpdateApi(props.testId, props.index-1, formData.value).catch(errorAlert);
 };
 
 const addChoice = () => {
@@ -38,10 +42,10 @@ const addChoice = () => {
 </script>
 
 <template>
-  <LoadingWindow v-if="loading" />
   <FormWrapper class="mb-3">
-    <form @submit.prevent="onSubmit">
+    <form>
       <div>
+        <div class="btn-trash" @click="onItemRemoved"><i class="fa-solid fa-trash-can"></i></div>
         <label class="form-label" for="text">{{index}}. {{ formData.text }}</label>
         <input
           v-model.trim="formData.text"
@@ -68,9 +72,9 @@ const addChoice = () => {
         <div class="row" v-for="choice in formData.choices" :key="choice">
           <div class="col-4 col-md-3 col-lg-2">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault"
-                     v-model="choice.isCorrect" @change="onUpdate">
-              <label class="form-check-label" for="switchCheckDefault">{{$t('correct')}}</label>
+              <input class="form-check-input" type="checkbox" role="switch"
+                     v-model="choice.isCorrect" @change="onUpdate" :disabled="!allowUncheck(choice)">
+              <label class="form-check-label" >{{$t('correct')}}</label>
             </div>
           </div>
 

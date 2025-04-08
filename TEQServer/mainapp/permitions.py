@@ -13,6 +13,9 @@ class IsTestOwner(IsAuthenticated):
             test_id = request.data.get("testId")
 
         if not test_id:
+            test_id = view.kwargs.get("test_id")
+
+        if not test_id:
             return False
 
         test = Test.objects.filter(id=test_id, owner=request.user).first()

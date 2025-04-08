@@ -6,14 +6,14 @@ defineProps({
     },
     bgColor: {
         type: String,
-        default: "primary",
+        default: "secondary",
     },
 });
 </script>
 
 <template>
     <div class="card">
-        <div v-if="title" :class="`card-header bg-${bgColor} main-style`">
+        <div v-if="title" :class="`card-header bg-${bgColor}`">
             <h4 class="form-title">{{ title }}</h4>
         </div>
         <div class="card-body">

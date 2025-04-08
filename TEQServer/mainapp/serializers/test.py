@@ -26,8 +26,6 @@ class ItemSerializer(CamelCaseSerializer):
         count = len(choices)
 
         if question_type == TEXT:
-            if count > 0:
-                raise ValidationError(f"For '{TEXT}' type questions, no choices are allowed.")
             return data
 
         if count < 1:
@@ -35,7 +33,7 @@ class ItemSerializer(CamelCaseSerializer):
 
         if question_type == SINGLE:
             correct = len([choice for choice in choices if choice["is_correct"]])
-            if correct != 1:
+            if correct < 0:
                 raise ValidationError("Exactly one choice must be marked as correct.")
 
         return data

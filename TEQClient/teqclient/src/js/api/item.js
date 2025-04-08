@@ -38,7 +38,7 @@ export const itemUpdateApi = (testId, index, { text, type, choices, correctAnswe
     body: JSON.stringify({testId, text, type, choices, correctAnswer })
   };
 
-  return sendAsync(API + `item/${index}/${testId}`, request);
+  return sendAsync(API + `item/${index}/${testId}/`, request);
 };
 
 

@@ -2,6 +2,7 @@
 @import "./css/vendor.css";
 @import "./css/style.css";
 
+
 .page {
     min-height: 50vh;
 }
@@ -13,8 +14,8 @@
 }
 
 input[type="checkbox"]:checked {
-    background-color: #c5a992;
-    border-color: #c5a992;
+    background-color: rgb(242, 137, 63);
+    border-color: rgb(154, 75, 20);
 }
 .card{
     border: None;
@@ -29,4 +30,16 @@ input[type="checkbox"]:checked {
     border: 1px #c5a992 solid;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.btn-trash{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.btn-trash:hover{
+    color: tomato;
+    cursor: pointer;
+
 }

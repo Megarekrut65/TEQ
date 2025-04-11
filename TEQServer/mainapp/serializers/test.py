@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from mainapp.item_types import ITEM_TYPES, TEXT, SINGLE, MULTIPLE
-from mainapp.models.test import Test, TestItem, ChoiceAnswerItem, Choice, TextAnswerItem
+from mainapp.models.test import Test, TestDocument, ChoiceItem, Choice, TextItem
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
@@ -40,7 +40,7 @@ class ItemSerializer(CamelCaseSerializer):
 
     def validate_test_id(self, value):
         try:
-            TestItem.objects.get(id=value)
+            TestDocument.objects.get(id=value)
         except DoesNotExist:
             raise ValidationError("TestItem with this ID does not exist.")
         return value
@@ -48,7 +48,7 @@ class ItemSerializer(CamelCaseSerializer):
     def __get_item(self, validated_data):
         item = None
         if validated_data["type"] in [SINGLE, MULTIPLE]:
-            item = ChoiceAnswerItem(
+            item = ChoiceItem(
                 type=validated_data["type"],
                 text=validated_data["text"],
                 choices=[
@@ -57,7 +57,7 @@ class ItemSerializer(CamelCaseSerializer):
                 ]
             )
         elif validated_data["type"] == TEXT:
-            item = TextAnswerItem(
+            item = TextItem(
                 type=validated_data["type"],
                 text=validated_data["text"],
                 correct_answer=validated_data["correct_answer"]
@@ -66,7 +66,7 @@ class ItemSerializer(CamelCaseSerializer):
         return item
 
     def create(self, validated_data):
-        test_item = TestItem.objects.get(id=self.validated_data["test_id"])
+        test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
 
         item = self.__get_item(validated_data)
 
@@ -75,7 +75,7 @@ class ItemSerializer(CamelCaseSerializer):
         return item
 
     def update(self, instance, validated_data):
-        test_item = TestItem.objects.get(id=self.validated_data["test_id"])
+        test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
 
         index = self.context.get("index", None)
         if index is None:
@@ -91,7 +91,7 @@ class ItemSerializer(CamelCaseSerializer):
         return item
 
 class TestSerializer(CamelCaseModelSerializer):
-    owner = UserProfileSerializer(read_only=True)
+    owner = UserProfileSerializer(read_only=True, source="owner.userprofile")
     items = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -100,7 +100,7 @@ class TestSerializer(CamelCaseModelSerializer):
         read_only_fields = ["id", "created_date"]
 
     def get_items(self, obj):
-        item = TestItem.objects.filter(id=obj.id).first()
+        item = TestDocument.objects.filter(id=obj.id).first()
         if item:
             return ItemSerializer(item.items, many=True).data
 

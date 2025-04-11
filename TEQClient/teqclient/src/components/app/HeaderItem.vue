@@ -1,6 +1,6 @@
 <script setup>
 
-import Menu from "@/components/app/Menu.vue";
+import Menu from "@/components/app/MenuItem.vue";
 
 import { ref, onMounted, onUnmounted } from "vue";
 

@@ -23,7 +23,7 @@ class BaseItem(me.EmbeddedDocument):
     type = me.StringField(required=True, max_length=50)
     meta = {"allow_inheritance": True}
 
-class TestItem(me.Document):
+class TestDocument(me.Document):
     id = me.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     items = me.ListField(me.EmbeddedDocumentField(BaseItem))
 
@@ -31,9 +31,9 @@ class Choice(me.EmbeddedDocument):
     text = me.StringField(required=True, max_length=200)
     is_correct = me.BooleanField(default=False)
 
-class ChoiceAnswerItem(BaseItem):
+class ChoiceItem(BaseItem):
     choices = me.EmbeddedDocumentListField(Choice, required=True)
 
-class TextAnswerItem(BaseItem):
+class TextItem(BaseItem):
     correct_answer = me.StringField(max_length=5000, default="")
 

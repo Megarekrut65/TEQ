@@ -22,14 +22,27 @@ class IsTestOwner(IsAuthenticated):
         
         return test is not None
 
-class IsTestMember(IsAuthenticated):
+class CanAccessTest(IsAuthenticated):
     def has_permission(self, request, view):
         if not super().has_permission(request, view):
             return False
 
-        test_id = view.kwargs.get("test_id")
+        test_id = view.kwargs.get("pk")
+        if not test_id and request.method in ("POST", "PUT", "PATCH"):
+            test_id = request.data.get("testId")
+
+        if not test_id:
+            test_id = view.kwargs.get("test_id")
+
         if not test_id:
             return False
+
+        test = Test.objects.get(pk=test_id)
+        if test.is_public:
+            return True
+
+        if test.owner == request.user:
+            return True
 
         test = TestMember.objects.filter(test__id=test_id, user=request.user).first()
         return test is not None

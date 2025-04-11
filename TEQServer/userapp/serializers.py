@@ -29,9 +29,8 @@ class UserLoginSerializer(CamelCaseSerializer):
     password = serializers.CharField(write_only=True)
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(source="username", read_only=True)
-    fullname = serializers.CharField(source="userprofile.fullname", read_only=True)
+    email = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = ["id", "fullname", "email"]

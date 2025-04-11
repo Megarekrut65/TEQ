@@ -1,7 +1,8 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { itemUpdateApi } from "@/js/api/item.js";
-import { errorAlert } from "@/js/utility/utility.js";  // Example API calls for create/update
+import { errorAlert } from "@/js/utility/utility.js";
+import { MULTIPLE, SINGLE, TEXT } from "@/js/types.js";
 
 const props = defineProps({
   index:{
@@ -66,7 +67,7 @@ const addChoice = () => {
         </select>
       </div>
 
-      <div v-if="formData.type === 'SINGLE' || formData.type === 'MULTIPLE'" class="mb-3">
+      <div v-if="formData.type === SINGLE || formData.type === MULTIPLE" class="mb-3">
         <label class="form-label">{{ $t("choices") }} <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span></label>
 
         <div class="row" v-for="choice in formData.choices" :key="choice">
@@ -87,7 +88,7 @@ const addChoice = () => {
 
       </div>
 
-      <div v-if="formData.type === 'TEXT'" class="mb-3">
+      <div v-if="formData.type === TEXT" class="mb-3">
         <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
         <textarea
           v-model="formData.correctAnswer"

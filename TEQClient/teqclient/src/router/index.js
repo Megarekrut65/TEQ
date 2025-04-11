@@ -30,6 +30,13 @@ const router = createRouter({
 
         },
         {
+          path: "pass/:testId",
+          name: "pass",
+          component: () => import("../views/TestPassView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
           path: "editor/new",
           name: "new-editor",
           component: () => import("../views/NewTestEditorView.vue"),

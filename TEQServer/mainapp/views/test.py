@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from mainapp.models.test import Test, TestItem
+from mainapp.models.test import Test, TestDocument
 from mainapp.permitions import IsTestOwner
 from mainapp.serializers.test import TestSerializer, ItemSerializer
 
@@ -20,7 +20,7 @@ class TestCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         test = serializer.save(owner=self.request.user)
-        TestItem(id=test.id).save()
+        TestDocument(id=test.id).save()
 
 class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Test.objects.all()
@@ -29,7 +29,7 @@ class TestRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        item = TestItem.objects.filter(id=instance.id).first()
+        item = TestDocument.objects.filter(id=instance.id).first()
         if item is None:
             return JsonResponse({"detail": "Test not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -46,7 +46,7 @@ class ItemCreateAPIView(CreateAPIView):
 class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemSerializer
     permission_classes = [IsTestOwner]
-    queryset = TestItem.objects.all()
+    queryset = TestDocument.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -54,11 +54,11 @@ class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return context
 
     def get_object(self):
-        return TestItem.objects.get(pk=self.kwargs["pk"])
+        return TestDocument.objects.get(pk=self.kwargs["pk"])
 
     def destroy(self, request, *args, **kwargs):
         test_id = self.kwargs["pk"]
-        test = TestItem.objects.get(id=test_id)
+        test = TestDocument.objects.get(id=test_id)
 
         index = self.kwargs["index"]
 

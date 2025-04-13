@@ -18,6 +18,7 @@ const props = defineProps({
                 title: "",
                 description: "",
                 isPublic: false,
+                autoCheck: false,
             };
         },
     },
@@ -103,12 +104,26 @@ const onItemRemoved = (index) => {
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="flexCheckDefault"
+                    id="public"
                 />
-                <label class="form-check-label" for="flexCheckDefault">
+                <label class="form-check-label" for="public">
                     {{ $t("isPublic") }}
                 </label>
             </div>
+
+          <div class="form-check">
+            <input
+              v-model="formData.autoCheck"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="autoCheck"
+
+            />
+            <label class="form-check-label" for="autoCheck" :title="$t('autoHint')">
+              {{ $t("autoCheck") }}
+            </label>
+          </div>
 
             <button class="btn btn-outline-secondary" type="submit">{{ $t(mode) }}</button>
         </form>
@@ -122,6 +137,7 @@ const onItemRemoved = (index) => {
                 v-model="formData.items[index]"
                 :on-item-removed="() => onItemRemoved(index)"
                 :test-id="formData.id"
+                :auto-check="formData.autoCheck"
             />
         </div>
         <div class="d-flex justify-content-center">

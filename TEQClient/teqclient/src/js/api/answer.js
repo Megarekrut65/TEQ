@@ -35,3 +35,14 @@ export const answerGetApi = (testId) => {
   };
   return sendAsync(API + `answer/${testId}`, request);
 };
+
+export const answerGetListApi = () => {
+  const request = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`
+    }
+  };
+  return sendAsync(API + `answers`, request);
+};

@@ -1,4 +1,5 @@
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
@@ -27,3 +28,11 @@ class AnswerRetrieveApiView(RetrieveAPIView):
     model = Answer
     permission_classes = [CanAccessAnswer]
     queryset = Answer.objects.all()
+
+class AnswerListApiView(ListAPIView):
+    serializer_class = AnswerSerializer
+    model = Answer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Answer.objects.filter(owner=self.request.user).order_by("-pass_date").all()

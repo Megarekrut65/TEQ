@@ -2,14 +2,14 @@ import { sendAsync } from "@/js/utility/request.js";
 import { API } from "@/js/api/api.js";
 import { getToken } from "@/js/utility/token.js";
 
-export const testCreateApi = ({ title, description, isPublic }) => {
+export const testCreateApi = ({ title, description, isPublic, autoCheck }) => {
   const request = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     },
-    body: JSON.stringify({ title, description, isPublic })
+    body: JSON.stringify({ title, description, isPublic, autoCheck })
   };
   return sendAsync(API + "test/", request);
 };

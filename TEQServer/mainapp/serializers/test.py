@@ -17,7 +17,12 @@ class ItemSerializer(CamelCaseSerializer):
 
     text = serializers.CharField(max_length=500, allow_blank=True)
     type = serializers.ChoiceField(choices=ITEM_TYPES)
+    grade = serializers.FloatField(min_value=0.0)
+    allow_proportion = serializers.BooleanField(default=False)
+
     choices = ChoiceSerializer(many=True, required=False)
+
+    min_similar_percent = serializers.FloatField(required=False, min_value=0, max_value=100)
     correct_answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
 
     def validate(self, data):
@@ -51,6 +56,8 @@ class ItemSerializer(CamelCaseSerializer):
             item = ChoiceItem(
                 type=validated_data["type"],
                 text=validated_data["text"],
+                grade=validated_data["grade"],
+                allow_proportion=validated_data["allow_proportion"],
                 choices=[
                     Choice(text=choice["text"], is_correct=choice["is_correct"])
                     for choice in validated_data["choices"]
@@ -60,6 +67,9 @@ class ItemSerializer(CamelCaseSerializer):
             item = TextItem(
                 type=validated_data["type"],
                 text=validated_data["text"],
+                grade=validated_data["grade"],
+                allow_proportion=validated_data["allow_proportion"],
+                min_similar_percent=validated_data["min_similar_percent"],
                 correct_answer=validated_data["correct_answer"]
             )
 
@@ -96,7 +106,8 @@ class TestSerializer(CamelCaseModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "is_public", "items"]
+        fields = ["id", "owner", "created_date", "title", "description", "is_public", "auto_check",
+                  "items"]
         read_only_fields = ["id", "created_date"]
 
     def get_items(self, obj):

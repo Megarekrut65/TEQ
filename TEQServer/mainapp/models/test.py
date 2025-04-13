@@ -13,6 +13,7 @@ class Test(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
+    auto_check = models.BooleanField(default=False)
 
     version = models.IntegerField(default=1)
 
@@ -23,6 +24,9 @@ class TestMember(models.Model):
 class BaseItem(me.EmbeddedDocument):
     text = me.StringField(required=True, max_length=500)
     type = me.StringField(required=True, max_length=50)
+    grade = me.FloatField(default=0,)
+    allow_proportion = me.BooleanField(default=False)
+
     meta = {"allow_inheritance": True}
 
 class TestDocument(me.Document):
@@ -38,4 +42,4 @@ class ChoiceItem(BaseItem):
 
 class TextItem(BaseItem):
     correct_answer = me.StringField(max_length=5000, default="")
-
+    min_similar_percent = me.FloatField(default=0.0)

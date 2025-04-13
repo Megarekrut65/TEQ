@@ -42,7 +42,7 @@ const formData = defineModel({required:true});
         </div>
       </div>
       <input class="form-check-input hide" type="radio"
-             :name="`radio_${index}`" checked>
+             :name="`radio_${index}`" v-model="formData.choices[0]" value="-1">
     </div>
 
     <div v-if="item.type === TEXT" class="mb-3">

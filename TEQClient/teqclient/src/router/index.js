@@ -37,6 +37,13 @@ const router = createRouter({
 
         },
         {
+          path: "view/:answerId",
+          name: "view",
+          component: () => import("../views/AnswerView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
           path: "editor/new",
           name: "new-editor",
           component: () => import("../views/NewTestEditorView.vue"),

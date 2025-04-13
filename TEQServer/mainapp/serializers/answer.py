@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework_mongoengine import serializers as mg_serializers
 
-from mainapp.item_types import ITEM_TYPES
+from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, TEXT
+from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem
 from mainapp.models.test import Test, TestDocument
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
@@ -31,3 +33,56 @@ class TestSerializer(CamelCaseModelSerializer):
             return ItemSerializer(item.items, many=True).data
 
         return []
+
+class AnswerItemSerializer(CamelCaseSerializer):
+    type = serializers.ChoiceField(choices=ITEM_TYPES)
+    choices = serializers.ListField(
+        child=serializers.IntegerField(min_value=0), required=False, allow_null=True, allow_empty=True
+    )
+    answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
+
+    def create(self, validated_data):
+        item = None
+        if validated_data["type"] in [SINGLE, MULTIPLE]:
+            item = AnswerChoiceItem(
+                type=validated_data["type"],
+                choices=validated_data["choices"],
+            )
+        elif validated_data["type"] == TEXT:
+            item = AnswerTextItem(
+                type=validated_data["type"],
+                answer=validated_data["answer"]
+            )
+
+        return item
+
+
+class AnswerSerializer(CamelCaseModelSerializer):
+    items = serializers.SerializerMethodField()
+    test = TestSerializer(read_only=True)
+
+    class Meta:
+        model = Answer
+        fields = ["id", "owner", "pass_date", "version", "items", "test"]
+        read_only_fields = ["id", "pass_date", "owner", "version"]
+
+    def get_items(self, obj):
+        doc = AnswerDocument.objects.get(pk=obj.id)
+        return AnswerItemSerializer(doc.items, many=True).data
+
+    def create(self, validated_data):
+        items = self.initial_data.get("items")
+        if items is None:
+            raise serializers.ValidationError({"items": "This field is required."})
+        item_serializer = AnswerItemSerializer(data=items, many=True)
+        item_serializer.is_valid(raise_exception=True)
+        validated_items = item_serializer.create(item_serializer.validated_data)
+
+        answer = Answer.objects.create(
+            owner=validated_data["owner"],
+            version=validated_data["version"],
+            test=validated_data["test"],)
+
+        doc = AnswerDocument.objects.create(id=answer.id, items=validated_items)
+
+        return answer

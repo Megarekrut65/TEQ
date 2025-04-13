@@ -14,6 +14,8 @@ class Test(models.Model):
     description = models.TextField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
 
+    version = models.IntegerField(default=1)
+
 class TestMember(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)

@@ -8,8 +8,10 @@ const alerts = computed(() => alertBus.alerts);
 <template>
   <div class="alert-window">
     <div v-for="alert in alerts" :key="alert" :class="`alert alert-${alert.alert}`" role="alert">
+
       <div>{{ alert.msg }}</div>
-      <i class="fa-solid fa-xmark icon-btn" @click="() => alertBus.closeAlert(alert)"></i>
+      <div class="close-btn"><i class="fa-solid fa-xmark icon-btn" @click="() => alertBus.closeAlert(alert)"></i></div>
+
     </div>
   </div>
 </template>
@@ -21,6 +23,11 @@ const alerts = computed(() => alertBus.alerts);
   right: 0;
   width: 100%;
   z-index: 1000;
+
+  max-height: 20vh;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  overflow-x: hidden;
 }
 
 .alert {
@@ -32,5 +39,11 @@ const alerts = computed(() => alertBus.alerts);
 .icon-btn:hover {
   cursor: pointer;
   opacity: 0.8;
+}
+
+.close-btn{
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 </style>

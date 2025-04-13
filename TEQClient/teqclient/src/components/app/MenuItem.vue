@@ -8,7 +8,6 @@ const user = ref(getUser());
 console.log(user.value);
 window.addEventListener("auth", (data) => {
   user.value = data.detail;
-  console.log(user.value);
 });
 </script>
 

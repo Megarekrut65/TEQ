@@ -1,5 +1,6 @@
 from rest_framework.permissions import IsAuthenticated
 
+from mainapp.models.answer import Answer
 from mainapp.models.test import Test, TestMember
 
 
@@ -46,3 +47,22 @@ class CanAccessTest(IsAuthenticated):
 
         test = TestMember.objects.filter(test__id=test_id, user=request.user).first()
         return test is not None
+
+class CanAccessAnswer(IsAuthenticated):
+    def has_permission(self, request, view):
+        if not super().has_permission(request, view):
+            return False
+
+        answer_id = view.kwargs.get("pk")
+        if not answer_id and request.method in ("POST", "PUT", "PATCH"):
+            answer_id = request.data.get("answerId")
+
+        if not answer_id:
+            answer_id = view.kwargs.get("answer_id")
+
+        if not answer_id:
+            return False
+
+        answer = Answer.objects.get(pk=answer_id)
+
+        return answer.owner == request.user or answer.test.owner == request.user

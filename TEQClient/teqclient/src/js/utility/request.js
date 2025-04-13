@@ -9,11 +9,13 @@ export const sendAsync = async (endpoint, request) => {
 
   if (!response.ok) {
     return response
-      .json()
+      .text()
       .then((err) => {
-        throw err;
-      })
-      .catch((err) => {
+        try{
+          err = JSON.parse(err);
+          // eslint-disable-next-line no-unused-vars
+        } catch (e) { /* empty */ }
+
         throw err;
       });
   }

@@ -6,11 +6,18 @@ import LoadingWindow from "@/components/LoadingWindow.vue";
 
 import TestItemPass from "@/components/test/TestItemPass.vue";
 import { MULTIPLE, SINGLE } from "@/js/types.js";
+import { testPassPostApi } from "@/js/api/answer.js";
+import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
     instance: {
         type: Object,
         required: true
+    },
+    answer:{
+        type: Object,
+        required: false,
+        default: null
     },
     readonly: {
         type: Boolean,
@@ -23,12 +30,6 @@ const router = useRouter();
 
 const loading = ref(false);
 
-const onSubmit = () => {
-    loading.value = true;
-
-    console.log(answer)
-};
-
 const createChoices = (type)=>{
   if(type===SINGLE) return [-1];
   if(type===MULTIPLE) return [];
@@ -38,14 +39,23 @@ const createChoices = (type)=>{
 
 const createAnswerItem = (item)=>{
   return {
+    type: item.type,
     choices: createChoices(item.type),
     answer:""
   };
 };
 
-const answer = ref({items: props.instance.items.map(createAnswerItem)});
-console.log(answer)
+const answer = ref(props.answer?props.answer: {items: props.instance.items.map(createAnswerItem)});
 
+const onSubmit = () => {
+  loading.value = true;
+
+  testPassPostApi(props.instance.id, answer.value).then(res=>{
+    router.push({ name: "view", params: { answerId: res.id } });
+  }).catch(errorAlert).finally(()=>{
+    loading.value = false;
+  });
+};
 </script>
 
 <template>
@@ -73,7 +83,7 @@ console.log(answer)
       />
     </div>
 
-    <button type="submit" class="btn btn-outline-success">{{$t('submit')}}</button>
+    <button v-if="!readonly" type="submit" class="btn btn-outline-success">{{$t('submit')}}</button>
   </form>
 </template>
 

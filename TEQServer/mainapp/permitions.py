@@ -23,6 +23,21 @@ class IsTestOwner(IsAuthenticated):
         
         return test is not None
 
+class IsTestOwnerMember(IsAuthenticated):
+    def has_permission(self, request, view):
+        if not super().has_permission(request, view):
+            return False
+
+        member_id = view.kwargs.get("pk")
+        if not member_id:
+            return False
+
+        member = TestMember.objects.filter(id=member_id).first()
+        if not member:
+            return False
+
+        return member.test.owner == request.user
+
 class CanAccessTest(IsAuthenticated):
     def has_permission(self, request, view):
         if not super().has_permission(request, view):
@@ -38,7 +53,10 @@ class CanAccessTest(IsAuthenticated):
         if not test_id:
             return False
 
-        test = Test.objects.get(pk=test_id)
+        test = Test.objects.filter(id=test_id).first()
+        if not test:
+            return False
+
         if test.is_public:
             return True
 
@@ -63,6 +81,8 @@ class CanAccessAnswer(IsAuthenticated):
         if not answer_id:
             return False
 
-        answer = Answer.objects.get(pk=answer_id)
+        answer = Answer.objects.filter(id=answer_id).first()
+        if not answer:
+            return False
 
         return answer.owner == request.user or answer.test.owner == request.user

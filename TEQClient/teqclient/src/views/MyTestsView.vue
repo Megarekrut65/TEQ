@@ -41,7 +41,7 @@ const removeTest = () => {
   <QuestionWindow v-model="removeActive" :on-success="removeTest"
                   :message="$t('removeMsg')" />
   <LoadingWindow v-if="loading" />
-  <div v-if="tests.length>0">
+  <div v-if="tests.length>0" class="scroll">
     <LocalizedLink to="editor/new"><i class="fa fa-plus"></i></LocalizedLink>
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -81,5 +81,7 @@ const removeTest = () => {
 </template>
 
 <style scoped>
-
+.scroll{
+  overflow-x: auto;
+}
 </style>

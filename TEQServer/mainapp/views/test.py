@@ -69,3 +69,4 @@ class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         test.save()
 
         return JsonResponse({"detail": "Item removed"}, status=status.HTTP_200_OK)
+

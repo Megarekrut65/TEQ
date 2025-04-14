@@ -20,7 +20,7 @@ const onSubmit = () => {
 
   login(formData.value)
     .then(() => {
-      router.push("/");
+      router.push({name:"home"});
     })
     .catch(errorAlert)
     .finally(() => {

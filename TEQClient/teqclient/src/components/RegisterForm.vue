@@ -20,7 +20,7 @@ const loading = ref(false);
 const onSubmit = () => {
   register(formData.value)
     .then(() => {
-      router.push("/");
+      router.push({name:"home"});
     })
     .catch(errorAlert)
     .finally(() => {

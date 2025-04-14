@@ -5,9 +5,12 @@ import { ref } from "vue";
 import { getUser, logout } from "@/js/utility/auth.js";
 
 const user = ref(getUser());
-console.log(user.value);
+
 window.addEventListener("auth", (data) => {
   user.value = data.detail;
+  if(!data.detail){
+    window.location.reload();
+  }
 });
 </script>
 

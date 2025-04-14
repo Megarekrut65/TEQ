@@ -1,4 +1,6 @@
 <script setup>
+import ModalWindow from "@/components/ModalWindow.vue";
+
 const props = defineProps({
   message: {
     type: String,
@@ -24,42 +26,22 @@ const submit = () => {
   model.value = false;
 };
 
-const cancel = () => {
-  props.onCancel();
-  model.value = false;
-};
+
 </script>
 
 <template>
-  <div class="modal-window" v-if="model">
-    <div class="modal show" style="display: block;">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            {{ message }}
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" @click="cancel">
-              {{ $t("cancel") }}
-            </button>
-            <button type="button" class="btn btn-outline-primary" @click="submit">{{ $t("submit") }}</button>
-          </div>
-        </div>
+  <ModalWindow v-model="model" :on-closed="onCancel">
+    <div class="card">
+      <div class="card-body">
+        {{ message }}
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" @click="onCancel(); model=false;">
+          {{ $t("cancel") }}
+        </button>
+        <button type="button" class="btn btn-outline-primary" @click="submit">{{ $t("submit") }}</button>
       </div>
     </div>
-  </div>
+  </ModalWindow>
 </template>
 
-<style scoped>
-.modal-window {
-  position: fixed;
-  z-index: 2000;
-
-  left: 0;
-  top: 0;
-
-  background-color: #0000001f;
-  width: 100%;
-  height: 100%;
-}
-</style>

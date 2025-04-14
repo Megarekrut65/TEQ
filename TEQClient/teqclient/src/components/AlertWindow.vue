@@ -43,7 +43,7 @@ const alerts = computed(() => alertBus.alerts);
 
 .close-btn{
   position: absolute;
-  top: 5px;
-  left: 5px;
+  height: 100%;
+  right: 10px;
 }
 </style>

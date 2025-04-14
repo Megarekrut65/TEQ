@@ -8,6 +8,8 @@ import { errorAlert } from "@/js/utility/utility.js";
 import TestItem from "@/components/test/TestItem.vue";
 import { itemCreateApi, itemDeleteApi } from "@/js/api/item.js";
 import { defaultAnswer } from "@/js/data-types.js";
+import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
+import MemberForm from "@/components/test/MemberForm.vue";
 
 const props = defineProps({
     instance: {
@@ -73,11 +75,23 @@ const onItemRemoved = (index) => {
     formData.value.items.splice(index, 1);
     itemDeleteApi(formData.value.id, index).catch(errorAlert);
 };
+
+const memberActive = ref(false);
 </script>
 
 <template>
+  <MemberForm v-if="mode!=='create'" v-model="memberActive" :test-id="formData.id"></MemberForm>
+
     <LoadingWindow v-if="loading" />
-    <FormWrapper :title="$t(mode) + ' ' + $t('test')">
+    <FormWrapper :title="$t(mode) + ' ' + $t('test')" show-menu>
+      <template v-slot:menu>
+        <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" >
+          {{ $t("pass") }}
+        </LocalizedLink>
+        <a class="dropdown-item" href="#" @click="memberActive=true;">
+          {{ $t("members") }}
+        </a>
+      </template>
         <form @submit.prevent="onSubmit">
             <div>
                 <label class="form-label" for="title">{{ $t("title") }}</label>

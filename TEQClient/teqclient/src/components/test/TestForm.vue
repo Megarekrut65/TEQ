@@ -15,14 +15,7 @@ const props = defineProps({
     instance: {
         type: Object,
         required: false,
-        default: () => {
-            return {
-                title: "",
-                description: "",
-                isPublic: false,
-                autoCheck: false,
-            };
-        },
+        default: () => {},
     },
     mode: {
         type: String,
@@ -124,6 +117,20 @@ const memberActive = ref(false);
                     {{ $t("isPublic") }}
                 </label>
             </div>
+
+          <div class="form-check" v-if="mode !== 'create'">
+            <input
+              v-model="formData.showCorrect"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="correctCheck"
+
+            />
+            <label class="form-check-label" for="correctCheck" :title="$t('correctHint')">
+              {{ $t("showCorrect") }}
+            </label>
+          </div>
 
           <div class="form-check" v-if="mode !== 'create'">
             <input

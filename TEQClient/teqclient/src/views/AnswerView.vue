@@ -7,13 +7,13 @@ import { errorAlert } from "@/js/utility/utility.js";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 import TestPassForm from "@/components/test/TestPassForm.vue";
 
-const { answerId } = useRoute().params;
+const { testId } = useRoute().params;
 
 const answer = ref(null);
 
 const loading = ref(true);
 
-answerGetApi(answerId).then((res) => {
+answerGetApi(testId).then((res) => {
   answer.value = res;
 }).catch(errorAlert).finally(() => {
   loading.value = false;
@@ -23,7 +23,7 @@ answerGetApi(answerId).then((res) => {
 
 <template>
   <LoadingWindow v-if="loading" />
-  <TestPassForm v-if="answer" :instance="answer.test" :answer="answer" :readonly="true"/>
+  <TestPassForm v-if="answer" :test="answer.test" :answer="answer" :readonly="true"/>
 </template>
 
 <style scoped>

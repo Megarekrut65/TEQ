@@ -12,11 +12,13 @@ const { testId } = useRoute().params;
 const test = ref(null);
 
 const loading = ref(true);
+const notFound = ref(false);
 
 testGetApi(testId).then((res) => {
   test.value = res;
 }).catch((err)=>{
   console.log(err);
+  notFound.value = true;
 }).finally(() => {
   loading.value = false;
 });
@@ -26,7 +28,7 @@ testGetApi(testId).then((res) => {
 <template>
   <LoadingWindow v-if="loading" />
   <TestForm v-if="test" :instance="test" mode="update" />
-  <NotFoundImage v-else></NotFoundImage>
+  <NotFoundImage v-if="notFound"></NotFoundImage>
 </template>
 
 <style scoped>

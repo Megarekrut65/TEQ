@@ -1,39 +1,45 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from rest_framework_mongoengine import serializers as mg_serializers
 
 from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, TEXT
 from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem
 from mainapp.models.test import Test, TestDocument
+from mainapp.serializers.test import get_test_grade, ItemSerializer
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
 
-class ChoiceSerializer(CamelCaseSerializer):
+class SafeChoiceSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=200, allow_blank=True)
 
-class ItemSerializer(CamelCaseSerializer):
+class SafeItemSerializer(CamelCaseSerializer):
     test_id = serializers.UUIDField(write_only=True)
 
     text = serializers.CharField(max_length=500, allow_blank=True)
     type = serializers.ChoiceField(choices=ITEM_TYPES)
-    choices = ChoiceSerializer(many=True, required=False)
+    choices = SafeChoiceSerializer(many=True, required=False)
 
-class TestSerializer(CamelCaseModelSerializer):
+class SafeTestSerializer(CamelCaseModelSerializer):
     owner = UserProfileSerializer(read_only=True, source="owner.userprofile")
-    items = serializers.SerializerMethodField(read_only=True)
+    items = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "items"]
+        fields = ["id", "owner", "created_date", "title", "description", "show_correct", "items"]
         read_only_fields = ["id", "created_date"]
+
+    def get_items(self, obj):
+        return []
+
+class PassTestSerializer(SafeTestSerializer):
 
     def get_items(self, obj):
         item = TestDocument.objects.filter(id=obj.id).first()
         if item:
-            return ItemSerializer(item.items, many=True).data
+            return SafeItemSerializer(item.items, many=True).data
 
         return []
+
 
 class AnswerItemSerializer(CamelCaseSerializer):
     type = serializers.ChoiceField(choices=ITEM_TYPES)
@@ -41,6 +47,7 @@ class AnswerItemSerializer(CamelCaseSerializer):
         child=serializers.IntegerField(min_value=0), required=False, allow_null=True, allow_empty=True
     )
     answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
+    grade = serializers.FloatField(read_only=True)
 
     def create(self, validated_data):
         item = None
@@ -60,12 +67,34 @@ class AnswerItemSerializer(CamelCaseSerializer):
 
 class AnswerSerializer(CamelCaseModelSerializer):
     items = serializers.SerializerMethodField()
-    test = TestSerializer(read_only=True)
+    test_items = serializers.SerializerMethodField()
+    test = SafeTestSerializer(read_only=True)
+    grade = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Answer
-        fields = ["id", "owner", "pass_date", "version", "items", "test", "checked", "auto_checked", "agree"]
-        read_only_fields = ["id", "pass_date", "owner", "version", "checked", "auto_checked", "agree"]
+        fields = ["id", "owner", "pass_date", "version", "items", "test", "checked",
+                  "auto_checked", "agree", "show_correct", "grade", "max_grade", "test_items"]
+        read_only_fields = ["id", "pass_date", "owner", "version", "checked", "auto_checked",
+                            "agree", "max_grade"]
+
+    def get_test_items(self, obj):
+        doc = AnswerDocument.objects.get(id=obj.id)
+        items = doc.test_items
+
+        if obj.test.show_correct:
+            return ItemSerializer(items, many=True).data
+
+        return SafeItemSerializer(items, many=True).data
+
+    def get_grade(self, obj):
+        doc = AnswerDocument.objects.get(pk=obj.id)
+
+        grade = 0
+        for item in doc.items:
+            grade += item.grade
+
+        return grade
 
     def get_items(self, obj):
         doc = AnswerDocument.objects.get(pk=obj.id)
@@ -87,7 +116,8 @@ class AnswerSerializer(CamelCaseModelSerializer):
         item_serializer.is_valid(raise_exception=True)
         validated_items = item_serializer.create(item_serializer.validated_data)
 
-        test_doc = TestDocument.objects.filter(id=validated_data["test"].id).first()
+        test = validated_data["test"]
+        test_doc = TestDocument.objects.filter(id=test.id).first()
         test_items = test_doc.items
 
         self._validate_items(test_items, validated_items)
@@ -95,7 +125,7 @@ class AnswerSerializer(CamelCaseModelSerializer):
         answer = Answer.objects.create(
             owner=validated_data["owner"],
             version=validated_data["version"],
-            test=validated_data["test"],)
+            test=test, show_correct=test.show_correct, max_grade=get_test_grade(test))
 
         doc = AnswerDocument.objects.create(id=answer.id, items=validated_items,
                                             test_items=test_items)

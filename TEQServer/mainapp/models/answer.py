@@ -13,9 +13,9 @@ class Answer(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     version = models.IntegerField(default=1)
-    grade = models.FloatField(default=0)
     max_grade = models.FloatField(default=0)
 
+    show_correct = models.BooleanField(default=False)
     checked = models.BooleanField(default=False)
     auto_checked = models.BooleanField(default=False)
 

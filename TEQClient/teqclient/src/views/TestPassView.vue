@@ -27,7 +27,7 @@ testPassGetApi(testId).then((res) => {
 
 <template>
   <LoadingWindow v-if="loading" />
-  <TestPassForm v-if="test" :instance="test"/>
+  <TestPassForm v-if="test" :test="test"/>
   <NotFoundImage v-if="notFound"></NotFoundImage>
 </template>
 

@@ -2,14 +2,14 @@ import { sendAsync } from "@/js/utility/request.js";
 import { API } from "@/js/api/api.js";
 import { getToken } from "@/js/utility/token.js";
 
-export const testCreateApi = ({ title, description, isPublic, autoCheck, showResult }) => {
+export const testCreateApi = ({ title, description, isPublic }) => {
   const request = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     },
-    body: JSON.stringify({ title, description, isPublic, autoCheck, showResult })
+    body: JSON.stringify({ title, description, isPublic })
   };
   return sendAsync(API + "test/", request);
 };
@@ -33,14 +33,14 @@ export const testDeleteApi = (testId) => {
   return testGetDeleteApi(testId, "DELETE");
 };
 
-export const testUpdateApi = (testId, { title, description, isPublic, autoCheck, showResult }) => {
+export const testUpdateApi = (testId, { title, description, isPublic, autoCheck, showResult, showCorrect }) => {
   const request = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${getToken()}`
     },
-    body: JSON.stringify({ title, description, isPublic,  autoCheck, showResult })
+    body: JSON.stringify({ title, description, isPublic,  autoCheck, showResult, showCorrect })
   };
 
   return sendAsync(API + `test/${testId}/`, request);

@@ -100,15 +100,29 @@ class ItemSerializer(CamelCaseSerializer):
 
         return item
 
+def get_test_grade(obj):
+    doc = TestDocument.objects.get(pk=obj.id)
+
+    grade = 0
+    for item in doc.items:
+        grade += item.grade
+
+    return grade
+
 class TestSerializer(CamelCaseModelSerializer):
     owner = UserProfileSerializer(read_only=True, source="owner.userprofile")
     items = serializers.SerializerMethodField(read_only=True)
+    grade = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Test
         fields = ["id", "owner", "created_date", "title", "description", "is_public", "auto_check",
-                  "items", "show_result"]
+                  "items", "show_result", "show_correct", "grade"]
         read_only_fields = ["id", "created_date"]
+
+
+    def get_grade(self, obj):
+       return get_test_grade(obj)
 
     def get_items(self, obj):
         item = TestDocument.objects.filter(id=obj.id).first()

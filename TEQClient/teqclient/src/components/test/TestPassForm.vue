@@ -10,7 +10,7 @@ import { testPassPostApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
-    instance: {
+    test: {
         type: Object,
         required: true
     },
@@ -45,13 +45,15 @@ const createAnswerItem = (item)=>{
   };
 };
 
-const answer = ref(props.answer?props.answer: {items: props.instance.items.map(createAnswerItem)});
+const answer = ref(props.answer?props.answer: {items: props.test.items.map(createAnswerItem), testItems:props.test.items});
+
+console.log(answer)
 
 const onSubmit = () => {
   loading.value = true;
 
-  testPassPostApi(props.instance.id, answer.value).then(res=>{
-    router.push({ name: "view", params: { answerId: res.id } });
+  testPassPostApi(props.test.id, answer.value).then(()=>{
+    router.push({ name: "view", params: { testId: props.test.id } });
   }).catch(errorAlert).finally(()=>{
     loading.value = false;
   });
@@ -61,11 +63,18 @@ const onSubmit = () => {
 <template>
     <LoadingWindow v-if="loading" />
     <div class="card">
-      <div class="card-header bg-secondary">
-        <h3 class="text-white">{{instance.title}}</h3>
+      <div class="card-header bg-secondary d-flex justify-content-between">
+        <h3 class="text-white">{{ test.title }}</h3>
+
+        <div>
+          <span v-if="answer.checked" class="badge text-dark bg-primary me-2">{{ answer.grade }}/{{ answer.maxGrade }}</span>
+          <span v-if="answer.checked" class="badge text-dark bg-info me-2">{{$t('checked')}}</span>
+          <span v-if="answer.autoChecked" class="badge text-dark bg-warning">{{$t('autoChecked')}}</span>
+        </div>
+
       </div>
-      <div class="card-body">
-        {{instance.description}}
+      <div class="card-body" v-if="test.description">
+        {{ test.description }}
       </div>
     </div>
 
@@ -73,13 +82,15 @@ const onSubmit = () => {
 
 
     <div class="mt-3 mb-3">
+
       <TestItemPass
-        v-for="(item, index) in instance.items"
+        v-for="(item, index) in answer.testItems"
         :key="index"
         :index="index + 1"
         v-model="answer.items[index]"
         :item="item"
         :readonly="readonly"
+        :show-correct="test.showCorrect && readonly"
       />
     </div>
 

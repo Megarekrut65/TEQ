@@ -16,6 +16,7 @@ class Test(models.Model):
 
     auto_check = models.BooleanField(default=False)
     show_result = models.BooleanField(default=False)
+    show_correct = models.BooleanField(default=False)
 
     version = models.IntegerField(default=1)
 

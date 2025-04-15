@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework_mongoengine import serializers as mg_serializers
 
 from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, TEXT
@@ -63,12 +64,20 @@ class AnswerSerializer(CamelCaseModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ["id", "owner", "pass_date", "version", "items", "test"]
-        read_only_fields = ["id", "pass_date", "owner", "version"]
+        fields = ["id", "owner", "pass_date", "version", "items", "test", "checked", "auto_checked", "agree"]
+        read_only_fields = ["id", "pass_date", "owner", "version", "checked", "auto_checked", "agree"]
 
     def get_items(self, obj):
         doc = AnswerDocument.objects.get(pk=obj.id)
         return AnswerItemSerializer(doc.items, many=True).data
+
+    def _validate_items(self, test_items, validated_items):
+        if len(test_items) != len(validated_items):
+            raise serializers.ValidationError({"items": "There must be all answers"})
+
+        for i in range(len(validated_items)):
+            if validated_items[i].type != test_items[i].type:
+                raise serializers.ValidationError({"items": "Type mismatch"})
 
     def create(self, validated_data):
         items = self.initial_data.get("items")
@@ -78,11 +87,17 @@ class AnswerSerializer(CamelCaseModelSerializer):
         item_serializer.is_valid(raise_exception=True)
         validated_items = item_serializer.create(item_serializer.validated_data)
 
+        test_doc = TestDocument.objects.filter(id=validated_data["test"].id).first()
+        test_items = test_doc.items
+
+        self._validate_items(test_items, validated_items)
+
         answer = Answer.objects.create(
             owner=validated_data["owner"],
             version=validated_data["version"],
             test=validated_data["test"],)
 
-        doc = AnswerDocument.objects.create(id=answer.id, items=validated_items)
+        doc = AnswerDocument.objects.create(id=answer.id, items=validated_items,
+                                            test_items=test_items)
 
         return answer

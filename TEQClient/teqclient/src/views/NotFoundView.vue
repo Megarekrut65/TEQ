@@ -1,5 +1,10 @@
-<script setup></script>
+<script setup>
+import NotFoundImage from "@/components/NotFoundImage.vue";
+</script>
 
-<template>Not found</template>
+<template>
+  <NotFoundImage></NotFoundImage>
+</template>
 
-<style scoped></style>
+<style scoped>
+</style>

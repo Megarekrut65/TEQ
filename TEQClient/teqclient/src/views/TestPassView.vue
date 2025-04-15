@@ -3,19 +3,23 @@
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { testPassGetApi } from "@/js/api/answer.js";
-import { errorAlert } from "@/js/utility/utility.js";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 import TestPassForm from "@/components/test/TestPassForm.vue";
+import NotFoundImage from "@/components/NotFoundImage.vue";
 
 const { testId } = useRoute().params;
 
 const test = ref(null);
 
 const loading = ref(true);
+const notFound = ref(false);
 
 testPassGetApi(testId).then((res) => {
   test.value = res;
-}).catch(errorAlert).finally(() => {
+}).catch((err)=>{
+  console.log(err);
+  notFound.value = true;
+}).finally(() => {
   loading.value = false;
 });
 
@@ -24,6 +28,7 @@ testPassGetApi(testId).then((res) => {
 <template>
   <LoadingWindow v-if="loading" />
   <TestPassForm v-if="test" :instance="test"/>
+  <NotFoundImage v-if="notFound"></NotFoundImage>
 </template>
 
 <style scoped>

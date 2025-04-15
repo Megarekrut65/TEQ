@@ -35,7 +35,7 @@ const allowUncheck = (item)=>{
 };
 
 const onUpdate = ()=>{
-  if(formData.value.type === SINGLE || formData.value.type === MULTIPLE
+  if((formData.value.type === SINGLE || formData.value.type === MULTIPLE)
     && (formData.value.choices == null || formData.value.choices.length === 0)){
     formData.value.choices = defaultChoices();
   }
@@ -140,6 +140,7 @@ const addChoice = () => {
             max="100"
             class="form-control mb-0"
             required
+            value="90"
             aria-describedby="basic-percent"
           />
         </div>

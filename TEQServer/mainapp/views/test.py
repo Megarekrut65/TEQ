@@ -9,9 +9,11 @@ from mainapp.serializers.test import TestSerializer, ItemSerializer
 
 
 class TestListAPIView(ListAPIView):
-    queryset = Test.objects.all()
     serializer_class = TestSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Test.objects.filter(owner=self.request.user)
 
 class TestCreateAPIView(CreateAPIView):
     queryset = Test.objects.all()

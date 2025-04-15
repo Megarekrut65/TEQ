@@ -107,7 +107,7 @@ class TestSerializer(CamelCaseModelSerializer):
     class Meta:
         model = Test
         fields = ["id", "owner", "created_date", "title", "description", "is_public", "auto_check",
-                  "items"]
+                  "items", "show_result"]
         read_only_fields = ["id", "created_date"]
 
     def get_items(self, obj):

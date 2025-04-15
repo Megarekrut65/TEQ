@@ -125,7 +125,7 @@ const memberActive = ref(false);
                 </label>
             </div>
 
-          <div class="form-check">
+          <div class="form-check" v-if="mode !== 'create'">
             <input
               v-model="formData.autoCheck"
               class="form-check-input"
@@ -136,6 +136,19 @@ const memberActive = ref(false);
             />
             <label class="form-check-label" for="autoCheck" :title="$t('autoHint')">
               {{ $t("autoCheck") }}
+            </label>
+          </div>
+          <div class="form-check" v-if="formData.autoCheck">
+            <input
+              v-model="formData.showResult"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="resCheck"
+
+            />
+            <label class="form-check-label" for="resCheck" :title="$t('resultHint')">
+              {{ $t("showResult") }}
             </label>
           </div>
 

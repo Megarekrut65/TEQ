@@ -5,6 +5,7 @@ from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
 from mainapp.permitions import CanAccessTest, CanAccessAnswer
 from mainapp.serializers.answer import TestSerializer, AnswerSerializer
+from mainapp.test_checker import check_test
 
 
 class TestRetrieveApiView(RetrieveAPIView):
@@ -21,7 +22,11 @@ class AnswerCreateApiView(CreateAPIView):
 
     def perform_create(self, serializer):
         test = Test.objects.get(pk=self.kwargs["test_id"])
-        serializer.save(owner=self.request.user, version=test.version, test=test)
+        answer = serializer.save(owner=self.request.user, version=test.version, test=test)
+
+        if test.auto_check:
+            check_test(answer)
+
 
 class AnswerRetrieveApiView(RetrieveAPIView):
     serializer_class = AnswerSerializer

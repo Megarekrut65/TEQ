@@ -61,8 +61,8 @@ const onSubmit = () => {
 <template>
     <LoadingWindow v-if="loading" />
     <div class="card">
-      <div class="card-header">
-        <h3>{{instance.title}}</h3>
+      <div class="card-header bg-secondary">
+        <h3 class="text-white">{{instance.title}}</h3>
       </div>
       <div class="card-body">
         {{instance.description}}

@@ -16,6 +16,9 @@ class Answer(models.Model):
     grade = models.FloatField(default=0)
     max_grade = models.FloatField(default=0)
 
+    checked = models.BooleanField(default=False)
+    auto_checked = models.BooleanField(default=False)
+
     agree = models.BooleanField(default=False)
 
     pass_date = models.DateTimeField(auto_now_add=True)

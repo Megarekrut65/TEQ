@@ -1,3 +1,4 @@
+from mainapp.api.similarity import calculate_similarity
 from mainapp.item_types import SINGLE, MULTIPLE, SHORT, FULL
 from mainapp.models.answer import Answer, AnswerDocument
 
@@ -40,7 +41,17 @@ def check_text_item(answer_item, test_item):
     if answer_item.answer == test_item.correct_answer:
         grade_percent = 1
 
-    answer_item.grade = test_item.grade * grade_percent
+    if answer_item.answer == "" or test_item.correct_answer == "":
+        answer_item.grade = 0
+        return
+
+    similarity = calculate_similarity(answer_item.answer, test_item.correct_answer)
+
+    if similarity * 100 >= test_item.min_similar_percent:
+        grade_percent = similarity
+    answer_item.grade = round(test_item.grade * grade_percent, 2)
+
+    answer_item.similarity = round(similarity*100, 2)
 
 CHECK = {
     SINGLE: check_choice_item,

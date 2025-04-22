@@ -57,3 +57,9 @@
 .img-404{
     width: 100%;
 }
+
+.sim-badge{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}

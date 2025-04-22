@@ -48,6 +48,7 @@ class AnswerItemSerializer(CamelCaseSerializer):
     )
     answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
     grade = serializers.FloatField(read_only=True)
+    similarity = serializers.FloatField(read_only=True, required=False, allow_null=True)
 
     def create(self, validated_data):
         item = None

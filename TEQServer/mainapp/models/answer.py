@@ -38,4 +38,5 @@ class AnswerChoiceItem(AnswerBaseItem):
 
 class AnswerTextItem(AnswerBaseItem):
     answer = me.StringField(max_length=5000, default="")
+    similarity = me.FloatField(default=0)
 

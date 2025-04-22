@@ -1,4 +1,4 @@
-from mainapp.item_types import SINGLE, MULTIPLE, TEXT
+from mainapp.item_types import SINGLE, MULTIPLE, SHORT, FULL
 from mainapp.models.answer import Answer, AnswerDocument
 
 def get_correct_count(answer_item, test_item):
@@ -45,7 +45,8 @@ def check_text_item(answer_item, test_item):
 CHECK = {
     SINGLE: check_choice_item,
     MULTIPLE: check_choice_item,
-    TEXT: check_text_item,
+    SHORT: check_text_item,
+    FULL: check_text_item,
 }
 
 def check_test(answer:Answer):

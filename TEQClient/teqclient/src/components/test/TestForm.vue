@@ -15,7 +15,12 @@ const props = defineProps({
     instance: {
         type: Object,
         required: false,
-        default: () => {},
+        default: () => ({
+            title: "",
+            description: "",
+            isPublic: false,
+            autoCheck: false,
+        }),
     },
     mode: {
         type: String,

@@ -2,7 +2,7 @@ from mongoengine import DoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from mainapp.item_types import ITEM_TYPES, TEXT, SINGLE, MULTIPLE
+from mainapp.item_types import ITEM_TYPES, SHORT, FULL, SINGLE, MULTIPLE
 from mainapp.models.test import Test, TestDocument, ChoiceItem, Choice, TextItem
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
@@ -30,7 +30,7 @@ class ItemSerializer(CamelCaseSerializer):
         choices = data.get("choices", [])
         count = len(choices)
 
-        if question_type == TEXT:
+        if question_type in [SHORT, FULL]:
             return data
 
         if count < 1:
@@ -63,7 +63,7 @@ class ItemSerializer(CamelCaseSerializer):
                     for choice in validated_data["choices"]
                 ]
             )
-        elif validated_data["type"] == TEXT:
+        elif validated_data["type"] in [SHORT, FULL]:
             item = TextItem(
                 type=validated_data["type"],
                 text=validated_data["text"],

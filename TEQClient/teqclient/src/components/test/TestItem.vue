@@ -2,7 +2,7 @@
 import FormWrapper from "@/components/FormWrapper.vue";
 import { itemUpdateApi } from "@/js/api/item.js";
 import { errorAlert } from "@/js/utility/utility.js";
-import { MULTIPLE, SINGLE, TEXT } from "@/js/types.js";
+import { MULTIPLE, SINGLE, SHORT, FULL, TYPES } from "@/js/types.js";
 import { defaultChoices } from "@/js/data-types.js";
 
 const props = defineProps({
@@ -69,14 +69,12 @@ const addChoice = () => {
       <div>
         <label class="form-label" for="type">{{ $t("type") }}</label>
         <select v-model="formData.type" class="form-select" required >
-          <option value="SINGLE">{{ $t("singleChoice") }}</option>
-          <option value="MULTIPLE">{{ $t("multipleChoice") }}</option>
-          <option value="TEXT">{{ $t("textAnswer") }}</option>
+          <option v-for="(type, index) in TYPES" :value="type" :key="type" :selected="index===0">{{ $t(type.toLowerCase()) }}</option>
         </select>
       </div>
 
       <div class="row mb-3">
-        <div class="col-md-6" v-if="formData.type !== SINGLE && autoCheck">
+        <div class="col-md-6" v-if="[SINGLE].includes(formData.type) && autoCheck">
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch"
                    v-model="formData.allowProportion">
@@ -100,7 +98,7 @@ const addChoice = () => {
         </div>
       </div>
 
-      <div v-if="formData.type === SINGLE || formData.type === MULTIPLE" class="mb-3">
+      <div v-if="[SINGLE, MULTIPLE].includes(formData.type)" class="mb-3">
         <label class="form-label">{{ $t("choices") }} <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span></label>
 
         <div class="row" v-for="choice in formData.choices" :key="choice">
@@ -120,16 +118,26 @@ const addChoice = () => {
 
 
       </div>
-
-      <div v-if="formData.type === TEXT" class="mb-3">
+      <div v-if="[SHORT].includes(formData.type)" class="mb-3">
+        <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
+        <input
+          v-model="formData.correctAnswer"
+          class="form-control"
+          maxlength="500"
+          type="text"
+        >
+      </div>
+      <div v-if="[FULL].includes(formData.type)" class="mb-3">
         <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
         <textarea
           v-model="formData.correctAnswer"
           class="form-control"
           rows="3"
+          maxlength="5000"
         ></textarea>
       </div>
-      <div v-if="formData.type === TEXT" class="mb-3">
+
+      <div v-if="[SHORT, FULL].includes(formData.type) && autoCheck" class="mb-3">
         <label class="form-label" for="text" :title="$t('minSimilarHnt')">{{$t('minSimilar')}}</label>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-percent">%</span>

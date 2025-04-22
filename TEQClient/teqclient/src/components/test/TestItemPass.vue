@@ -1,5 +1,5 @@
 <script setup>
-import { MULTIPLE, SINGLE, TEXT } from "@/js/types.js";
+import { MULTIPLE, SINGLE, SHORT, FULL } from "@/js/types.js";
 
 defineProps({
     index: {
@@ -35,13 +35,13 @@ const formData = defineModel({ required: true });
                 </div>
             </div>
 
-            <div v-if="item.type === SINGLE || item.type === MULTIPLE" class="mb-3">
+            <div v-if="[SINGLE, MULTIPLE].includes(item.type)" class="mb-3">
                 <label class="form-label">{{ $t("choices") }}</label>
 
                 <div v-for="(choice, i) in item.choices" :key="choice">
                     <div class="form-check">
                         <input
-                            v-if="item.type === SINGLE"
+                            v-if="[SINGLE].includes(item.type)"
                             class="form-check-input"
                             type="radio"
                             :name="`radio_${index}`"
@@ -77,13 +77,16 @@ const formData = defineModel({ required: true });
                 />
             </div>
 
-            <div v-if="item.type === TEXT" class="mb-3">
+            <div v-if="[FULL, SHORT].includes(formData.type)" class="mb-3">
                 <textarea
+                  v-if="[FULL].includes(formData.type)"
                     v-model="formData.answer"
                     class="form-control"
                     rows="3"
                     :readonly="readonly"
+                    maxlength="5000"
                 ></textarea>
+              <input v-else v-model="formData.answer" class="form-control" type="text"  :readonly="readonly">
               <div v-if="showCorrect&&item.correctAnswer">
                 <span class="text-success">{{$t('answer')}}</span>
                 <p>{{item.correctAnswer}}</p>

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, TEXT
+from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, SHORT, FULL
 from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem
 from mainapp.models.test import Test, TestDocument
 from mainapp.serializers.test import get_test_grade, ItemSerializer
@@ -56,7 +56,7 @@ class AnswerItemSerializer(CamelCaseSerializer):
                 type=validated_data["type"],
                 choices=validated_data["choices"],
             )
-        elif validated_data["type"] == TEXT:
+        elif validated_data["type"] in [SHORT, FULL]:
             item = AnswerTextItem(
                 type=validated_data["type"],
                 answer=validated_data["answer"]

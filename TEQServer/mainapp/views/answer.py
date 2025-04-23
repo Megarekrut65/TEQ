@@ -28,7 +28,7 @@ class AnswerCreateApiView(CreateAPIView):
             check_test(answer)
 
 
-class AnswerRetrieveApiView(RetrieveAPIView):
+class LastAnswerRetrieveApiView(RetrieveAPIView):
     serializer_class = AnswerSerializer
     model = Answer
     permission_classes = [CanAccessTest]
@@ -37,6 +37,14 @@ class AnswerRetrieveApiView(RetrieveAPIView):
         test_id = self.kwargs["pk"]
         test = Test.objects.get(pk=test_id)
         return Answer.objects.filter(owner=self.request.user, test=test).order_by("pass_date").last()
+
+class AnswerRetrieveApiView(RetrieveAPIView):
+    serializer_class = AnswerSerializer
+    model = Answer
+    permission_classes = [CanAccessAnswer]
+
+    def get_queryset(self):
+        return Answer.objects.filter(owner=self.request.user)
 
 class AnswerListApiView(ListAPIView):
     serializer_class = AnswerSerializer
@@ -53,4 +61,4 @@ class TestAnswerListApiView(ListAPIView):
 
     def get_queryset(self):
         test_id = self.kwargs["test_id"]
-        return Answer.objects.filter(test_id=test_id).order_by("-pass_date").all()
+        return Answer.objects.filter(test_id=test_id).order_by("pass_date").all()

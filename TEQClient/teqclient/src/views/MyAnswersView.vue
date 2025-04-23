@@ -42,7 +42,7 @@ answerGetListApi().then(res => {
         <td>{{ new Date(answer.passDate).toLocaleString() }}</td>
         <td>{{ answer.grade }}/{{answer.maxGrade}}</td>
         <td>
-          <LocalizedLink :to="`/view/${answer.id}`">{{ $t("goTo") }}</LocalizedLink>
+          <LocalizedLink :to="`/answer/${answer.id}`">{{ $t("goTo") }}</LocalizedLink>
         </td>
       </tr>
       </tbody>

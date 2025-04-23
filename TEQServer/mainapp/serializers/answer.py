@@ -70,12 +70,13 @@ class AnswerSerializer(CamelCaseModelSerializer):
     items = serializers.SerializerMethodField()
     test_items = serializers.SerializerMethodField()
     test = SafeTestSerializer(read_only=True)
+    owner = UserProfileSerializer(read_only=True, source="owner.userprofile")
     grade = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Answer
         fields = ["id", "owner", "pass_date", "version", "items", "test", "checked",
-                  "auto_checked", "agree", "show_correct", "grade", "max_grade", "test_items"]
+                  "auto_checked", "agree", "show_correct", "grade", "max_grade", "test_items", "owner"]
         read_only_fields = ["id", "pass_date", "owner", "version", "checked", "auto_checked",
                             "agree", "max_grade"]
 

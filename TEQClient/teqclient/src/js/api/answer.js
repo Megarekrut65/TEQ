@@ -25,7 +25,7 @@ export const testPassPostApi = (testId, { items }) => {
     return sendAsync(API + `test/${testId}/pass`, request);
 };
 
-export const answerGetApi = (testId) => {
+export const answerGetApi = (answerId) => {
   const request = {
     method: "GET",
     headers: {
@@ -33,7 +33,18 @@ export const answerGetApi = (testId) => {
       Authorization: `Token ${getToken()}`
     }
   };
-  return sendAsync(API + `answer/${testId}`, request);
+  return sendAsync(API + `answer/${answerId}`, request);
+};
+
+export const answerLastGetApi = (testId) => {
+  const request = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`
+    }
+  };
+  return sendAsync(API + `answer/${testId}/last`, request);
 };
 
 export const answerGetListApi = (page=1) => {

@@ -16,6 +16,11 @@ defineProps({
         required: false,
         default: false,
     },
+    autoCheck: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     item: {
         type: Object,
         required: true,
@@ -78,7 +83,7 @@ const formData = defineModel({ required: true });
             </div>
 
             <div v-if="[FULL, SHORT].includes(formData.type)" class="mb-3">
-              <div v-if="showCorrect" class="badge text-dark bg-warning sim-badge">{{formData.similarity.toFixed(1)}}%</div>
+              <div v-if="showCorrect&&autoCheck" class="badge text-dark bg-warning sim-badge">{{formData.similarity.toFixed(1)}}%</div>
                 <textarea
                   v-if="[FULL].includes(formData.type)"
                     v-model="formData.answer"

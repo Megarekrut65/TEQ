@@ -39,6 +39,13 @@ const router = createRouter({
         {
           path: "view/:testId",
           name: "view",
+          component: () => import("../views/LastAnswerView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
+          path: "answer/:answerId",
+          name: "answer",
           component: () => import("../views/AnswerView.vue"),
           beforeEnter: ifAuthenticated
 

@@ -11,6 +11,7 @@ import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import MemberForm from "@/components/test/MemberForm.vue";
 import TestSettings from "@/components/test/TestSettings.vue";
 import TestShare from "@/components/test/TestShare.vue";
+import TestAnswers from "@/components/test/TestAnswers.vue";
 
 const props = defineProps({
     instance: {
@@ -46,12 +47,14 @@ const onItemRemoved = (index) => {
 const memberActive = ref(false);
 const settingsActive = ref(false);
 const shareActive = ref(false);
+const answerActive = ref(false);
 </script>
 
 <template>
   <MemberForm v-model="memberActive" :test-id="formData.id"></MemberForm>
   <TestSettings v-model="formData" v-model:active="settingsActive" @change="updateTest"/>
   <TestShare v-model="formData" v-model:active="shareActive" @change="updateTest"/>
+  <TestAnswers :test-id="formData.id" v-model="answerActive"></TestAnswers>
 
     <FormWrapper :title="formData.title" show-menu>
       <template v-slot:menu>
@@ -64,6 +67,9 @@ const shareActive = ref(false);
         </LocalizedLink>
         <a class="dropdown-item" href="#" @click="memberActive=true;">
           {{ $t("members") }}
+        </a>
+        <a class="dropdown-item" href="#" @click="answerActive=true;">
+          {{ $t("answers") }}
         </a>
         <a class="dropdown-item" href="#" @click="settingsActive=true;">
           {{ $t("settings") }}

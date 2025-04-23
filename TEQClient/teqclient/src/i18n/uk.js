@@ -77,6 +77,10 @@ export const uk = {
   answer:"Відповідь",
   noAnswers:"Ви не пройшли ще не одного тесту",
   passDate:"Дата проходження",
-  myAnswers:"Мої відповіді"
+  myAnswers:"Мої відповіді",
+  autoCheckedTh:"Перевірено автоматично",
+  publishResultTh:"Опублікувати результати",
+  publish:"Опублікувати",
+  answers:"Відповіді"
 
 };

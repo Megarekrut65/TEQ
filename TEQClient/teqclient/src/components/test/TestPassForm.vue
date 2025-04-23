@@ -90,7 +90,8 @@ const onSubmit = () => {
         v-model="answer.items[index]"
         :item="item"
         :readonly="readonly"
-        :show-correct="test.showCorrect && readonly"
+        :show-correct="test.showCorrect && readonly && answer.checked"
+        :auto-check="answer.autoChecked"
       />
     </div>
 

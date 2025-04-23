@@ -51,9 +51,16 @@ const router = createRouter({
 
         },
         {
-          path: "tests/my",
+          path: "account/tests",
           name: "my-tests",
           component: () => import("../views/MyTestsView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
+          path: "account/answers",
+          name: "my-answers",
+          component: () => import("../views/MyAnswersView.vue"),
           beforeEnter: ifAuthenticated
 
         }
@@ -75,6 +82,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const newLocale = to.params.locale;
   const prevLocale = from.params.locale;
+
   if (newLocale === prevLocale) {
     return;
   }

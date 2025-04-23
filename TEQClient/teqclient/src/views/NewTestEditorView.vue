@@ -1,10 +1,10 @@
 <script setup>
 
-import TestForm from "@/components/test/TestForm.vue";
+import TestCreateForm from "@/components/test/TestCreateForm.vue";
 </script>
 
 <template>
-  <TestForm />
+  <TestCreateForm/>
 </template>
 
 <style scoped>

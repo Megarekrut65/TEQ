@@ -27,7 +27,7 @@ testGetApi(testId).then((res) => {
 
 <template>
   <LoadingWindow v-if="loading" />
-  <TestForm v-if="test" :instance="test" mode="update" />
+  <TestForm v-if="test" :instance="test" />
   <NotFoundImage v-if="notFound"></NotFoundImage>
 </template>
 

@@ -42,8 +42,13 @@ window.addEventListener("auth", (data) => {
                 </LocalizedLink>
               </li>
               <li>
-                <LocalizedLink class="dropdown-item" to="/tests/my"><i class="fa-solid fa-newspaper"></i>
+                <LocalizedLink class="dropdown-item" to="/account/tests"><i class="fa-solid fa-newspaper"></i>
                   {{ $t("myTests") }}
+                </LocalizedLink>
+              </li>
+              <li>
+                <LocalizedLink class="dropdown-item" to="/account/answers"><i class="fa-solid fa-newspaper"></i>
+                  {{ $t("myAnswers") }}
                 </LocalizedLink>
               </li>
               <li>

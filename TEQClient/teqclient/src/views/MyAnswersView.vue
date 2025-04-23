@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref } from "vue";
-import { errorAlert, truncate } from "@/js/utility/utility.js";
+import { errorAlert } from "@/js/utility/utility.js";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import { answerGetListApi } from "@/js/api/answer.js";
@@ -23,7 +23,6 @@ answerGetListApi().then(res => {
 <template>
   <LoadingWindow v-if="loading" />
   <div v-if="answers.length>0">
-    <LocalizedLink to="editor/new"><i class="fa fa-plus"></i></LocalizedLink>
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
       <tr>
@@ -35,27 +34,21 @@ answerGetListApi().then(res => {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(test, index) in answers" :key="index">
+      <tr v-for="(answer, index) in answers" :key="index">
         <td class="text-center">{{ index + 1 }}</td>
         <td>
-          <LocalizedLink :to="`/editor/${test.id}`">{{ test.title }}</LocalizedLink>
+          <LocalizedLink :to="`/pass/${answer.test.id}`">{{ answer.test.title }}</LocalizedLink>
         </td>
-        <td>{{ truncate(test.description) }}</td>
-        <td>{{ test.isPublic ? $t("yes") : $t("no") }}</td>
-        <td>{{ new Date(test.createdDate).toLocaleString() }}</td>
+        <td>{{ new Date(answer.passDate).toLocaleString() }}</td>
+        <td>{{ answer.grade }}/{{answer.maxGrade}}</td>
         <td>
-          <LocalizedLink :to="`/editor/${test.id}`">{{ $t("goTo") }}</LocalizedLink>
-        </td>
-        <td>
-          <a href="#" @click="removeActive=true; currentTest=test">{{ $t("remove") }}</a>
+          <LocalizedLink :to="`/view/${answer.id}`">{{ $t("goTo") }}</LocalizedLink>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <div v-else>{{ $t("noTests") }}
-    <LocalizedLink to="editor/new">{{ $t("createOne") }}?</LocalizedLink>
-  </div>
+  <div v-else>{{ $t("noAnswers") }}</div>
 
 </template>
 

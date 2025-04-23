@@ -36,7 +36,7 @@ export const answerGetApi = (testId) => {
   return sendAsync(API + `answer/${testId}`, request);
 };
 
-export const answerGetListApi = () => {
+export const answerGetListApi = (page=1) => {
   const request = {
     method: "GET",
     headers: {
@@ -44,5 +44,16 @@ export const answerGetListApi = () => {
       Authorization: `Token ${getToken()}`
     }
   };
-  return sendAsync(API + `answers`, request);
+  return sendAsync(API + `answers/?page=${page}`, request);
+};
+
+export const answerTestGetListApi = (testId, page=1) => {
+  const request = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`
+    }
+  };
+  return sendAsync(API + `answers/test/${testId}/?page=${page}`, request);
 };

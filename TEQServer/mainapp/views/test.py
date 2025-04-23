@@ -13,7 +13,7 @@ class TestListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Test.objects.filter(owner=self.request.user)
+        return Test.objects.filter(owner=self.request.user).order_by("-id")
 
 class TestCreateAPIView(CreateAPIView):
     queryset = Test.objects.all()

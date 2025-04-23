@@ -1,32 +1,22 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
-import LoadingWindow from "@/components/LoadingWindow.vue";
-import { testCreateApi, testUpdateApi } from "@/js/api/test.js";
+
+import { testUpdateApi } from "@/js/api/test.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import TestItem from "@/components/test/TestItem.vue";
 import { itemCreateApi, itemDeleteApi } from "@/js/api/item.js";
 import { defaultAnswer } from "@/js/data-types.js";
 import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import MemberForm from "@/components/test/MemberForm.vue";
+import TestSettings from "@/components/test/TestSettings.vue";
+import TestShare from "@/components/test/TestShare.vue";
 
 const props = defineProps({
     instance: {
         type: Object,
-        required: false,
-        default: () => ({
-            title: "",
-            description: "",
-            isPublic: false,
-            autoCheck: false,
-        }),
-    },
-    mode: {
-        type: String,
-        required: false,
-        default: "create",
-    },
+        required: true
+    }
 });
 
 const formData = ref(props.instance);
@@ -39,32 +29,11 @@ const addNewAnswer = () => {
         .catch(errorAlert);
 };
 
-const router = useRouter();
-
-const loading = ref(false);
-
-const createTest = () => {
-    return testCreateApi(formData.value).then((res) => {
-        router.push({ name: "editor", params: { testId: res.id } });
-    });
-};
 
 const updateTest = () => {
-    return testUpdateApi(props.instance.id, formData.value).then((res) => {
-        formData.value = res;
-    });
-};
+   if(formData.value.title === "") return;
 
-const api = props.mode === "create" ? createTest : updateTest;
-
-const onSubmit = () => {
-    loading.value = true;
-
-    api()
-        .catch(errorAlert)
-        .finally(() => {
-            loading.value = false;
-        });
+    testUpdateApi(props.instance.id, formData.value).catch(errorAlert);
 };
 
 const onItemRemoved = (index) => {
@@ -75,22 +44,32 @@ const onItemRemoved = (index) => {
 };
 
 const memberActive = ref(false);
+const settingsActive = ref(false);
+const shareActive = ref(false);
 </script>
 
 <template>
-  <MemberForm v-if="mode!=='create'" v-model="memberActive" :test-id="formData.id"></MemberForm>
+  <MemberForm v-model="memberActive" :test-id="formData.id"></MemberForm>
+  <TestSettings v-model="formData" v-model:active="settingsActive" @change="updateTest"/>
+  <TestShare v-model="formData" v-model:active="shareActive" @change="updateTest"/>
 
-    <LoadingWindow v-if="loading" />
-    <FormWrapper :title="$t(mode) + ' ' + $t('test')" show-menu>
+    <FormWrapper :title="formData.title" show-menu>
       <template v-slot:menu>
+        <a class="dropdown-item" href="#" @click="shareActive=true;">
+          {{ $t("share") }}
+        </a>
+
         <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" >
           {{ $t("pass") }}
         </LocalizedLink>
         <a class="dropdown-item" href="#" @click="memberActive=true;">
           {{ $t("members") }}
         </a>
+        <a class="dropdown-item" href="#" @click="settingsActive=true;">
+          {{ $t("settings") }}
+        </a>
       </template>
-        <form @submit.prevent="onSubmit">
+        <form @change="updateTest">
             <div>
                 <label class="form-label" for="title">{{ $t("title") }}</label>
                 <input
@@ -109,65 +88,9 @@ const memberActive = ref(false);
                     maxlength="1000"
                 />
             </div>
-
-            <div class="form-check">
-                <input
-                    v-model="formData.isPublic"
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="public"
-                />
-                <label class="form-check-label" for="public">
-                    {{ $t("isPublic") }}
-                </label>
-            </div>
-
-          <div class="form-check" v-if="mode !== 'create'">
-            <input
-              v-model="formData.showCorrect"
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="correctCheck"
-
-            />
-            <label class="form-check-label" for="correctCheck" :title="$t('correctHint')">
-              {{ $t("showCorrect") }}
-            </label>
-          </div>
-
-          <div class="form-check" v-if="mode !== 'create'">
-            <input
-              v-model="formData.autoCheck"
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="autoCheck"
-
-            />
-            <label class="form-check-label" for="autoCheck" :title="$t('autoHint')">
-              {{ $t("autoCheck") }}
-            </label>
-          </div>
-          <div class="form-check" v-if="formData.autoCheck">
-            <input
-              v-model="formData.showResult"
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="resCheck"
-
-            />
-            <label class="form-check-label" for="resCheck" :title="$t('resultHint')">
-              {{ $t("showResult") }}
-            </label>
-          </div>
-
-            <button class="btn btn-outline-secondary" type="submit">{{ $t(mode) }}</button>
         </form>
     </FormWrapper>
-    <div v-if="mode !== 'create'">
+    <div>
         <div class="mt-3">
             <TestItem
                 v-for="(item, index) in formData.items"

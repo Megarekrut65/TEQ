@@ -27,6 +27,11 @@ const setup = (options = { locale: defaultLocale }) => {
     return _i18n;
 };
 
+const containsLocale = (locale)=>{
+  return !!messages[locale];
+
+};
+
 const setLocale = (newLocale) => {
     if (messages[newLocale]) {
         _i18n.global.locale.value = newLocale;
@@ -56,6 +61,7 @@ export default {
     getLocale,
     t,
     useT,
+    containsLocale
 };
 
 export const supportedLocales = {

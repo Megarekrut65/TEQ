@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
-from mainapp.permitions import CanAccessTest, CanAccessAnswer
+from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner
 from mainapp.serializers.answer import PassTestSerializer, AnswerSerializer
 from mainapp.test_checker import check_test
 
@@ -45,3 +45,12 @@ class AnswerListApiView(ListAPIView):
 
     def get_queryset(self):
         return Answer.objects.filter(owner=self.request.user).order_by("-pass_date").all()
+
+class TestAnswerListApiView(ListAPIView):
+    serializer_class = AnswerSerializer
+    model = Answer
+    permission_classes = [IsTestOwner]
+
+    def get_queryset(self):
+        test_id = self.kwargs["test_id"]
+        return Answer.objects.filter(test_id=test_id).order_by("-pass_date").all()

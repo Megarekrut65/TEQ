@@ -34,12 +34,15 @@ const close = () => {
 <template>
   <div class="modal-window" v-if="model">
     <div class="modal-inner pt-5 ">
-  <div class="row">
+  <div class="row ms-4 ms-sm-0 me-4 me-sm-0">
     <div class="col-0 col-sm-1 col-md-2 col-lg-3 col-xl-4"></div>
     <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
 
       <div class="card">
         <div class="modal-close" @click="close"><i class="fa-solid fa-xmark"></i></div>
+        <div class="card-header">
+          <slot name="header"></slot>
+        </div>
         <div class="card-body">
           <slot></slot>
         </div>

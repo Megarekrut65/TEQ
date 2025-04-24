@@ -1,7 +1,13 @@
 <script setup>
 import { MULTIPLE, SINGLE, SHORT, FULL } from "@/js/types.js";
+import { answerItemUpdateApi } from "@/js/api/answer.js";
+import { errorAlert } from "@/js/utility/utility.js";
 
-defineProps({
+const props = defineProps({
+    answerId:{
+      type: String,
+      required: true
+    },
     index: {
         type: Number,
         required: true,
@@ -25,9 +31,18 @@ defineProps({
         type: Object,
         required: true,
     },
+    isOwner:{
+        type: Boolean,
+        required: false,
+        default: false,
+    }
 });
 
 const formData = defineModel({ required: true });
+
+const updateGrade = ()=>{
+  answerItemUpdateApi(props.answerId, props.index-1, formData.value).catch(errorAlert);
+};
 </script>
 
 <template>
@@ -35,7 +50,16 @@ const formData = defineModel({ required: true });
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <label>{{ index }}. {{ item.text }}</label>
-                <div v-if="showCorrect" class="badge bg-secondary">
+                <div v-if="isOwner" class="badge">
+                  <label class="form-label text-dark">{{ $t("grade") }}({{ formData.grade }}/{{ item.grade }})</label>
+                  <input
+                    @change="updateGrade"
+                    class="form-control"
+                    type="number"
+                    v-model="formData.grade"
+                  />
+                </div>
+                <div v-else-if="showCorrect" class="badge bg-secondary">
                     {{ formData.grade }}/{{ item.grade }}
                 </div>
             </div>
@@ -69,7 +93,7 @@ const formData = defineModel({ required: true });
                                 'form-check-label': true,
                                 'text-success': showCorrect && choice.isCorrect,
                             }">
-                          {{ choice.text }} <i v-if="showCorrect && choice.isCorrect" class="fa-solid fa-check"></i>
+                          {{ choice.text }}<i v-if="showCorrect && choice.isCorrect" class="fa-solid fa-check"></i>
                         </label>
                     </div>
                 </div>

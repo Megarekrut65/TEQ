@@ -68,3 +68,29 @@ export const answerTestGetListApi = (testId, page=1) => {
   };
   return sendAsync(API + `answers/test/${testId}/?page=${page}`, request);
 };
+
+export const answerItemUpdateApi = (answerId, index, { grade  }) => {
+  const request = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`
+    },
+    body: JSON.stringify({grade  })
+  };
+
+  return sendAsync(API + `answer/item/${index}/${answerId}/`, request);
+};
+
+export const answerCheckUpdateApi = (answerId) => {
+  const request = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`
+    },
+    body: JSON.stringify({checked:true})
+  };
+
+  return sendAsync(API + `answer/check/${answerId}/`, request);
+};

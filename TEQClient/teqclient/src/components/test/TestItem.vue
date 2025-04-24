@@ -74,7 +74,7 @@ const addChoice = () => {
       </div>
 
       <div class="row mb-3">
-        <div class="col-md-6" v-if="[SINGLE].includes(formData.type) && autoCheck">
+        <div class="col-md-6" v-if="[SINGLE, MULTIPLE].includes(formData.type) && autoCheck">
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch"
                    v-model="formData.allowProportion">

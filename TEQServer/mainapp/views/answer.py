@@ -1,10 +1,11 @@
-from rest_framework.generics import RetrieveAPIView, CreateAPIView, ListAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
-from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner
-from mainapp.serializers.answer import PassTestSerializer, AnswerSerializer
+from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner, IsAnswerTestOwner
+from mainapp.serializers.answer import PassTestSerializer, AnswerSerializer, AnswerItemSerializer, \
+    AnswerItemGradeSerializer, AnswerCheckSerializer
 from mainapp.test_checker import check_test
 
 
@@ -46,6 +47,13 @@ class AnswerRetrieveApiView(RetrieveAPIView):
     def get_queryset(self):
         return Answer.objects.filter(owner=self.request.user)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        obj = self.get_object()
+        context["is_owner"] = obj.owner == self.request.user
+
+        return context
+
 class AnswerListApiView(ListAPIView):
     serializer_class = AnswerSerializer
     model = Answer
@@ -62,3 +70,22 @@ class TestAnswerListApiView(ListAPIView):
     def get_queryset(self):
         test_id = self.kwargs["test_id"]
         return Answer.objects.filter(test_id=test_id).order_by("pass_date").all()
+
+class AnswerItemUpdateAPIView(UpdateAPIView):
+    serializer_class = AnswerItemGradeSerializer
+    permission_classes = [IsAnswerTestOwner]
+    queryset = AnswerDocument.objects.all()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["index"] = self.kwargs["index"]
+        context["answer_id"] = self.kwargs["pk"]
+        return context
+
+    def get_object(self):
+        return AnswerDocument.objects.get(pk=self.kwargs["pk"])
+
+class AnswerUpdateAPIView(UpdateAPIView):
+    serializer_class = AnswerCheckSerializer
+    permission_classes = [IsAnswerTestOwner]
+    queryset = Answer.objects.all()

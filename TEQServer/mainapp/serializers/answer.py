@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, SHORT, FULL
 from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem
@@ -50,7 +51,8 @@ class AnswerItemSerializer(CamelCaseSerializer):
     grade = serializers.FloatField(read_only=True)
     similarity = serializers.FloatField(read_only=True, required=False, allow_null=True)
 
-    def create(self, validated_data):
+
+    def __get_item(self, validated_data):
         item = None
         if validated_data["type"] in [SINGLE, MULTIPLE]:
             item = AnswerChoiceItem(
@@ -65,6 +67,32 @@ class AnswerItemSerializer(CamelCaseSerializer):
 
         return item
 
+    def create(self, validated_data):
+       return self.__get_item(validated_data)
+
+class AnswerItemGradeSerializer(CamelCaseSerializer):
+    grade = serializers.FloatField()
+
+    def update(self, instance, validated_data):
+        answer_item = AnswerDocument.objects.get(id=self.context.get("answer_id", None))
+
+        index = self.context.get("index", None)
+        if index is None:
+            raise ValidationError("Index must be provided.")
+
+        if index >= len(answer_item.items):
+            raise ValidationError("Index must be less than the number of items.")
+
+        item = answer_item.items[index]
+        item.grade = self.validated_data["grade"]
+        answer_item.save()
+
+        return item
+
+class AnswerCheckSerializer(CamelCaseModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ["checked"]
 
 class AnswerSerializer(CamelCaseModelSerializer):
     items = serializers.SerializerMethodField()
@@ -84,7 +112,7 @@ class AnswerSerializer(CamelCaseModelSerializer):
         doc = AnswerDocument.objects.get(id=obj.id)
         items = doc.test_items
 
-        if obj.test.show_correct:
+        if obj.test.show_correct or self.context.get("is_owner", False):
             return ItemSerializer(items, many=True).data
 
         return SafeItemSerializer(items, many=True).data

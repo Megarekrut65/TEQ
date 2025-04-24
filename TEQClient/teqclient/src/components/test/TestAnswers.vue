@@ -17,11 +17,15 @@ const model = defineModel({required: true});
 
 const answers = ref([]);
 
-answerTestGetListApi(props.testId).then((res) => {
-  answers.value = res.results;
-  console.log(res);
-}).catch(errorAlert);
+const refreshAnswers = ()=>{
+  answerTestGetListApi(props.testId).then((res) => {
+    answers.value = res.results;
+  }).catch(errorAlert);
+};
 
+refreshAnswers();
+
+setInterval(refreshAnswers, 10000);
 </script>
 
 <template>
@@ -50,10 +54,10 @@ answerTestGetListApi(props.testId).then((res) => {
         <td>  {{answer.owner.fullname}} </td>
         <td>  {{answer.owner.email}} </td>
         <td>{{ new Date(answer.passDate).toLocaleString() }}</td>
-        <td>{{ answer.grade }}/{{answer.maxGrade}}</td>
+        <td>{{ answer.grade.toFixed(2) }}/{{answer.maxGrade.toFixed(2)}}</td>
         <td>{{answer.autoChecked?$t('yes'):$t('no')}}</td>
         <td>
-          <LocalizedLink :to="`/answer/${answer.id}`">{{ $t("goTo") }}</LocalizedLink>
+          <LocalizedLink :to="`/answer/${answer.id}`" target="_blank">{{ $t("goTo") }}</LocalizedLink>
         </td>
         <td><a href="#">{{$t('publish')}}</a></td>
       </tr>

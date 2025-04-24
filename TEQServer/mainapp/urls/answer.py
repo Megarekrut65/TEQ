@@ -1,7 +1,7 @@
 from django.urls import path
 
 from mainapp.views.answer import TestRetrieveApiView, AnswerCreateApiView, AnswerRetrieveApiView, AnswerListApiView, \
-    TestAnswerListApiView, LastAnswerRetrieveApiView
+    TestAnswerListApiView, LastAnswerRetrieveApiView, AnswerItemUpdateAPIView, AnswerUpdateAPIView
 
 urlpatterns = [
     path("test/<str:pk>/view", TestRetrieveApiView.as_view()),
@@ -10,4 +10,6 @@ urlpatterns = [
     path("answer/<str:pk>/last", LastAnswerRetrieveApiView.as_view()),
     path("answers/", AnswerListApiView.as_view()),
     path("answers/test/<str:test_id>/", TestAnswerListApiView.as_view()),
+    path("answer/item/<int:index>/<str:pk>/", AnswerItemUpdateAPIView.as_view()),
+    path("answer/check/<str:pk>/", AnswerUpdateAPIView.as_view()),
 ]

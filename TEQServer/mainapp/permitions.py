@@ -23,6 +23,25 @@ class IsTestOwner(IsAuthenticated):
         
         return test is not None
 
+class IsAnswerTestOwner(IsAuthenticated):
+    def has_permission(self, request, view):
+        if not super().has_permission(request, view):
+            return False
+
+        answer_id = view.kwargs.get("pk")
+        if not answer_id and request.method in ("POST", "PUT", "PATCH"):
+            answer_id = request.data.get("answerId")
+
+        if not answer_id:
+            answer_id = view.kwargs.get("answer_id")
+
+        if not answer_id:
+            return False
+
+        answer = Answer.objects.filter(id=answer_id, test__owner=request.user).first()
+
+        return answer is not None
+
 class IsTestOwnerMember(IsAuthenticated):
     def has_permission(self, request, view):
         if not super().has_permission(request, view):

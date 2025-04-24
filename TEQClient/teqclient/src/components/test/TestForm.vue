@@ -62,7 +62,7 @@ const answerActive = ref(false);
           {{ $t("share") }}
         </a>
 
-        <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" >
+        <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" target="_blank">
           {{ $t("pass") }}
         </LocalizedLink>
         <a class="dropdown-item" href="#" @click="memberActive=true;">

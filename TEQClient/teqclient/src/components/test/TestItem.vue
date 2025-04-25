@@ -1,9 +1,10 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
-import { itemUpdateApi } from "@/js/api/item.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import { MULTIPLE, SINGLE, SHORT, FULL, TYPES } from "@/js/types.js";
 import { defaultChoices } from "@/js/data-types.js";
+import DotsMenu from "@/components/DotsMenu.vue";
+import { copyObject, pasteObject } from "@/js/utility/clipboard.js";
 
 const props = defineProps({
   index:{
@@ -19,6 +20,14 @@ const props = defineProps({
     required: true
   },
   onItemRemoved:{
+    type: Function,
+    required: true
+  },
+  updateApi:{
+    type: Function,
+    required: true
+  },
+  onItemPaste:{
     type: Function,
     required: true
   }
@@ -40,7 +49,7 @@ const onUpdate = ()=>{
     formData.value.choices = defaultChoices();
   }
 
-  itemUpdateApi(props.testId, props.index-1, formData.value).catch(errorAlert);
+  props.updateApi(props.testId, props.index-1, formData.value).catch(errorAlert);
 };
 
 const addChoice = () => {
@@ -48,14 +57,46 @@ const addChoice = () => {
   onUpdate();
 };
 
+const onAddToPool = ()=>{
 
+};
+const onPasteFromPool = ()=>{
+
+};
+
+const onCopy = ()=>{
+  copyObject("testItem", formData.value);
+};
+const onPaste = ()=>{
+  const data = pasteObject("testItem");
+  if(data){
+    formData.value = data;
+  }
+};
+
+const onPasteNew = ()=>{
+  const data = pasteObject("testItem");
+  if(data){
+    props.onItemPaste(data);
+  }
+
+};
 </script>
 
 <template>
   <FormWrapper class="mb-3">
     <form  @change="onUpdate">
       <div>
-        <div class="btn-trash" @click="onItemRemoved"><i class="fa-solid fa-trash-can"></i></div>
+        <div class="float-right">
+          <DotsMenu>
+            <div class="dropdown-item" @click="onItemRemoved">{{$t('delete')}}</div>
+            <div class="dropdown-item"  @click="onCopy">{{$t('copy')}}</div>
+            <div class="dropdown-item"  @click="onPaste">{{$t('paste')}}</div>
+            <div class="dropdown-item" @click="onPasteNew">{{$t('pasteAsNew')}}</div>
+            <div class="dropdown-item" @click="onPasteFromPool">{{$t('pasteFromPool')}}</div>
+            <div class="dropdown-item"  @click="onAddToPool">{{$t('addToPool')}}</div>
+          </DotsMenu>
+        </div>
         <label class="form-label" for="text">{{index}}. {{ formData.text }}</label>
         <input
           v-model.trim="formData.text"
@@ -166,5 +207,10 @@ button {
 
 form {
   margin-bottom: 0;
+}
+
+.dropdown-item:hover{
+  opacity: 0.5;
+  cursor: pointer;
 }
 </style>

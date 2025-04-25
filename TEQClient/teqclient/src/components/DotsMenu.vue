@@ -10,9 +10,13 @@
       <i class="fa-solid fa-ellipsis-vertical dots-btn text-dark"></i>
     </button>
     <ul class="dropdown-menu" role="menu">
-      <slot></slot>
+      <slot>
+        <!--<a class="dropdown-item" href="#" ></a>-->
+
+      </slot>
     </ul>
   </div>
+
 </template>
 <style scoped>
 .btn-none{

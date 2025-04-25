@@ -5,7 +5,7 @@ import { ref } from "vue";
 import { testUpdateApi } from "@/js/api/test.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import TestItem from "@/components/test/TestItem.vue";
-import { itemCreateApi, itemDeleteApi } from "@/js/api/item.js";
+import { itemCreateApi, itemDeleteApi, itemUpdateApi } from "@/js/api/item.js";
 import { defaultAnswer } from "@/js/data-types.js";
 import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import MemberForm from "@/components/test/MemberForm.vue";
@@ -48,6 +48,16 @@ const memberActive = ref(false);
 const settingsActive = ref(false);
 const shareActive = ref(false);
 const answerActive = ref(false);
+
+const onItemPaste = (data)=>{
+  data.testId = formData.value.id;
+
+  itemCreateApi(data)
+    .then((res) => {
+      formData.value.items.push(res);
+    })
+    .catch(errorAlert);
+};
 </script>
 
 <template>
@@ -106,6 +116,8 @@ const answerActive = ref(false);
                 :on-item-removed="() => onItemRemoved(index)"
                 :test-id="formData.id"
                 :auto-check="formData.autoCheck"
+                :update-api="itemUpdateApi"
+                :on-item-paste="onItemPaste"
             />
         </div>
         <div class="d-flex justify-content-center">

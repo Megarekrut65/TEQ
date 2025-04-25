@@ -12,9 +12,7 @@ class ChoiceSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=200, allow_blank=True)
     is_correct = serializers.BooleanField(default=False)
 
-class ItemSerializer(CamelCaseSerializer):
-    test_id = serializers.UUIDField(write_only=True)
-
+class BaseItemSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=500, allow_blank=True)
     type = serializers.ChoiceField(choices=ITEM_TYPES)
     grade = serializers.FloatField(min_value=0.0)
@@ -43,14 +41,7 @@ class ItemSerializer(CamelCaseSerializer):
 
         return data
 
-    def validate_test_id(self, value):
-        try:
-            TestDocument.objects.get(id=value)
-        except DoesNotExist:
-            raise ValidationError("TestItem with this ID does not exist.")
-        return value
-
-    def __get_item(self, validated_data):
+    def _get_item(self, validated_data):
         item = None
         if validated_data["type"] in [SINGLE, MULTIPLE]:
             item = ChoiceItem(
@@ -75,10 +66,30 @@ class ItemSerializer(CamelCaseSerializer):
 
         return item
 
+    def _get_index(self, length):
+        index = self.context.get("index", None)
+        if index is None:
+            raise ValidationError("Index must be provided.")
+
+        if index >= length:
+            raise ValidationError("Index must be less than the number of items.")
+
+        return index
+
+class ItemSerializer(BaseItemSerializer):
+    test_id = serializers.UUIDField(write_only=True)
+
+    def validate_test_id(self, value):
+        try:
+            TestDocument.objects.get(id=value)
+        except DoesNotExist:
+            raise ValidationError("TestItem with this ID does not exist.")
+        return value
+
     def create(self, validated_data):
         test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
 
-        item = self.__get_item(validated_data)
+        item = self._get_item(validated_data)
 
         test_item.items.append(item)
         test_item.save()
@@ -87,14 +98,8 @@ class ItemSerializer(CamelCaseSerializer):
     def update(self, instance, validated_data):
         test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
 
-        index = self.context.get("index", None)
-        if index is None:
-            raise ValidationError("Index must be provided.")
-
-        if index >= len(test_item.items):
-            raise ValidationError("Index must be less than the number of items.")
-
-        item = self.__get_item(validated_data)
+        index = self._get_index(len(test_item.items))
+        item = self._get_item(validated_data)
         test_item.items[index] = item
         test_item.save()
 

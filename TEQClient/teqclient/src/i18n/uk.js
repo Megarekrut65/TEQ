@@ -60,6 +60,12 @@ export const uk = {
   share:"Поширити",
   shareUrl:"Посилання на тест",
   copied:"Скопійовано!",
+  delete:"Видалити",
+  copy:"Копіювати",
+  paste:"Вставити",
+  pasteAsNew:"Вставити як нове питання",
+  pasteFromPool:"Вставити з набору",
+  addToPool:"Додати до набору",
 
   testId: "ID тесту",
   text: "Текст",
@@ -81,6 +87,13 @@ export const uk = {
   autoCheckedTh:"Перевірено автоматично",
   publishResultTh:"Опублікувати результати",
   publish:"Опублікувати",
-  answers:"Відповіді"
+  answers:"Відповіді",
+  markChecked:"Позначити роботу перевіреною",
+
+
+  pool:"Набір питань",
+  missingCategory:"Категорії відсутні",
+  name:"Назва",
+  category:"Категорія",
 
 };

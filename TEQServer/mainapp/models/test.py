@@ -12,6 +12,7 @@ class Test(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    can_share = models.BooleanField(default=False)
     is_public = models.BooleanField(default=False)
 
     auto_check = models.BooleanField(default=False)

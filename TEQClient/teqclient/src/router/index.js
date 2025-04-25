@@ -44,6 +44,20 @@ const router = createRouter({
 
         },
         {
+          path: "category/:categoryId",
+          name: "category",
+          component: () => import("../views/CategoryView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
+          path: "account/pool",
+          name: "pool",
+          component: () => import("../views/PoolView.vue"),
+          beforeEnter: ifAuthenticated
+
+        },
+        {
           path: "answer/:answerId",
           name: "answer",
           component: () => import("../views/AnswerView.vue"),

@@ -92,10 +92,11 @@ const updateGrade = ()=>{
 <template>
     <LoadingWindow v-if="loading" />
     <div class="card">
-        <div class="card-header bg-secondary d-flex justify-content-between">
-            <h3 class="text-white">{{ test.title }}</h3>
+        <div class="card-header bg-secondary">
+          <div class="row">
+            <h3 class="text-white col-12 col-md-6">{{ test.title }}</h3>
 
-            <div class="text-primary text-center" v-if="answer.id">
+            <div class="text-primary text-right col-12 col-md-6" v-if="answer.id">
                 <button
                     v-if="isOwner && !answer.checked"
                     class="btn btn-success"
@@ -106,7 +107,7 @@ const updateGrade = ()=>{
               <div >{{answer.owner.fullname}}</div>
               <div >{{answer.owner.email}}</div>
             </div>
-            <div>
+            <div class="col-12 mt-2">
                 <span v-if="answer.checked || isOwner" class="badge text-dark bg-primary me-2"
                     >{{ answer.grade }}/{{ answer.maxGrade }}</span
                 >
@@ -117,6 +118,7 @@ const updateGrade = ()=>{
                     $t("autoChecked")
                 }}</span>
             </div>
+          </div>
         </div>
         <div class="card-body" v-if="test.description">
             {{ test.description }}

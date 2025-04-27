@@ -28,8 +28,12 @@ testGetApi(testId)
 
 <template>
     <LoadingWindow v-if="loading" />
+  <div class="container">
     <TestForm v-if="test" :instance="test" />
     <NotFoundImage v-if="notFound"></NotFoundImage>
+  </div>
+
+
 </template>
 
 <style scoped></style>

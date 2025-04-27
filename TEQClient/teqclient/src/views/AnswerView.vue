@@ -25,7 +25,9 @@ answerGetApi(answerId)
 
 <template>
     <LoadingWindow v-if="loading" />
+  <div class="container">
     <TestPassForm v-if="answer" :test="answer.test" :answer="answer" :readonly="true" />
+  </div>
 </template>
 
 <style scoped></style>

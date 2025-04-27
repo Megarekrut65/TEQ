@@ -28,8 +28,10 @@ categoryGetApi(categoryId)
 
 <template>
     <LoadingWindow v-if="loading" />
+  <div class="container">
     <CategoryForm v-if="category" :instance="category" />
     <NotFoundImage v-if="notFound"></NotFoundImage>
+  </div>
 </template>
 
 <style scoped></style>

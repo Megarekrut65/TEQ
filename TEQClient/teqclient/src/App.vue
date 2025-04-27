@@ -10,7 +10,7 @@ import Header from "@/components/app/HeaderItem.vue";
     <Header />
 
     <section>
-        <div class="container page">
+        <div class="container-fluid page">
             <RouterView />
         </div>
     </section>

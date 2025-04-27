@@ -1721,10 +1721,7 @@ img.post-image {
 
 /* - Search Form hover Effects
 ------------------------------------------------------------- */
-#header-wrap .action-menu {
-    display: inline-block;
-    align-items: baseline;
-}
+
 
 #header-wrap {
     height: var(--header-height);
@@ -1739,22 +1736,6 @@ img.post-image {
     font-weight: 800;
 }
 
-.action-menu .search-bar {
-    overflow: hidden;
-}
-
-.action-menu .search-bar,
-.action-menu .open-icon-wrap {
-    width: 40px;
-    height: 40px;
-    background: #efeee8;
-    border-radius: 40px;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.3s width cubic-bezier(0, 0.75, 0.49, 0.99);
-}
 
 #header-wrap .search-button {
     order: 1;
@@ -1803,17 +1784,11 @@ img.post-image {
     text-decoration: none;
 }
 
-@media screen and (max-width: 768px) {
-    .action-menu .search-bar {
-        margin-top: 20px;
-        width: 100%;
-    }
-}
 
 /* - Main Navigation
 ------------------------------------------------------------- */
 #header {
-    padding: 20px 0;
+    padding: 0;
     border-bottom: 1px solid #e0e0e0;
     background-color: #faf4d0;
 }
@@ -1863,18 +1838,6 @@ img.post-image {
     text-align: inherit;
 }
 
-#billboard button.slick-arrow {
-    background: transparent;
-    border: 1px solid #e5e3da;
-    padding: initial;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    z-index: 5;
-    cursor: pointer;
-}
 
 #billboard button.slick-arrow:hover {
     border: 1px solid #74642f;

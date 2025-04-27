@@ -17,7 +17,7 @@ defineProps({
       </div>
       <div class="card-body">
         <span v-if="test.description">
-          {{truncate(test.description, 100)}}...
+          {{truncate(test.description, 100)}}
         </span>
       </div>
       <div class="card-footer">

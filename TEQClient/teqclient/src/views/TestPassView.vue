@@ -28,8 +28,10 @@ testPassGetApi(testId)
 
 <template>
     <LoadingWindow v-if="loading" />
+  <div class="container">
     <TestPassForm v-if="test" :test="test" />
     <NotFoundImage v-if="notFound"></NotFoundImage>
+  </div>
 </template>
 
 <style scoped></style>

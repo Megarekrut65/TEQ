@@ -20,25 +20,31 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div id="header-wrap">
+    <div class="wrapper">
         <header id="header" :class="{ 'fixed-top': isFixedTop }">
+          <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2 logo-col">
-                        <div class="main-logo">
-                            <RouterLink to="/">
-                                <img src="@/assets/images/main-logo.png" alt="logo" />
-                            </RouterLink>
-                        </div>
-                    </div>
+              <div class="main-logo navbar-brand">
+                <RouterLink to="/">
+                  <img src="@/assets/images/main-logo.png" alt="logo" />
+                </RouterLink>
+              </div>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <Menu />
 
-                    <div class="col-md-10">
-                        <Menu />
-                    </div>
-                </div>
+
             </div>
+          </nav>
+
+
         </header>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.wrapper{
+  margin-bottom: 100px
+}
+</style>

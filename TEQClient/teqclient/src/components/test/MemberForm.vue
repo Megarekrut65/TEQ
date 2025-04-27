@@ -3,7 +3,6 @@ import { ref } from "vue";
 import ModalWindow from "@/components/ModalWindow.vue";
 import { memberCreateApi, memberDeleteApi, memberListApi } from "@/js/api/member.js";
 import { errorAlert } from "@/js/utility/utility.js";
-import QuestionWindow from "@/components/QuestionWindow.vue";
 
 const props = defineProps({
   testId:{

@@ -38,7 +38,7 @@ const close = () => {
 const getContentSize = ()=>{
   const size = props.size;
   if(size === "small") return "col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4";
-  if(size === "medium") return "col-12 col-sm-10 col-md-10 col-lg-6";
+  if(size === "medium") return "col-12 col-sm-10 col-md-8 col-lg-6";
   if(size==="big") return "col-12 col-sm-10 col-md-8";
 
   return "col-12";

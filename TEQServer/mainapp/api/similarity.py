@@ -1,9 +1,9 @@
 import requests
 
-URL = "http://127.0.0.1:8005/api"
+URL = "http://127.0.0.1:8005/similarity/"
 
 def calculate_similarity(text1, text2):
-    response = requests.post(f"{URL}/similarity/", json={"text1": text1, "text2": text2})
+    response = requests.post(URL, json={"text1": text1, "text2": text2})
 
     if response.ok:
         data = response.json()

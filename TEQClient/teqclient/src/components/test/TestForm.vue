@@ -12,6 +12,7 @@ import MemberForm from "@/components/test/MemberForm.vue";
 import TestSettings from "@/components/test/TestSettings.vue";
 import TestShare from "@/components/test/TestShare.vue";
 import TestAnswers from "@/components/test/TestAnswers.vue";
+import PoolWindow from "@/components/pool/PoolWindow.vue";
 
 const props = defineProps({
     instance: {
@@ -48,6 +49,7 @@ const memberActive = ref(false);
 const settingsActive = ref(false);
 const shareActive = ref(false);
 const answerActive = ref(false);
+const poolActive = ref(false);
 
 const onItemPaste = (data)=>{
   data.testId = formData.value.id;
@@ -58,6 +60,12 @@ const onItemPaste = (data)=>{
     })
     .catch(errorAlert);
 };
+
+const poolItem = ref(null);
+const onOpenPool = (item)=>{
+  poolActive.value = true;
+  poolItem.value = item;
+};
 </script>
 
 <template>
@@ -65,6 +73,7 @@ const onItemPaste = (data)=>{
   <TestSettings v-model="formData" v-model:active="settingsActive" @change="updateTest"/>
   <TestShare v-model="formData" v-model:active="shareActive" @change="updateTest"/>
   <TestAnswers :test-id="formData.id" v-model="answerActive"></TestAnswers>
+  <PoolWindow v-model="poolActive" v-model:item="poolItem"></PoolWindow>
 
     <FormWrapper :title="formData.title" show-menu>
       <template v-slot:menu>
@@ -118,6 +127,7 @@ const onItemPaste = (data)=>{
                 :auto-check="formData.autoCheck"
                 :update-api="itemUpdateApi"
                 :on-item-paste="onItemPaste"
+                :open-pool="onOpenPool"
             />
         </div>
         <div class="d-flex justify-content-center">

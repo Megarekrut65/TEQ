@@ -30,6 +30,10 @@ const props = defineProps({
   onItemPaste:{
     type: Function,
     required: true
+  },
+  openPool:{
+    type: Function,
+    required: true
   }
 });
 
@@ -58,7 +62,7 @@ const addChoice = () => {
 };
 
 const onAddToPool = ()=>{
-
+  props.openPool(formData.value);
 };
 const onPasteFromPool = ()=>{
 
@@ -209,8 +213,5 @@ form {
   margin-bottom: 0;
 }
 
-.dropdown-item:hover{
-  opacity: 0.5;
-  cursor: pointer;
-}
+
 </style>

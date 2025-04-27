@@ -27,7 +27,7 @@ const alerts = computed(() => alertBus.alerts);
     bottom: 0;
     right: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 20000;
 
     max-height: 20vh;
     overflow-y: auto;

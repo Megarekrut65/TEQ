@@ -61,7 +61,7 @@ const onItemPaste = (data) => {
 };
 
 const poolItem = ref(null);
-const poolPasteMode = ref(null);
+const poolPasteMode = ref(true);
 const onOpenPool = (item, pasteMode) => {
     poolActive.value = true;
     poolPasteMode.value = pasteMode;
@@ -77,7 +77,8 @@ const onOpenPool = (item, pasteMode) => {
     <PoolWindow
         v-model="poolActive"
         v-model:item="poolItem"
-        v-model:paste-mode="poolPasteMode"
+        :paste-mode="poolPasteMode"
+        :add-selected="onItemPaste"
     ></PoolWindow>
 
     <FormWrapper :title="formData.title" show-menu>

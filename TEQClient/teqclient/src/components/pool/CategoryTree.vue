@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
     categories: {
         type: Array,
         required: true,
@@ -17,16 +17,33 @@ defineProps({
         required: true,
     },
 });
+
+const onCategorySelected = (category)=>{
+  console.log(category);
+  if(props.pasteMode){
+    props.addToPool(category);
+
+    return;
+  }
+
+  props.copyFromPool(category, null);
+};
+
+const onItemSelected = (item)=>{
+  if(props.pasteMode) return;
+
+  props.copyFromPool(null, item);
+};
 </script>
 
 <template>
     <ul id="tree">
         <li v-for="category in categories" :key="category.id">
             <input type="checkbox" checked v-if="!pasteMode" />
-            <span>{{ category.name }} <i class="fa fa-plus btn-hover"></i></span>
+            <span>{{ category.name }} <i :class="{'fa fa-plus':pasteMode, 'fa-solid fa-circle-check':!pasteMode, 'btn-hover text-secondary': true}" @click="()=>onCategorySelected(category)"></i></span>
             <ul v-if="!pasteMode">
                 <li v-for="item in category.items" :key="item">
-                    <span>{{ item.text ? item.text : $t("empty") }}</span>
+                    <span >{{ item.text ? item.text : $t("empty") }} <i class="fa-solid fa-circle-check btn-hover text-secondary" @click="()=>onItemSelected(item)"></i></span>
                 </li>
             </ul>
         </li>

@@ -33,7 +33,8 @@ const props = defineProps({
     },
     openPool: {
         type: Function,
-        required: true,
+        required: false,
+        default: null
     },
 });
 
@@ -98,10 +99,10 @@ const onPasteNew = () => {
                         <div class="dropdown-item" @click="onCopy">{{ $t("copy") }}</div>
                         <div class="dropdown-item" @click="onPaste">{{ $t("paste") }}</div>
                         <div class="dropdown-item" @click="onPasteNew">{{ $t("pasteAsNew") }}</div>
-                        <div class="dropdown-item" @click="onPasteFromPool">
+                        <div class="dropdown-item" @click="onPasteFromPool" v-if="openPool">
                             {{ $t("pasteFromPool") }}
                         </div>
-                        <div class="dropdown-item" @click="onAddToPool">{{ $t("addToPool") }}</div>
+                        <div class="dropdown-item" @click="onAddToPool" v-if="openPool">{{ $t("addToPool") }}</div>
                     </DotsMenu>
                 </div>
                 <label class="form-label" for="text">{{ index }}. {{ formData.text }}</label>

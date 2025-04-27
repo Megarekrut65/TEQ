@@ -45,7 +45,7 @@ class PassTestSerializer(SafeTestSerializer):
 class AnswerItemSerializer(CamelCaseSerializer):
     type = serializers.ChoiceField(choices=ITEM_TYPES)
     choices = serializers.ListField(
-        child=serializers.IntegerField(min_value=0), required=False, allow_null=True, allow_empty=True
+        child=serializers.IntegerField(), required=False, allow_null=True, allow_empty=True
     )
     answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
     grade = serializers.FloatField(read_only=True)
@@ -109,7 +109,10 @@ class AnswerSerializer(CamelCaseModelSerializer):
                             "agree", "max_grade"]
 
     def get_test_items(self, obj):
-        doc = AnswerDocument.objects.get(id=obj.id)
+        doc = AnswerDocument.objects.filter(id=obj.id).first()
+        if doc is None:
+            return []
+        
         items = doc.test_items
 
         if obj.test.show_correct or self.context.get("is_owner", False):
@@ -118,7 +121,9 @@ class AnswerSerializer(CamelCaseModelSerializer):
         return SafeItemSerializer(items, many=True).data
 
     def get_grade(self, obj):
-        doc = AnswerDocument.objects.get(pk=obj.id)
+        doc = AnswerDocument.objects.filter(id=obj.id).first()
+        if doc is None:
+            return 0
 
         grade = 0
         for item in doc.items:
@@ -127,7 +132,10 @@ class AnswerSerializer(CamelCaseModelSerializer):
         return grade
 
     def get_items(self, obj):
-        doc = AnswerDocument.objects.get(pk=obj.id)
+        doc = AnswerDocument.objects.filter(id=obj.id).first()
+        if doc is None:
+            return []
+
         return AnswerItemSerializer(doc.items, many=True).data
 
     def _validate_items(self, test_items, validated_items):

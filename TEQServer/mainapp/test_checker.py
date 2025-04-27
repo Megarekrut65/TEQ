@@ -48,7 +48,7 @@ def check_text_item(answer_item, test_item):
     similarity = calculate_similarity(answer_item.answer, test_item.correct_answer)
 
     if similarity * 100 >= test_item.min_similar_percent:
-        grade_percent = similarity
+        grade_percent = 1
     answer_item.grade = round(test_item.grade * grade_percent, 2)
 
     answer_item.similarity = round(similarity*100, 2)

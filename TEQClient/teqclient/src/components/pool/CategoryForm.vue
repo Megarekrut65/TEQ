@@ -5,7 +5,6 @@ import FormWrapper from "@/components/FormWrapper.vue";
 import { ref } from "vue";
 import { defaultAnswer } from "@/js/data-types.js";
 import { errorAlert } from "@/js/utility/utility.js";
-import PoolWindow from "@/components/pool/PoolWindow.vue";
 
 const props = defineProps({
     instance: {
@@ -45,17 +44,9 @@ const onItemRemoved = (index) => {
     itemDeleteApi(formData.value.id, index).catch(errorAlert);
 };
 
-const poolItem = ref(null);
-const poolActive = ref(false);
-const onOpenPool = (item) => {
-    poolActive.value = true;
-    poolItem.value = item;
-};
 </script>
 
 <template>
-    <PoolWindow v-model="poolActive" v-model:item="poolItem"></PoolWindow>
-
     <FormWrapper :title="formData.title" show-menu>
         <template v-slot:menu>
             <a class="dropdown-item" href="#">
@@ -88,7 +79,6 @@ const onOpenPool = (item) => {
                 auto-check
                 :update-api="itemUpdateApi"
                 :on-item-paste="onItemPaste"
-                :open-pool="onOpenPool"
             />
         </div>
         <div class="d-flex justify-content-center">

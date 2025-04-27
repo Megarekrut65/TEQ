@@ -69,8 +69,8 @@ export const uk = {
     copy: "Копіювати",
     paste: "Вставити",
     pasteAsNew: "Вставити як нове питання",
-    pasteFromPool: "Вставити з набору",
-    addToPool: "Додати до набору",
+    pasteFromPool: "Вставити з колекції",
+    addToPool: "Додати до колекції",
 
     testId: "ID тесту",
     text: "Текст",
@@ -95,8 +95,10 @@ export const uk = {
     answers: "Відповіді",
     markChecked: "Позначити роботу перевіреною",
 
-    pool: "Набір питань",
-    missingCategory: "Категорії відсутні",
+    pool: "Колекції",
+    missingCategory: "Колекції відсутні",
     name: "Назва",
-    category: "Категорія",
+    category: "Колекція",
+    empty:"Пусто",
+    newCategory:"Нова колекція",
 };

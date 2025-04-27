@@ -20,8 +20,8 @@ export const errorAlert = (err) => {
     alertBus.addAlert(errorToString(err), "danger", 0);
 };
 
-export const successAlert = (err) => {
-    alertBus.addAlert(errorToString(err), "success", 5);
+export const successAlert = (text) => {
+    alertBus.addAlert(text, "success", 5);
 };
 
 export const truncate = (str, length = 20) =>

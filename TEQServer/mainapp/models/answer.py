@@ -34,7 +34,7 @@ class AnswerDocument(me.Document):
     items = me.ListField(me.EmbeddedDocumentField(AnswerBaseItem))
 
 class AnswerChoiceItem(AnswerBaseItem):
-    choices = me.ListField(me.IntField(min_value=0))
+    choices = me.ListField(me.IntField())
 
 class AnswerTextItem(AnswerBaseItem):
     answer = me.StringField(max_length=5000, default="")

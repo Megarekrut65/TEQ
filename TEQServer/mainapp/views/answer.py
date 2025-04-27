@@ -60,7 +60,7 @@ class AnswerListApiView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Answer.objects.filter(owner=self.request.user).order_by("-pass_date").all()
+        return Answer.objects.filter(owner=self.request.user).order_by("-pass_date")
 
 class TestAnswerListApiView(ListAPIView):
     serializer_class = AnswerSerializer
@@ -69,7 +69,7 @@ class TestAnswerListApiView(ListAPIView):
 
     def get_queryset(self):
         test_id = self.kwargs["test_id"]
-        return Answer.objects.filter(test_id=test_id).order_by("pass_date").all()
+        return Answer.objects.filter(test_id=test_id).order_by("pass_date")
 
 class AnswerItemUpdateAPIView(UpdateAPIView):
     serializer_class = AnswerItemGradeSerializer

@@ -34,7 +34,11 @@ const addNewAnswer = () => {
 const updateTest = () => {
     if (formData.value.title === "") return;
 
-    testUpdateApi(props.instance.id, formData.value).catch(errorAlert);
+    testUpdateApi(props.instance.id, formData.value).then(res=>{
+      formData.value.canShare = res.canShare;
+      formData.value.isPublic = res.isPublic;
+    }).catch(errorAlert);
+
 };
 
 const onItemRemoved = (index) => {

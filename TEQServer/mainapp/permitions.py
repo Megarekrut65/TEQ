@@ -76,7 +76,7 @@ class CanAccessTest(IsAuthenticated):
         if not test:
             return False
 
-        if test.is_public:
+        if test.can_share:
             return True
 
         if test.owner == request.user:

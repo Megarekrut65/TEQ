@@ -40,12 +40,12 @@ const copy = () => {
                 class="form-check-input"
                 type="checkbox"
                 role="switch"
-                v-model="model.isPublic"
+                v-model="model.canShare"
             />
-            <label class="form-check-label">{{ $t("isPublic") }}</label>
+            <label class="form-check-label">{{ $t("allowAccess") }}</label>
         </div>
 
-        <div v-if="model.isPublic">
+        <div v-if="model.canShare">
             <label class="form-label"
                 >{{ $t("shareUrl") }} <i class="fa-solid fa-copy btn-hover" @click="copy"></i
             ></label>

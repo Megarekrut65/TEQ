@@ -35,7 +35,7 @@ export const testDeleteApi = (testId) => {
 
 export const testUpdateApi = (
     testId,
-    { title, description, isPublic, autoCheck, showResult, showCorrect },
+    { title, description, isPublic, canShare, autoCheck, showResult, showCorrect },
 ) => {
     const request = {
         method: "PUT",
@@ -43,7 +43,7 @@ export const testUpdateApi = (
             "Content-Type": "application/json",
             Authorization: `Token ${getToken()}`,
         },
-        body: JSON.stringify({ title, description, isPublic, autoCheck, showResult, showCorrect }),
+        body: JSON.stringify({ title, description, isPublic, canShare, autoCheck, showResult, showCorrect }),
     };
 
     return sendAsync(API + `test/${testId}/`, request);

@@ -121,7 +121,7 @@ class TestSerializer(CamelCaseModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "is_public", "auto_check",
+        fields = ["id", "owner", "created_date", "title", "description", "is_public", "can_share", "auto_check",
                   "items", "show_result", "show_correct", "grade"]
         read_only_fields = ["id", "created_date"]
 
@@ -135,3 +135,11 @@ class TestSerializer(CamelCaseModelSerializer):
             return ItemSerializer(item.items, many=True).data
 
         return []
+
+    def validate(self, data):
+        if data.get("can_share") is False and self.instance.can_share is True:
+            data["is_public"] = False
+        if data.get("is_public") is True:
+            data["can_share"] = True
+
+        return data

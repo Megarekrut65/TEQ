@@ -112,7 +112,7 @@ class AnswerSerializer(CamelCaseModelSerializer):
         doc = AnswerDocument.objects.filter(id=obj.id).first()
         if doc is None:
             return []
-        
+
         items = doc.test_items
 
         if obj.test.show_correct or self.context.get("is_owner", False):

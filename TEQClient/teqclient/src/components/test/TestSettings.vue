@@ -16,6 +16,7 @@ const activeModel = defineModel("active");
                 class="form-check-input"
                 type="checkbox"
                 role="switch"
+                :title="$t('public')"
                 v-model="model.isPublic"
             />
             <label class="form-check-label">{{ $t("isPublic") }}</label>

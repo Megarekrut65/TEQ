@@ -14,7 +14,7 @@ const props = defineProps({
             title: "",
             description: "",
         }),
-    }
+    },
 });
 
 const formData = ref(props.instance);
@@ -32,18 +32,15 @@ const createTest = () => {
 const onSubmit = () => {
     loading.value = true;
 
-  createTest()
+    createTest()
         .catch(errorAlert)
         .finally(() => {
             loading.value = false;
         });
 };
-
-
 </script>
 
 <template>
-
     <LoadingWindow v-if="loading" />
     <FormWrapper :title="$t('createTest')">
         <form @submit.prevent="onSubmit">
@@ -66,10 +63,9 @@ const onSubmit = () => {
                 />
             </div>
 
-            <button class="btn btn-outline-secondary" type="submit">{{ $t('create') }}</button>
+            <button class="btn btn-outline-secondary" type="submit">{{ $t("create") }}</button>
         </form>
     </FormWrapper>
-
 </template>
 
 <style scoped>

@@ -3,8 +3,7 @@ import NotFoundImage from "@/components/NotFoundImage.vue";
 </script>
 
 <template>
-  <NotFoundImage></NotFoundImage>
+    <NotFoundImage></NotFoundImage>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

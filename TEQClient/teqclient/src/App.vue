@@ -3,19 +3,17 @@ import { RouterView } from "vue-router";
 import AlertWindow from "@/components/AlertWindow.vue";
 import Footer from "@/components/app/FooterItem.vue";
 import Header from "@/components/app/HeaderItem.vue";
-
-
 </script>
 
 <template>
-  <AlertWindow />
-  <Header />
+    <AlertWindow />
+    <Header />
 
-  <section>
-    <div class="container page">
-      <RouterView />
-    </div>
-  </section>
+    <section>
+        <div class="container page">
+            <RouterView />
+        </div>
+    </section>
 
-  <Footer />
+    <Footer />
 </template>

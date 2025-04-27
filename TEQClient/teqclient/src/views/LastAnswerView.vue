@@ -1,5 +1,4 @@
 <script setup>
-
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { answerLastGetApi } from "@/js/api/answer.js";
@@ -13,19 +12,19 @@ const answer = ref(null);
 
 const loading = ref(true);
 
-answerLastGetApi(testId).then((res) => {
-  answer.value = res;
-}).catch(errorAlert).finally(() => {
-  loading.value = false;
-});
-
+answerLastGetApi(testId)
+    .then((res) => {
+        answer.value = res;
+    })
+    .catch(errorAlert)
+    .finally(() => {
+        loading.value = false;
+    });
 </script>
 
 <template>
-  <LoadingWindow v-if="loading" />
-  <TestPassForm v-if="answer" :test="answer.test" :answer="answer" :readonly="true"/>
+    <LoadingWindow v-if="loading" />
+    <TestPassForm v-if="answer" :test="answer.test" :answer="answer" :readonly="true" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

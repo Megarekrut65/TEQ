@@ -1143,9 +1143,10 @@ fieldset[disabled] a.btn {
     display: block;
     padding: 0.5rem 1rem;
     text-decoration: none;
-    transition: color 0.15s ease-in-out,
-    background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out;
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1293,11 +1294,12 @@ fieldset[disabled] a.btn {
     border-radius: 0;
     box-shadow: none;
     overflow-anchor: none;
-    transition: color 0.15s ease-in-out,
-    background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out,
-    border-radius 0.15s ease;
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out,
+        border-radius 0.15s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1556,7 +1558,6 @@ button {
 .image-hvr-effect:hover img.post-image {
     transform: scale(1.1);
 }
-
 
 /*--- Page Title
 -----------------------------------------------*/

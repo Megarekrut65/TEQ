@@ -6,44 +6,49 @@ const alerts = computed(() => alertBus.alerts);
 </script>
 
 <template>
-  <div class="alert-window">
-    <div v-for="alert in alerts" :key="alert" :class="`alert alert-${alert.alert}`" role="alert">
-
-      <div>{{ alert.msg }}</div>
-      <div class="close-btn"><i class="fa-solid fa-xmark icon-btn" @click="() => alertBus.closeAlert(alert)"></i></div>
-
+    <div class="alert-window">
+        <div
+            v-for="alert in alerts"
+            :key="alert"
+            :class="`alert alert-${alert.alert}`"
+            role="alert"
+        >
+            <div>{{ alert.msg }}</div>
+            <div class="close-btn">
+                <i class="fa-solid fa-xmark icon-btn" @click="() => alertBus.closeAlert(alert)"></i>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
 .alert-window {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
 
-  max-height: 20vh;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  overflow-x: hidden;
+    max-height: 20vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    overflow-x: hidden;
 }
 
 .alert {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .icon-btn:hover {
-  cursor: pointer;
-  opacity: 0.8;
+    cursor: pointer;
+    opacity: 0.8;
 }
 
-.close-btn{
-  position: absolute;
-  height: 100%;
-  right: 10px;
+.close-btn {
+    position: absolute;
+    height: 100%;
+    right: 10px;
 }
 </style>

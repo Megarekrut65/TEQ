@@ -1,12 +1,9 @@
 <script setup>
-
 import TestCreateForm from "@/components/test/TestCreateForm.vue";
 </script>
 
 <template>
-  <TestCreateForm/>
+    <TestCreateForm />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

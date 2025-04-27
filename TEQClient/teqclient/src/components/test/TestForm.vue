@@ -17,8 +17,8 @@ import PoolWindow from "@/components/pool/PoolWindow.vue";
 const props = defineProps({
     instance: {
         type: Object,
-        required: true
-    }
+        required: true,
+    },
 });
 
 const formData = ref(props.instance);
@@ -31,9 +31,8 @@ const addNewAnswer = () => {
         .catch(errorAlert);
 };
 
-
 const updateTest = () => {
-   if(formData.value.title === "") return;
+    if (formData.value.title === "") return;
 
     testUpdateApi(props.instance.id, formData.value).catch(errorAlert);
 };
@@ -51,49 +50,55 @@ const shareActive = ref(false);
 const answerActive = ref(false);
 const poolActive = ref(false);
 
-const onItemPaste = (data)=>{
-  data.testId = formData.value.id;
+const onItemPaste = (data) => {
+    data.testId = formData.value.id;
 
-  itemCreateApi(data)
-    .then((res) => {
-      formData.value.items.push(res);
-    })
-    .catch(errorAlert);
+    itemCreateApi(data)
+        .then((res) => {
+            formData.value.items.push(res);
+        })
+        .catch(errorAlert);
 };
 
 const poolItem = ref(null);
-const onOpenPool = (item)=>{
-  poolActive.value = true;
-  poolItem.value = item;
+const poolPasteMode = ref(null);
+const onOpenPool = (item, pasteMode) => {
+    poolActive.value = true;
+    poolPasteMode.value = pasteMode;
+    poolItem.value = item;
 };
 </script>
 
 <template>
-  <MemberForm v-model="memberActive" :test-id="formData.id"></MemberForm>
-  <TestSettings v-model="formData" v-model:active="settingsActive" @change="updateTest"/>
-  <TestShare v-model="formData" v-model:active="shareActive" @change="updateTest"/>
-  <TestAnswers :test-id="formData.id" v-model="answerActive"></TestAnswers>
-  <PoolWindow v-model="poolActive" v-model:item="poolItem"></PoolWindow>
+    <MemberForm v-model="memberActive" :test-id="formData.id"></MemberForm>
+    <TestSettings v-model="formData" v-model:active="settingsActive" @change="updateTest" />
+    <TestShare v-model="formData" v-model:active="shareActive" @change="updateTest" />
+    <TestAnswers :test-id="formData.id" v-model="answerActive"></TestAnswers>
+    <PoolWindow
+        v-model="poolActive"
+        v-model:item="poolItem"
+        v-model:paste-mode="poolPasteMode"
+    ></PoolWindow>
 
     <FormWrapper :title="formData.title" show-menu>
-      <template v-slot:menu>
-        <a class="dropdown-item" href="#" @click="shareActive=true;">
-          {{ $t("share") }}
-        </a>
+        <template v-slot:menu>
+            <a class="dropdown-item" href="#" @click="shareActive = true">
+                {{ $t("share") }}
+            </a>
 
-        <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" target="_blank">
-          {{ $t("pass") }}
-        </LocalizedLink>
-        <a class="dropdown-item" href="#" @click="memberActive=true;">
-          {{ $t("members") }}
-        </a>
-        <a class="dropdown-item" href="#" @click="answerActive=true;">
-          {{ $t("answers") }}
-        </a>
-        <a class="dropdown-item" href="#" @click="settingsActive=true;">
-          {{ $t("settings") }}
-        </a>
-      </template>
+            <LocalizedLink class="dropdown-item" :to="`pass/${formData.id}`" target="_blank">
+                {{ $t("pass") }}
+            </LocalizedLink>
+            <a class="dropdown-item" href="#" @click="memberActive = true">
+                {{ $t("members") }}
+            </a>
+            <a class="dropdown-item" href="#" @click="answerActive = true">
+                {{ $t("answers") }}
+            </a>
+            <a class="dropdown-item" href="#" @click="settingsActive = true">
+                {{ $t("settings") }}
+            </a>
+        </template>
         <form @change="updateTest">
             <div>
                 <label class="form-label" for="title">{{ $t("title") }}</label>

@@ -4,9 +4,9 @@ import { answerItemUpdateApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
-    answerId:{
-      type: String,
-      required: true
+    answerId: {
+        type: String,
+        required: true,
     },
     index: {
         type: Number,
@@ -23,25 +23,25 @@ const props = defineProps({
         default: false,
     },
     autoCheck: {
-      type: Boolean,
-      required: false,
-      default: false,
+        type: Boolean,
+        required: false,
+        default: false,
     },
     item: {
         type: Object,
         required: true,
     },
-    isOwner:{
+    isOwner: {
         type: Boolean,
         required: false,
         default: false,
-    }
+    },
 });
 
 const formData = defineModel({ required: true });
 
-const updateGrade = ()=>{
-  answerItemUpdateApi(props.answerId, props.index-1, formData.value).catch(errorAlert);
+const updateGrade = () => {
+    answerItemUpdateApi(props.answerId, props.index - 1, formData.value).catch(errorAlert);
 };
 </script>
 
@@ -51,13 +51,15 @@ const updateGrade = ()=>{
             <div class="d-flex justify-content-between">
                 <label>{{ index }}. {{ item.text }}</label>
                 <div v-if="isOwner" class="badge">
-                  <label class="form-label text-dark">{{ $t("grade") }}({{ formData.grade }}/{{ item.grade }})</label>
-                  <input
-                    @change="updateGrade"
-                    class="form-control"
-                    type="number"
-                    v-model="formData.grade"
-                  />
+                    <label class="form-label text-dark"
+                        >{{ $t("grade") }}({{ formData.grade }}/{{ item.grade }})</label
+                    >
+                    <input
+                        @change="updateGrade"
+                        class="form-control"
+                        type="number"
+                        v-model="formData.grade"
+                    />
                 </div>
                 <div v-else-if="showCorrect" class="badge bg-secondary">
                     {{ formData.grade }}/{{ item.grade }}
@@ -92,8 +94,13 @@ const updateGrade = ()=>{
                             :class="{
                                 'form-check-label': true,
                                 'text-success': showCorrect && choice.isCorrect,
-                            }">
-                          {{ choice.text }}<i v-if="showCorrect && choice.isCorrect" class="fa-solid fa-check"></i>
+                            }"
+                        >
+                            {{ choice.text
+                            }}<i
+                                v-if="showCorrect && choice.isCorrect"
+                                class="fa-solid fa-check"
+                            ></i>
                         </label>
                     </div>
                 </div>
@@ -107,20 +114,28 @@ const updateGrade = ()=>{
             </div>
 
             <div v-if="[FULL, SHORT].includes(formData.type)" class="mb-3">
-              <div v-if="showCorrect&&autoCheck" class="badge text-dark bg-warning sim-badge">{{formData.similarity.toFixed(1)}}%</div>
+                <div v-if="showCorrect && autoCheck" class="badge text-dark bg-warning sim-badge">
+                    {{ formData.similarity.toFixed(1) }}%
+                </div>
                 <textarea
-                  v-if="[FULL].includes(formData.type)"
+                    v-if="[FULL].includes(formData.type)"
                     v-model="formData.answer"
                     class="form-control"
                     rows="3"
                     :readonly="readonly"
                     maxlength="5000"
                 ></textarea>
-              <input v-else v-model="formData.answer" class="form-control" type="text"  :readonly="readonly">
-              <div v-if="showCorrect&&item.correctAnswer">
-                <span class="text-success">{{$t('answer')}}</span>
-                <p>{{item.correctAnswer}}</p>
-              </div>
+                <input
+                    v-else
+                    v-model="formData.answer"
+                    class="form-control"
+                    type="text"
+                    :readonly="readonly"
+                />
+                <div v-if="showCorrect && item.correctAnswer">
+                    <span class="text-success">{{ $t("answer") }}</span>
+                    <p>{{ item.correctAnswer }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -138,7 +153,7 @@ form {
 .hide {
     display: none;
 }
-.badge{
-  height: min-content;
+.badge {
+    height: min-content;
 }
 </style>

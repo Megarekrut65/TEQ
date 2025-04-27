@@ -2,7 +2,6 @@
 @import "./css/vendor.css";
 @import "./css/style.css";
 
-
 .page {
     min-height: 50vh;
 }
@@ -23,53 +22,52 @@
     box-shadow: 0 0 4px 4px #c5a992;
     border-color: rgb(154, 75, 20);
 }
-.card{
+.card {
     border: None;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.btn-img{
+.btn-img {
     width: 120px;
 }
 
-.btn-img:hover{
+.btn-img:hover {
     border: 1px #c5a992 solid;
     border-radius: 50%;
     cursor: pointer;
 }
 
-.btn-trash{
+.btn-trash {
     position: absolute;
     top: 5px;
     right: 10px;
 }
 
-.btn-trash:hover{
+.btn-trash:hover {
     color: tomato;
     cursor: pointer;
-
 }
 
-.btn-hover:hover{
+.btn-hover:hover {
     color: rgb(242, 137, 63);
     cursor: pointer;
 }
-.img-404{
+.img-404 {
     width: 100%;
 }
 
-.sim-badge{
+.sim-badge {
     position: absolute;
     bottom: 5px;
     right: 5px;
 }
-.float-right{
+.float-right {
     position: absolute;
     right: 5px;
     top: 5px;
 }
 
-.dropdown-item:hover{
+.dropdown-item:hover {
     color: rgb(242, 137, 63);
     cursor: pointer;
 }

@@ -95,7 +95,7 @@ const updateGrade = ()=>{
         <div class="card-header bg-secondary d-flex justify-content-between">
             <h3 class="text-white">{{ test.title }}</h3>
 
-            <div class="text-primary text-center">
+            <div class="text-primary text-center" v-if="answer.id">
                 <button
                     v-if="isOwner && !answer.checked"
                     class="btn btn-success"

@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
 from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner, IsAnswerTestOwner
-from mainapp.serializers.answer import PassTestSerializer, AnswerSerializer, AnswerItemSerializer, \
-    AnswerItemGradeSerializer, AnswerCheckSerializer
+from mainapp.serializers.answer import AnswerSerializer, AnswerItemGradeSerializer, AnswerCheckSerializer
+from mainapp.serializers.safe_test import PassTestSerializer
 from mainapp.test_checker import check_test
 
 
@@ -24,6 +24,9 @@ class AnswerCreateApiView(CreateAPIView):
     def perform_create(self, serializer):
         test = Test.objects.get(pk=self.kwargs["test_id"])
         answer = serializer.save(owner=self.request.user, version=test.version, test=test)
+
+        test.answer_count += 1
+        test.save()
 
         if test.auto_check:
             check_test(answer)

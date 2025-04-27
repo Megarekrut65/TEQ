@@ -4,6 +4,7 @@ from mainapp.views import test
 
 urlpatterns = [
     path("tests/", test.TestListAPIView.as_view()),
+    path("public/tests/", test.PublicTestListAPIView.as_view()),
     path("test/", test.TestCreateAPIView.as_view()),
     path("test/<str:pk>/", test.TestRetrieveUpdateDestroyAPIView.as_view()),
     path("item/", test.ItemCreateAPIView.as_view()),

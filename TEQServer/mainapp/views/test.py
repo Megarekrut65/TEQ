@@ -1,10 +1,12 @@
+from django.db.models import Count
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.test import Test, TestDocument
-from mainapp.permitions import IsTestOwner
+from mainapp.permitions import IsTestOwner, CanAccessTest
+from mainapp.serializers.safe_test import PassTestSerializer
 from mainapp.serializers.test import TestSerializer, ItemSerializer
 
 
@@ -72,3 +74,10 @@ class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
         return JsonResponse({"detail": "Item removed"}, status=status.HTTP_200_OK)
 
+
+class PublicTestListAPIView(ListAPIView):
+    model = Test
+    serializer_class = PassTestSerializer
+
+    def get_queryset(self):
+        return Test.objects.filter(is_public=True).order_by("-answer_count", "-id")

@@ -87,7 +87,7 @@ export const uk = {
     correctAnswer: "Правильна відповідь",
     checked: "Перевірено!",
     autoChecked: "Автоматична перевірка",
-    answer: "Відповідь",
+    answer: "Правильна відповідь",
     noAnswers: "Ви не пройшли ще не одного тесту",
     passDate: "Дата проходження",
     myAnswers: "Мої відповіді",
@@ -103,4 +103,6 @@ export const uk = {
     category: "Колекція",
     empty:"Пусто",
     newCategory:"Нова колекція",
+
+    answerCount:"Кількість проходжень"
 };

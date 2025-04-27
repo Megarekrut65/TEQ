@@ -78,6 +78,15 @@ const markChecked = () => {
         })
         .catch(errorAlert);
 };
+
+const updateGrade = ()=>{
+  let grade = 0;
+  for(let item of answer.value.items){
+    grade += item.grade;
+  }
+
+  answer.value.grade = grade;
+};
 </script>
 
 <template>
@@ -86,7 +95,7 @@ const markChecked = () => {
         <div class="card-header bg-secondary d-flex justify-content-between">
             <h3 class="text-white">{{ test.title }}</h3>
 
-            <div>
+            <div class="text-primary text-center">
                 <button
                     v-if="isOwner && !answer.checked"
                     class="btn btn-success"
@@ -94,9 +103,11 @@ const markChecked = () => {
                 >
                     {{ $t("markChecked") }}
                 </button>
+              <div >{{answer.owner.fullname}}</div>
+              <div >{{answer.owner.email}}</div>
             </div>
             <div>
-                <span v-if="answer.checked" class="badge text-dark bg-primary me-2"
+                <span v-if="answer.checked || isOwner" class="badge text-dark bg-primary me-2"
                     >{{ answer.grade }}/{{ answer.maxGrade }}</span
                 >
                 <span v-if="answer.checked" class="badge text-dark bg-info me-2">{{
@@ -125,6 +136,7 @@ const markChecked = () => {
                 :auto-check="answer.autoChecked"
                 :answer-id="answer.id"
                 :is-owner="isOwner"
+                :update-grade="updateGrade"
             />
         </div>
 

@@ -25,10 +25,7 @@ window.addEventListener("auth", (data) => {
                     <LocalizedLink to="/">{{ $t("home") }}</LocalizedLink>
                 </li>
                 <li class="menu-item">
-                    <a href="#featured-books" class="nav-link">{{ $t("publicTests") }}</a>
-                </li>
-                <li class="menu-item">
-                    <a href="#popular-books" class="nav-link">{{ $t("savedTests") }}</a>
+                  <LocalizedLink to="/public">{{ $t("publicTests")  }}</LocalizedLink>
                 </li>
                 <li class="menu-item">
                     <a href="#special-offer" class="nav-link">{{ $t("contacts") }}</a>

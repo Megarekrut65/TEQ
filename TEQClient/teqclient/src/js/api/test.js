@@ -60,3 +60,15 @@ export const testListApi = () => {
 
     return sendAsync(API + `tests/`, request);
 };
+
+export const publicTestListApi = () => {
+  const request = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${getToken()}`,
+    },
+  };
+
+  return sendAsync(API + `public/tests/`, request);
+};

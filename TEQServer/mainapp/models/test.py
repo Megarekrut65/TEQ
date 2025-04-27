@@ -19,6 +19,8 @@ class Test(models.Model):
     show_result = models.BooleanField(default=False)
     show_correct = models.BooleanField(default=False)
 
+    answer_count = models.IntegerField(default=0)
+
     version = models.IntegerField(default=1)
 
 class TestMember(models.Model):

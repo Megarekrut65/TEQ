@@ -17,6 +17,11 @@ const router = createRouter({
                     name: "home",
                     component: () => import("../views/HomeView.vue"),
                 },
+              {
+                path: "public",
+                name: "public",
+                component: () => import("../views/PublicTestsView.vue"),
+              },
                 {
                     path: "auth",
                     name: "auth",

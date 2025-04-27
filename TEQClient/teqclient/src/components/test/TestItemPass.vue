@@ -36,12 +36,17 @@ const props = defineProps({
         required: false,
         default: false,
     },
+  updateGrade:{
+      type: Function,
+      required: true,
+  }
 });
 
 const formData = defineModel({ required: true });
 
 const updateGrade = () => {
-    answerItemUpdateApi(props.answerId, props.index - 1, formData.value).catch(errorAlert);
+    answerItemUpdateApi(props.answerId, props.index - 1, formData.value)
+      .then(()=>props.updateGrade()).catch(errorAlert);
 };
 </script>
 

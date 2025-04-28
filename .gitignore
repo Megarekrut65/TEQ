@@ -182,3 +182,4 @@ cython_debug/
 /SimilarityMicroservice/Models
 /Microservices/SimilarityMicroservice/.idea
 /Microservices/CppRunnerMicroservice/.idea
+/Microservices/PythonRunnerMicroservice/.idea

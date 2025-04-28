@@ -8,7 +8,7 @@ const props = defineProps({
   script:{
     type: String,
     required: false,
-    default: ""
+    default: null
   },
   lang:{
     type: Object,
@@ -38,13 +38,14 @@ const getAceMode = (lang) => {
 
 watch(language, ()=>{
   editor.value.session.setMode(getAceMode(language.value.ace));
+  editor.value.session.setValue(language.value.script);
 });
 
 onMounted(() => {
   editor.value = ace.edit("editor");
   editor.value.setTheme("ace/theme/dracula-css");
   editor.value.session.setMode(getAceMode(language.value.ace));
-  editor.value.session.setValue(script.value);
+  editor.value.session.setValue(script.value ?? language.value.script);
 
   editor.value.session.on("change", () => {
     script.value = editor.value.getValue();

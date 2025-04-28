@@ -22,6 +22,11 @@ const router = createRouter({
                 name: "public",
                 component: () => import("../views/PublicTestsView.vue"),
               },
+              {
+                path: "script",
+                name: "script",
+                component: () => import("../views/ScriptView.vue"),
+              },
                 {
                     path: "auth",
                     name: "auth",

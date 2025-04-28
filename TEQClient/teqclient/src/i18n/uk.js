@@ -104,5 +104,9 @@ export const uk = {
     empty:"Пусто",
     newCategory:"Нова колекція",
 
-    answerCount:"Кількість проходжень"
+    answerCount:"Кількість проходжень",
+
+  language:"Мова програмування",
+  run:"Запустити",
+  output:"Вивід",
 };

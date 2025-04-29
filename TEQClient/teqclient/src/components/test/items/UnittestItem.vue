@@ -23,12 +23,6 @@ const model = defineModel({ required: true });
   <div class="unit">
     <div class="ms-1">{{ index + 1 }}.</div>
     <div>
-      <div class="input-group mb-3">
-        <label class="input-group-text mb-0">{{ $t("returnType") }}</label>
-        <select class="form-select mb-0" v-model="model.type">
-          <option v-for="type in RETURN_TYPES" :key="type" :value="type">{{ type }}</option>
-        </select>
-      </div>
       <div class="input-group">
         <input
           type="text"

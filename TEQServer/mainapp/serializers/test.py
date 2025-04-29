@@ -1,4 +1,3 @@
-from mongoengine import DoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -18,7 +17,6 @@ class UnitTestSerializer(CamelCaseSerializer):
     name = serializers.CharField(required=True, max_length=200)
     in_test = serializers.CharField(required=True, max_length=500)
     out_test = serializers.CharField(required=True, max_length=200)
-    type = serializers.ChoiceField(choices=UNIT_TYPES, required=True)
 
 class BaseItemSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=500, allow_blank=True)
@@ -39,6 +37,7 @@ class BaseItemSerializer(CamelCaseSerializer):
     public_unittests = UnitTestSerializer(many=True, required=False)
     private_unittests = UnitTestSerializer(many=True, required=False)
     function_structure = serializers.CharField(max_length=500, required=False, allow_blank=True, allow_null=True)
+    function_type = serializers.ChoiceField(choices=UNIT_TYPES, required=False, allow_blank=True, allow_null=True)
 
     def validate(self, data):
         question_type = data.get("type")
@@ -111,7 +110,8 @@ class BaseItemSerializer(CamelCaseSerializer):
                 **common_kwargs,
                 public_unittests=self._get_unittests(data.get("public_unittests", [])),
                 private_unittests=self._get_unittests(data.get("private_unittests", [])),
-                function_structure=data.get("function_structure")
+                function_structure=data.get("function_structure"),
+                function_type=data.get("function_type")
             )
 
         return None

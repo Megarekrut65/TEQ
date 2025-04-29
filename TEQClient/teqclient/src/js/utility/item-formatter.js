@@ -1,4 +1,12 @@
-import { FULL, MULTIPLE, SCRIPT, SCRIPT_UNITTEST, SHORT, SINGLE } from "@/js/types.js";
+import {
+  FULL,
+  MULTIPLE,
+  RETURN_TYPES,
+  SCRIPT,
+  SCRIPT_UNITTEST,
+  SHORT,
+  SINGLE,
+} from "@/js/types.js";
 import { defaultChoices, defaultUnitTests } from "@/js/data-types.js";
 import { getLanguage, languages } from "@/js/languages.js";
 
@@ -18,6 +26,10 @@ export const formatItem = (item) => {
     item.minSimilarPercent = 99;
   }
 
+  if ([SCRIPT].includes(item.type) && !item.language) {
+    item.language = languages[0].type;
+  }
+
   if ([SCRIPT_UNITTEST].includes(item.type)) {
     if (!item.language) item.language = languages[0].type;
     if (!item.publicUnittests || !item.privateUnittests) {
@@ -26,6 +38,7 @@ export const formatItem = (item) => {
       const lang = getLanguage(item.language);
       item.correctAnswer = lang.testFun;
       item.functionStructure = lang.testFunStruct;
+      item.functionType = RETURN_TYPES[0];
     }
     if (item.functionStructure === "") item.functionStructure = "_";
   }

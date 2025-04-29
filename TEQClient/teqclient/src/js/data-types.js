@@ -24,7 +24,6 @@ export const defaultUnitTest = (index) => {
     name: `unittest_${index}`,
     in_test: '"Hello", "World"',
     out_test: '"Hello World"',
-    type: "string",
   };
 };
 

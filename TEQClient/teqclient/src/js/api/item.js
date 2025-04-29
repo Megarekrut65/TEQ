@@ -16,6 +16,7 @@ export const itemCreateApi = (
     publicUnittests = [],
     privateUnittests = [],
     functionStructure = null,
+    functionType = null,
   },
 ) => {
   const payload = {
@@ -30,6 +31,7 @@ export const itemCreateApi = (
     publicUnittests,
     privateUnittests,
     functionStructure,
+    functionType,
   };
 
   const request = {
@@ -70,6 +72,7 @@ export const itemUpdateApi = (
     publicUnittests = [],
     privateUnittests = [],
     functionStructure = null,
+    functionType = null,
   },
 ) => {
   const payload = {
@@ -84,8 +87,9 @@ export const itemUpdateApi = (
     publicUnittests,
     privateUnittests,
     functionStructure,
+    functionType,
   };
-  console.log(payload);
+
   const request = {
     method: "PUT",
     headers: {

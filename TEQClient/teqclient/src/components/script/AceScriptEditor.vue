@@ -14,8 +14,19 @@ const props = defineProps({
     required: false,
     default: (lang) => lang.script,
   },
+  readonly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  languageReadonly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
+const editorRef = ref(null);
 const editor = ref(null);
 
 const language = defineModel("language", { default: languages[0], required: true });
@@ -36,7 +47,7 @@ const getAceMode = (lang) => {
 
 watch(language, () => {
   editor.value.session.setMode(getAceMode(language.value.ace));
-  editor.value.session.setValue(props.scriptOnChange(language.value));
+  script.value = props.scriptOnChange(language.value);
 });
 
 watch(script, () => {
@@ -46,11 +57,13 @@ watch(script, () => {
 });
 
 onMounted(() => {
-  editor.value = ace.edit("editor");
+  editor.value = ace.edit(editorRef.value);
   editor.value.setTheme("ace/theme/dracula-css");
   editor.value.session.setMode(getAceMode(language.value.ace));
 
   editor.value.session.setValue(script.value ?? props.scriptOnChange(language.value));
+
+  editor.value.setReadOnly(props.readonly);
 
   editor.value.session.on("change", () => {
     if (script.value === editor.value.getValue()) return;
@@ -77,8 +90,8 @@ const run = () => {
   <div class="card">
     <div class="card-header">
       <div class="input-group mb-3">
-        <label class="input-group-text mb-0" for="inputGroupSelect01">{{ $t("language") }}</label>
-        <select class="form-select mb-0" id="inputGroupSelect01" v-model="language">
+        <label class="input-group-text mb-0">{{ $t("language") }}</label>
+        <select class="form-select mb-0" v-model="language" :disabled="readonly">
           <option v-for="lang in languages" :key="lang" :value="lang" selected>
             {{ lang.name }}
           </option>
@@ -89,7 +102,7 @@ const run = () => {
       </div>
     </div>
     <div class="card-body">
-      <div id="editor"></div>
+      <div ref="editorRef" class="editor"></div>
     </div>
     <div class="card-footer" v-if="output || error">
       <div v-if="output">
@@ -104,7 +117,7 @@ const run = () => {
 </template>
 
 <style scoped>
-#editor {
+.editor {
   height: 300px;
   position: relative;
 }

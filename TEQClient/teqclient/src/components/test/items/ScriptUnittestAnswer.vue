@@ -4,6 +4,7 @@ import { getLanguage } from "@/js/languages.js";
 import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
 import UnittestItem from "@/components/test/items/UnittestItem.vue";
 import { defaultUnitTest } from "@/js/data-types.js";
+import { RETURN_TYPES } from "@/js/types.js";
 
 const props = defineProps({
   onUpdate: {
@@ -13,10 +14,20 @@ const props = defineProps({
 });
 
 const formData = defineModel({ required: true });
-
 const language = ref(getLanguage(formData.value.language));
 
+watch(
+  () => formData.value.language,
+  () => {
+    if (language.value != null) return;
+
+    language.value = getLanguage(formData.value.language);
+  },
+);
+
 watch(language, () => {
+  if (formData.value.language === language.value?.type) return;
+
   formData.value.language = language.value?.type;
 });
 
@@ -58,6 +69,7 @@ const onUnitRemoved = (index) => {
         v-model:script="formData.correctAnswer"
         :on-run="runTests"
         :script-on-change="scriptOnChange"
+        :key="formData.type"
       />
     </div>
     <div class="col-12 col-md-6">
@@ -66,9 +78,15 @@ const onUnitRemoved = (index) => {
         <input
           type="text"
           class="form-control"
-          :placeholder="language.testFunStruct"
+          :placeholder="language?.testFunStruct"
           v-model="formData.functionStructure"
         />
+      </div>
+      <div class="input-group mb-3">
+        <label class="input-group-text mb-0">{{ $t("returnType") }}</label>
+        <select class="form-select mb-0" v-model="formData.functionType">
+          <option v-for="type in RETURN_TYPES" :key="type" :value="type">{{ type }}</option>
+        </select>
       </div>
       <ul class="nav nav-tabs">
         <li class="nav-item">

@@ -57,9 +57,9 @@ class UnitTest(me.EmbeddedDocument):
     name = me.StringField(required=True, max_length=200)
     in_test = me.StringField(required=True, max_length=500)
     out_test = me.StringField(required=True, max_length=200)
-    type = me.StringField(required=True, max_length=50) # integer, float, string
 
 class ScriptUnitTestItem(ScriptItem):
     function_structure = me.StringField(default="", max_length=500)
+    function_type = me.StringField(required=True, max_length=50) # integer, float, string
     public_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)
     private_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)

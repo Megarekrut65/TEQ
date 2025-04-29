@@ -48,7 +48,7 @@ class AnswerUnitTestFailure(me.EmbeddedDocument):
     reason = me.StringField(max_length=500, default="")
 
 class AnswerScriptUnitTestItem(AnswerTextItem):
-    total_tests = me.IntField()
+    total_tests = me.IntField(default=0)
     passed = me.BooleanField(default=False)
     failure = me.EmbeddedDocumentListField(AnswerUnitTestFailure)
     error = me.StringField(max_length=1000, null=True, default=None)

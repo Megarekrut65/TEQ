@@ -1,1 +1,1 @@
-UNIT_TYPES = ["integer", "float", "string"]
+UNIT_TYPES = ["integer", "float", "string", "bool"]

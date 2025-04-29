@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, SHORT, FULL
-from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem
+from mainapp.item_types import ITEM_TYPES, SINGLE, MULTIPLE, SHORT, FULL, SCRIPT, SCRIPT_UNITTEST
+from mainapp.models.answer import Answer, AnswerDocument, AnswerChoiceItem, AnswerTextItem, AnswerScriptItem, \
+    AnswerScriptUnitTestItem
 from mainapp.models.test import TestDocument
 from mainapp.serializers.safe_test import SafeTestSerializer, SafeItemSerializer
 from mainapp.serializers.test import get_test_grade, ItemSerializer
@@ -22,14 +23,25 @@ class AnswerItemSerializer(CamelCaseSerializer):
 
     def __get_item(self, validated_data):
         item = None
-        if validated_data["type"] in [SINGLE, MULTIPLE]:
+        type_ = validated_data.get("type")
+        if type_ in [SINGLE, MULTIPLE]:
             item = AnswerChoiceItem(
-                type=validated_data["type"],
+                type=type_,
                 choices=validated_data["choices"],
             )
-        elif validated_data["type"] in [SHORT, FULL]:
+        elif type_ in [SHORT, FULL]:
             item = AnswerTextItem(
-                type=validated_data["type"],
+                type=type_,
+                answer=validated_data["answer"]
+            )
+        elif type_ in [SCRIPT]:
+            item = AnswerScriptItem(
+                type=type_,
+                answer=validated_data["answer"]
+            )
+        elif type_ in [SCRIPT_UNITTEST]:
+            item = AnswerScriptUnitTestItem(
+                type=type_,
                 answer=validated_data["answer"]
             )
 

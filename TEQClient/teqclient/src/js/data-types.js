@@ -1,11 +1,14 @@
-export const defaultAnswer = (testId) => {
+import { languages } from "@/js/languages.js";
+
+export const defaultAnswer = () => {
     return {
-        testId,
         text: "",
         type: "SINGLE",
         allowProportion: false,
         grade: 1,
         choices: defaultChoices(),
+        minSimilarPercent:100,
+        language:languages[0].type
     };
 };
 

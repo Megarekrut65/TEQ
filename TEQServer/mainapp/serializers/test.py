@@ -2,8 +2,10 @@ from mongoengine import DoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from mainapp.item_types import ITEM_TYPES, SHORT, FULL, SINGLE, MULTIPLE
-from mainapp.models.test import Test, TestDocument, ChoiceItem, Choice, TextItem
+from mainapp.item_types import ITEM_TYPES, SHORT, FULL, SINGLE, MULTIPLE, SCRIPT, SCRIPT_UNITTEST
+from mainapp.models.test import Test, TestDocument, ChoiceItem, Choice, TextItem, ScriptItem, ScriptUnitTestItem, \
+    UnitTest
+from mainapp.unit_types import UNIT_TYPES
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
@@ -12,26 +14,51 @@ class ChoiceSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=200, allow_blank=True)
     is_correct = serializers.BooleanField(default=False)
 
+class UnitTestSerializer(CamelCaseSerializer):
+    name = serializers.CharField(required=True, max_length=200)
+    in_test = serializers.CharField(required=True, max_length=500)
+    out_test = serializers.CharField(required=True, max_length=200)
+    type = serializers.ChoiceField(choices=UNIT_TYPES, required=True)
+
 class BaseItemSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=500, allow_blank=True)
     type = serializers.ChoiceField(choices=ITEM_TYPES)
     grade = serializers.FloatField(min_value=0.0)
     allow_proportion = serializers.BooleanField(default=False)
 
+    #For choice item
     choices = ChoiceSerializer(many=True, required=False)
 
+    #For text and script item
     min_similar_percent = serializers.FloatField(required=False, min_value=0, max_value=100)
     correct_answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
 
+    language = serializers.CharField(max_length=50, required=False, allow_blank=True, allow_null=True)
+
+    #For unittest script item
+    public_unittests = UnitTestSerializer(many=True, required=False)
+    private_unittests = UnitTestSerializer(many=True, required=False)
+
     def validate(self, data):
         question_type = data.get("type")
+        language = data.get("language", None)
         choices = data.get("choices", [])
-        count = len(choices)
+        public_unittests = data.get("public_unittests", [])
+        private_unittests = data.get("private_unittests", [])
 
-        if question_type in [SHORT, FULL]:
+        if question_type in [SHORT, FULL, SCRIPT]:
             return data
 
-        if count < 1:
+        if question_type in [SCRIPT_UNITTEST]:
+            if len(public_unittests) < 1 and len(private_unittests) < 1:
+                raise ValidationError("At least one unit test is required for public and private group")
+            if not language:
+                raise ValidationError("Language is required for unittest item")
+
+            return data
+
+
+        if len(choices) < 1:
             raise ValidationError("At least one choices are required.")
 
         if question_type == SINGLE:
@@ -41,30 +68,51 @@ class BaseItemSerializer(CamelCaseSerializer):
 
         return data
 
-    def _get_item(self, validated_data):
-        item = None
-        if validated_data["type"] in [SINGLE, MULTIPLE]:
-            item = ChoiceItem(
-                type=validated_data["type"],
-                text=validated_data["text"],
-                grade=validated_data["grade"],
-                allow_proportion=validated_data["allow_proportion"],
-                choices=[
-                    Choice(text=choice["text"], is_correct=choice["is_correct"])
-                    for choice in validated_data["choices"]
-                ]
-            )
-        elif validated_data["type"] in [SHORT, FULL]:
-            item = TextItem(
-                type=validated_data["type"],
-                text=validated_data["text"],
-                grade=validated_data["grade"],
-                allow_proportion=validated_data["allow_proportion"],
-                min_similar_percent=validated_data["min_similar_percent"],
-                correct_answer=validated_data["correct_answer"]
+    def _get_choices(self, choices):
+        return [Choice(**choice) for choice in choices]
+
+    def _get_unittests(self, unittests):
+        return [UnitTest(**ut) for ut in unittests]
+
+    def _get_item(self, data):
+        common_kwargs = {
+            "type": data.get("type"),
+            "text": data.get("text"),
+            "grade": data.get("grade"),
+            "allow_proportion": data.get("allow_proportion", False)
+        }
+
+        type_ = common_kwargs["type"]
+
+        if type_ in [SINGLE, MULTIPLE]:
+            return ChoiceItem(
+                **common_kwargs,
+                choices=self._get_choices(data.get("choices", []))
             )
 
-        return item
+        common_kwargs["min_similar_percent"] = data.get("min_similar_percent", 0)
+        common_kwargs["correct_answer"] = data.get("correct_answer")
+
+        if type_ in [SHORT, FULL]:
+            return TextItem(
+                **common_kwargs
+            )
+
+        common_kwargs["language"] = data.get("language")
+
+        if type_ == SCRIPT:
+            return ScriptItem(
+                **common_kwargs
+            )
+
+        if type_ == SCRIPT_UNITTEST:
+            return ScriptUnitTestItem(
+                **common_kwargs,
+                public_unittests=self._get_unittests(data.get("public_unittests", [])),
+                private_unittests=self._get_unittests(data.get("private_unittests", []))
+            )
+
+        return None
 
     def _get_index(self, length):
         index = self.context.get("index", None)
@@ -77,17 +125,10 @@ class BaseItemSerializer(CamelCaseSerializer):
         return index
 
 class ItemSerializer(BaseItemSerializer):
-    test_id = serializers.UUIDField(write_only=True)
-
-    def validate_test_id(self, value):
-        try:
-            TestDocument.objects.get(id=value)
-        except DoesNotExist:
-            raise ValidationError("TestItem with this ID does not exist.")
-        return value
-
     def create(self, validated_data):
-        test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
+        test_item = TestDocument.objects.filter(id=self.context["test_id"]).first()
+        if test_item is None:
+            raise ValidationError("Test not found.")
 
         item = self._get_item(validated_data)
 
@@ -96,12 +137,10 @@ class ItemSerializer(BaseItemSerializer):
         return item
 
     def update(self, instance, validated_data):
-        test_item = TestDocument.objects.get(id=self.validated_data["test_id"])
-
-        index = self._get_index(len(test_item.items))
+        index = self._get_index(len(instance.items))
         item = self._get_item(validated_data)
-        test_item.items[index] = item
-        test_item.save()
+        instance.items[index] = item
+        instance.save()
 
         return item
 

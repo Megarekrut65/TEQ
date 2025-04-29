@@ -1,10 +1,17 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { errorAlert } from "@/js/utility/utility.js";
-import { MULTIPLE, SINGLE, SHORT, FULL, TYPES } from "@/js/types.js";
+import { MULTIPLE, SINGLE, SHORT, FULL, TYPES, SCRIPT } from "@/js/types.js";
 import { defaultChoices } from "@/js/data-types.js";
 import DotsMenu from "@/components/DotsMenu.vue";
 import { copyObject, pasteObject } from "@/js/utility/clipboard.js";
+import ChoiceProportion from "@/components/test/items/ChoiceProportion.vue";
+import ChoiceAnswers from "@/components/test/items/ChoiceAnswers.vue";
+import ShortAnswer from "@/components/test/items/ShortAnswer.vue";
+import FullAnswer from "@/components/test/items/FullAnswer.vue";
+import AnswerSimilarity from "@/components/test/items/AnswerSimilarity.vue";
+import ScriptAnswer from "@/components/test/items/ScriptAnswer.vue";
+import { languages } from "@/js/languages.js";
 
 const props = defineProps({
     index: {
@@ -34,34 +41,29 @@ const props = defineProps({
     openPool: {
         type: Function,
         required: false,
-        default: null
+        default: null,
     },
 });
 
 const formData = defineModel({ required: true });
 
-const allowUncheck = (item) => {
-    if (formData.value.type !== "SINGLE" || !item.isCorrect) return true;
-
-    const found = formData.value.choices.find((choice) => choice !== item && choice.isCorrect);
-
-    return found !== undefined;
-};
-
 const onUpdate = () => {
     if (
-        (formData.value.type === SINGLE || formData.value.type === MULTIPLE) &&
+        [SINGLE, MULTIPLE].includes(formData.value.type) &&
         (formData.value.choices == null || formData.value.choices.length === 0)
     ) {
         formData.value.choices = defaultChoices();
     }
 
-    props.updateApi(props.testId, props.index - 1, formData.value).catch(errorAlert);
-};
+    if ([SCRIPT].includes(formData.value.type) && !formData.value.language) {
+        formData.value.language = languages[0].type;
+    }
 
-const addChoice = () => {
-    formData.value.choices.push({ text: "", isCorrect: false });
-    onUpdate();
+    if ([SCRIPT, SHORT, FULL].includes(formData.value.type) && !formData.value.minSimilarPercent) {
+        formData.value.minSimilarPercent = 99;
+    }
+
+    props.updateApi(props.testId, props.index - 1, formData.value).catch(errorAlert);
 };
 
 const onAddToPool = () => {
@@ -102,7 +104,9 @@ const onPasteNew = () => {
                         <div class="dropdown-item" @click="onPasteFromPool" v-if="openPool">
                             {{ $t("pasteFromPool") }}
                         </div>
-                        <div class="dropdown-item" @click="onAddToPool" v-if="openPool">{{ $t("addToPool") }}</div>
+                        <div class="dropdown-item" @click="onAddToPool" v-if="openPool">
+                            {{ $t("addToPool") }}
+                        </div>
                     </DotsMenu>
                 </div>
                 <label class="form-label" for="text">{{ index }}. {{ formData.text }}</label>
@@ -130,22 +134,11 @@ const onPasteNew = () => {
             </div>
 
             <div class="row mb-3">
-                <div
-                    class="col-md-6"
+                <ChoiceProportion
                     v-if="[SINGLE, MULTIPLE].includes(formData.type) && autoCheck"
-                >
-                    <div class="form-check form-switch">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            v-model="formData.allowProportion"
-                        />
-                        <label class="form-check-label" :title="$t('allowProportionHint')">{{
-                            $t("allowProportion")
-                        }}</label>
-                    </div>
-                </div>
+                    v-model="formData"
+                />
+
                 <div class="col-md-6">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-grade">{{ $t("grade") }}</span>
@@ -161,74 +154,20 @@ const onPasteNew = () => {
                 </div>
             </div>
 
-            <div v-if="[SINGLE, MULTIPLE].includes(formData.type)" class="mb-3">
-                <label class="form-label"
-                    >{{ $t("choices") }}
-                    <span class="btn btn-link" @click="addChoice"
-                        ><i class="fa-solid fa-plus"></i></span
-                ></label>
+            <ChoiceAnswers
+                v-if="[SINGLE, MULTIPLE].includes(formData.type)"
+                v-model="formData"
+                :on-update="onUpdate"
+            />
 
-                <div class="row" v-for="choice in formData.choices" :key="choice">
-                    <div class="col-4 col-md-3 col-lg-2">
-                        <div class="form-check form-switch">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                role="switch"
-                                v-model="choice.isCorrect"
-                                :disabled="!allowUncheck(choice)"
-                            />
-                            <label class="form-check-label">{{ $t("correct") }}</label>
-                        </div>
-                    </div>
+            <ShortAnswer v-if="[SHORT].includes(formData.type)" v-model="formData" />
+            <FullAnswer v-if="[FULL].includes(formData.type)" v-model="formData" />
+            <ScriptAnswer v-if="[SCRIPT].includes(formData.type)" v-model="formData" />
 
-                    <div class="col-8 col-md-9 col-lg-10">
-                        <input
-                            type="text"
-                            class="form-control"
-                            v-model.trim="choice.text"
-                            :placeholder="$t('choiceText')"
-                        />
-                    </div>
-                </div>
-            </div>
-            <div v-if="[SHORT].includes(formData.type)" class="mb-3">
-                <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
-                <input
-                    v-model="formData.correctAnswer"
-                    class="form-control"
-                    maxlength="500"
-                    type="text"
-                />
-            </div>
-            <div v-if="[FULL].includes(formData.type)" class="mb-3">
-                <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
-                <textarea
-                    v-model="formData.correctAnswer"
-                    class="form-control"
-                    rows="3"
-                    maxlength="5000"
-                ></textarea>
-            </div>
-
-            <div v-if="[SHORT, FULL].includes(formData.type) && autoCheck" class="mb-3">
-                <label class="form-label" for="text" :title="$t('minSimilarHnt')">{{
-                    $t("minSimilar")
-                }}</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-percent">%</span>
-                    <input
-                        v-model.number="formData.minSimilarPercent"
-                        type="number"
-                        min="0"
-                        max="100"
-                        class="form-control mb-0"
-                        required
-                        value="90"
-                        aria-describedby="basic-percent"
-                    />
-                </div>
-            </div>
+            <AnswerSimilarity
+                v-if="[SHORT, FULL, SCRIPT].includes(formData.type) && autoCheck"
+                v-model="formData"
+            />
         </form>
     </FormWrapper>
 </template>

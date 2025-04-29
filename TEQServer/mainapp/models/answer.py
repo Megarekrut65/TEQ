@@ -4,7 +4,7 @@ import mongoengine as me
 from django.contrib.auth.models import User
 from django.db import models
 
-from mainapp.models.test import Test, TextItem, TestDocument, BaseItem
+from mainapp.models.test import Test, TextItem, TestDocument, BaseItem, UnitTest
 
 
 class Answer(models.Model):
@@ -40,3 +40,15 @@ class AnswerTextItem(AnswerBaseItem):
     answer = me.StringField(max_length=5000, default="")
     similarity = me.FloatField(default=0)
 
+class AnswerScriptItem(AnswerTextItem):
+    pass
+
+class AnswerUnitTestFailure(me.EmbeddedDocument):
+    fun_name = me.StringField(required=True, max_length=200)
+    reason = me.StringField(max_length=500, default="")
+
+class AnswerScriptUnitTestItem(AnswerTextItem):
+    total_tests = me.IntField()
+    passed = me.BooleanField(default=False)
+    failure = me.EmbeddedDocumentListField(AnswerUnitTestFailure)
+    error = me.StringField(max_length=1000, null=True, default=None)

@@ -49,3 +49,16 @@ class ChoiceItem(BaseItem):
 class TextItem(BaseItem):
     correct_answer = me.StringField(max_length=5000, default="")
     min_similar_percent = me.FloatField(default=0.0)
+
+class ScriptItem(TextItem):
+    language = me.StringField(required=True, max_length=50)
+
+class UnitTest(me.EmbeddedDocument):
+    name = me.StringField(required=True, max_length=200)
+    in_test = me.StringField(required=True, max_length=500)
+    out_test = me.StringField(required=True, max_length=200)
+    type = me.StringField(required=True, max_length=50) # integer, float, string
+
+class ScriptUnitTestItem(ScriptItem):
+    public_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)
+    private_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)

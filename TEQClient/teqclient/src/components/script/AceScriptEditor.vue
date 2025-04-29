@@ -5,23 +5,16 @@ import { languages } from "@/js/languages.js";
 import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
-  script:{
-    type: String,
+  onRun:{
+    type: Function,
     required: false,
-    default: null
-  },
-  lang:{
-    type: Object,
-    required: false,
-    default: ()=>languages[0]
   }
 })
 
 const editor = ref(null);
 
-const script = ref(props.script);
-
-const language = ref(props.lang);
+const language = defineModel("language", {default: languages[0], required: true});
+const script = defineModel("script", {default: languages[0].script});
 const output = ref(null);
 const error = ref(null);
 
@@ -41,6 +34,12 @@ watch(language, ()=>{
   editor.value.session.setValue(language.value.script);
 });
 
+watch(script, ()=>{
+  if(script.value === editor.value.getValue()) return;
+
+  editor.value.session.setValue(script.value ?? language.value.script);
+});
+
 onMounted(() => {
   editor.value = ace.edit("editor");
   editor.value.setTheme("ace/theme/dracula-css");
@@ -48,6 +47,8 @@ onMounted(() => {
   editor.value.session.setValue(script.value ?? language.value.script);
 
   editor.value.session.on("change", () => {
+    if(script.value === editor.value.getValue()) return;
+
     script.value = editor.value.getValue();
   });
 });
@@ -56,8 +57,7 @@ const run = ()=>{
   output.value = null;
   error.value = null;
 
-  const runner = language.value.runner;
-  runner(script.value ?? "").then(res=>{
+  props.onRun(language.value, script.value ?? "").then(res=>{
     output.value = res.output;
     error.value = res.error;
   }).catch(errorAlert);
@@ -65,36 +65,31 @@ const run = ()=>{
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
+  <div class="card">
 
-        <div class="card-header">
-          <div class="input-group mb-3">
-            <label class="input-group-text mb-0" for="inputGroupSelect01">{{$t('language')}}</label>
-            <select class="form-select mb-0" id="inputGroupSelect01" v-model="language">
-              <option v-for="lang in languages" :key="lang" :value="lang" selected>{{lang.name}}</option>
-            </select>
-            <button class="btn btn-outline-secondary my-0" type="button" @click="run">{{$t('run')}}</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div id="editor"></div>
-        </div>
-        <div class="card-footer" v-if="output||error">
-          <div v-if="output">
-            <h2 class="my-0">{{$t('output')}}</h2>
-            <div>{{output}} </div>
-          </div>
-          <div v-if="error" class="text-danger">
-            {{error}}
-          </div>
-
-        </div>
-
+    <div class="card-header">
+      <div class="input-group mb-3">
+        <label class="input-group-text mb-0" for="inputGroupSelect01">{{$t('language')}}</label>
+        <select class="form-select mb-0" id="inputGroupSelect01" v-model="language">
+          <option v-for="lang in languages" :key="lang" :value="lang" selected>{{lang.name}}</option>
+        </select>
+        <button class="btn btn-outline-secondary my-0" type="button" @click="run">{{$t('run')}}</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="editor"></div>
+    </div>
+    <div class="card-footer" v-if="output||error">
+      <div v-if="output">
+        <h2 class="my-0">{{$t('output')}}</h2>
+        <div>{{output}} </div>
+      </div>
+      <div v-if="error" class="text-danger">
+        {{error}}
       </div>
 
     </div>
+
   </div>
 </template>
 

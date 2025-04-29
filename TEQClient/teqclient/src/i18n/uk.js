@@ -26,8 +26,8 @@ export const uk = {
     title: "Заголовок",
     description: "Опис",
     isPublic: "Публічний тест",
-    public:"Тест буде доступний усім охочим користувачам",
-    allowAccess:"Дозволити доступ за посиланням",
+    public: "Тест буде доступний усім охочим користувачам",
+    allowAccess: "Дозволити доступ за посиланням",
     create: "Створити",
     update: "Зберегти",
     goTo: "Перейти",
@@ -74,6 +74,9 @@ export const uk = {
     pasteFromPool: "Вставити з колекції",
     addToPool: "Додати до колекції",
 
+    script: "Код, подібність",
+    script_unittest: "Код, тести",
+
     testId: "ID тесту",
     text: "Текст",
     type: "Тип",
@@ -101,12 +104,12 @@ export const uk = {
     missingCategory: "Колекції відсутні",
     name: "Назва",
     category: "Колекція",
-    empty:"Пусто",
-    newCategory:"Нова колекція",
+    empty: "Пусто",
+    newCategory: "Нова колекція",
 
-    answerCount:"Кількість проходжень",
+    answerCount: "Кількість проходжень",
 
-  language:"Мова програмування",
-  run:"Запустити",
-  output:"Вивід",
+    language: "Мова програмування",
+    run: "Запустити",
+    output: "Вивід",
 };

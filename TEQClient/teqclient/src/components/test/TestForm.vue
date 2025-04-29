@@ -24,7 +24,7 @@ const props = defineProps({
 const formData = ref(props.instance);
 
 const addNewAnswer = () => {
-    itemCreateApi(defaultAnswer(formData.value.id))
+    itemCreateApi(formData.value.id, defaultAnswer())
         .then((res) => {
             formData.value.items.push(res);
         })

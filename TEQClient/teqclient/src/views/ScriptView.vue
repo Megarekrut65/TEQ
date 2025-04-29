@@ -1,11 +1,11 @@
 <script setup>
 
-import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
+import ScriptEditorRun from "@/components/script/ScriptEditorRun.vue";
 </script>
 
 <template>
   <div class="container">
-    <AceScriptEditor></AceScriptEditor>
+    <ScriptEditorRun/>
   </div>
 </template>
 

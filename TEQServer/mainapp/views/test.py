@@ -47,6 +47,12 @@ class ItemCreateAPIView(CreateAPIView):
     serializer_class = ItemSerializer
     permission_classes = [IsTestOwner]
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["test_id"] = self.kwargs["pk"]
+
+        return context
+
 class ItemUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemSerializer
     permission_classes = [IsTestOwner]

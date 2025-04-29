@@ -3,5 +3,6 @@ export const MULTIPLE = "MULTIPLE";
 export const SHORT = "SHORT";
 export const FULL = "FULL";
 export const SCRIPT = "SCRIPT";
+export const SCRIPT_UNITTEST = "SCRIPT_UNITTEST";
 
-export const TYPES = [SINGLE, MULTIPLE, SHORT, FULL];
+export const TYPES = [SINGLE, MULTIPLE, SHORT, FULL, SCRIPT, SCRIPT_UNITTEST];

@@ -25,3 +25,7 @@ export const languages = [
         script: 'public class Script { \n\tpublic static void main(String[] args) { \n\t\tSystem.out.println("Hello World");\n\t}\n}',
     },
 ];
+
+export const getLanguage=(type)=>{
+  return languages.find(lang => lang.type === type);
+};

@@ -1,15 +1,24 @@
 <script setup>
-
 const props = defineProps({
-  onUpdate:{
+  onUpdate: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 });
 
-const formData = defineModel({required:true});
+const formData = defineModel({ required: true });
 
 const allowUncheck = (item) => {
+  if (formData.value.type !== "SINGLE" || !item.isCorrect) return true;
+
+  const found = formData.value.choices.find((choice) => choice !== item && choice.isCorrect);
+
+  return found !== undefined;
+};
+
+const allowRemove = (item) => {
+  if (formData.value.choices.length <= 1) return false;
+
   if (formData.value.type !== "SINGLE" || !item.isCorrect) return true;
 
   const found = formData.value.choices.find((choice) => choice !== item && choice.isCorrect);
@@ -21,15 +30,21 @@ const addChoice = () => {
   formData.value.choices.push({ text: "", isCorrect: false });
   props.onUpdate();
 };
+
+const onChoiceRemoved = (index) => {
+  if (index < 0 || index >= formData.value.choices.length) return;
+
+  formData.value.choices.splice(index, 1);
+  props.onUpdate();
+};
 </script>
 
 <template>
   <div class="mb-3">
     <label class="form-label"
-    >{{ $t("choices") }}
-      <span class="btn btn-link" @click="addChoice"
-      ><i class="fa-solid fa-plus"></i></span
-      ></label>
+      >{{ $t("choices") }}
+      <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span
+    ></label>
 
     <div class="row" v-for="choice in formData.choices" :key="choice">
       <div class="col-4 col-md-3 col-lg-2">
@@ -45,18 +60,19 @@ const addChoice = () => {
         </div>
       </div>
 
-      <div class="col-8 col-md-9 col-lg-10">
+      <div class="col-8 col-md-9 col-lg-10 d-flex justify-content-between">
         <input
           type="text"
           class="form-control"
           v-model.trim="choice.text"
           :placeholder="$t('choiceText')"
         />
+        <div class="btn-hover ms-3" @click="onChoiceRemoved" v-if="allowRemove(choice)">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

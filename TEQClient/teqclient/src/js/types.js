@@ -6,3 +6,5 @@ export const SCRIPT = "SCRIPT";
 export const SCRIPT_UNITTEST = "SCRIPT_UNITTEST";
 
 export const TYPES = [SINGLE, MULTIPLE, SHORT, FULL, SCRIPT, SCRIPT_UNITTEST];
+
+export const RETURN_TYPES = ["string", "int", "float", "bool"];

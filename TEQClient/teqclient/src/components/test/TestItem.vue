@@ -1,8 +1,7 @@
 <script setup>
 import FormWrapper from "@/components/FormWrapper.vue";
 import { errorAlert } from "@/js/utility/utility.js";
-import { MULTIPLE, SINGLE, SHORT, FULL, TYPES, SCRIPT } from "@/js/types.js";
-import { defaultChoices } from "@/js/data-types.js";
+import { MULTIPLE, SINGLE, SHORT, FULL, TYPES, SCRIPT, SCRIPT_UNITTEST } from "@/js/types.js";
 import DotsMenu from "@/components/DotsMenu.vue";
 import { copyObject, pasteObject } from "@/js/utility/clipboard.js";
 import ChoiceProportion from "@/components/test/items/ChoiceProportion.vue";
@@ -11,173 +10,160 @@ import ShortAnswer from "@/components/test/items/ShortAnswer.vue";
 import FullAnswer from "@/components/test/items/FullAnswer.vue";
 import AnswerSimilarity from "@/components/test/items/AnswerSimilarity.vue";
 import ScriptAnswer from "@/components/test/items/ScriptAnswer.vue";
-import { languages } from "@/js/languages.js";
+import ScriptUnittestAnswer from "@/components/test/items/ScriptUnittestAnswer.vue";
+import { formatItem } from "@/js/utility/item-formatter.js";
 
 const props = defineProps({
-    index: {
-        type: Number,
-        required: true,
-    },
-    testId: {
-        type: String,
-        required: true,
-    },
-    autoCheck: {
-        type: Boolean,
-        required: true,
-    },
-    onItemRemoved: {
-        type: Function,
-        required: true,
-    },
-    updateApi: {
-        type: Function,
-        required: true,
-    },
-    onItemPaste: {
-        type: Function,
-        required: true,
-    },
-    openPool: {
-        type: Function,
-        required: false,
-        default: null,
-    },
+  index: {
+    type: Number,
+    required: true,
+  },
+  testId: {
+    type: String,
+    required: true,
+  },
+  autoCheck: {
+    type: Boolean,
+    required: true,
+  },
+  onItemRemoved: {
+    type: Function,
+    required: true,
+  },
+  updateApi: {
+    type: Function,
+    required: true,
+  },
+  onItemPaste: {
+    type: Function,
+    required: true,
+  },
+  openPool: {
+    type: Function,
+    required: false,
+    default: null,
+  },
 });
 
 const formData = defineModel({ required: true });
 
 const onUpdate = () => {
-    if (
-        [SINGLE, MULTIPLE].includes(formData.value.type) &&
-        (formData.value.choices == null || formData.value.choices.length === 0)
-    ) {
-        formData.value.choices = defaultChoices();
-    }
-
-    if ([SCRIPT].includes(formData.value.type) && !formData.value.language) {
-        formData.value.language = languages[0].type;
-    }
-
-    if ([SCRIPT, SHORT, FULL].includes(formData.value.type) && !formData.value.minSimilarPercent) {
-        formData.value.minSimilarPercent = 99;
-    }
-
-    props.updateApi(props.testId, props.index - 1, formData.value).catch(errorAlert);
+  formatItem(formData.value);
+  props.updateApi(props.testId, props.index - 1, formData.value).catch(errorAlert);
 };
 
 const onAddToPool = () => {
-    props.openPool(formData.value, true);
+  props.openPool(formData.value, true);
 };
 const onPasteFromPool = () => {
-    props.openPool(formData.value, false);
+  props.openPool(formData.value, false);
 };
 
 const onCopy = () => {
-    copyObject("testItem", formData.value);
+  copyObject("testItem", formData.value);
 };
 const onPaste = () => {
-    const data = pasteObject("testItem");
-    if (data) {
-        formData.value = data;
-    }
+  const data = pasteObject("testItem");
+  if (data) {
+    formData.value = data;
+  }
 };
 
 const onPasteNew = () => {
-    const data = pasteObject("testItem");
-    if (data) {
-        props.onItemPaste(data);
-    }
+  const data = pasteObject("testItem");
+  if (data) {
+    props.onItemPaste(data);
+  }
 };
 </script>
 
 <template>
-    <FormWrapper class="mb-3">
-        <form @change="onUpdate">
-            <div>
-                <div class="float-right">
-                    <DotsMenu>
-                        <div class="dropdown-item" @click="onItemRemoved">{{ $t("delete") }}</div>
-                        <div class="dropdown-item" @click="onCopy">{{ $t("copy") }}</div>
-                        <div class="dropdown-item" @click="onPaste">{{ $t("paste") }}</div>
-                        <div class="dropdown-item" @click="onPasteNew">{{ $t("pasteAsNew") }}</div>
-                        <div class="dropdown-item" @click="onPasteFromPool" v-if="openPool">
-                            {{ $t("pasteFromPool") }}
-                        </div>
-                        <div class="dropdown-item" @click="onAddToPool" v-if="openPool">
-                            {{ $t("addToPool") }}
-                        </div>
-                    </DotsMenu>
-                </div>
-                <label class="form-label" for="text">{{ index }}. {{ formData.text }}</label>
-                <input
-                    v-model.trim="formData.text"
-                    type="text"
-                    class="form-control"
-                    :placeholder="$t('questionText')"
-                    required
-                />
+  <FormWrapper class="mb-3">
+    <form @change="onUpdate">
+      <div>
+        <div class="float-right">
+          <DotsMenu>
+            <div class="dropdown-item" @click="onItemRemoved">{{ $t("delete") }}</div>
+            <div class="dropdown-item" @click="onCopy">{{ $t("copy") }}</div>
+            <div class="dropdown-item" @click="onPaste">{{ $t("paste") }}</div>
+            <div class="dropdown-item" @click="onPasteNew">{{ $t("pasteAsNew") }}</div>
+            <div class="dropdown-item" @click="onPasteFromPool" v-if="openPool">
+              {{ $t("pasteFromPool") }}
             </div>
-
-            <div>
-                <label class="form-label" for="type">{{ $t("type") }}</label>
-                <select v-model="formData.type" class="form-select" required>
-                    <option
-                        v-for="(type, index) in TYPES"
-                        :value="type"
-                        :key="type"
-                        :selected="index === 0"
-                    >
-                        {{ $t(type.toLowerCase()) }}
-                    </option>
-                </select>
+            <div class="dropdown-item" @click="onAddToPool" v-if="openPool">
+              {{ $t("addToPool") }}
             </div>
+          </DotsMenu>
+        </div>
+        <label class="form-label" for="text">{{ index }}. {{ formData.text }}</label>
+        <input
+          v-model.trim="formData.text"
+          type="text"
+          class="form-control"
+          :placeholder="$t('questionText')"
+          required
+        />
+      </div>
 
-            <div class="row mb-3">
-                <ChoiceProportion
-                    v-if="[SINGLE, MULTIPLE].includes(formData.type) && autoCheck"
-                    v-model="formData"
-                />
+      <div>
+        <label class="form-label" for="type">{{ $t("type") }}</label>
+        <select v-model="formData.type" class="form-select" required>
+          <option v-for="(type, index) in TYPES" :value="type" :key="type" :selected="index === 0">
+            {{ $t(type.toLowerCase()) }}
+          </option>
+        </select>
+      </div>
 
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-grade">{{ $t("grade") }}</span>
-                        <input
-                            v-model.trim="formData.grade"
-                            type="number"
-                            min="0"
-                            class="form-control mb-0"
-                            required
-                            aria-describedby="basic-grade"
-                        />
-                    </div>
-                </div>
-            </div>
+      <div class="row mb-3">
+        <ChoiceProportion
+          v-if="[SINGLE, MULTIPLE].includes(formData.type) && autoCheck"
+          v-model="formData"
+        />
 
-            <ChoiceAnswers
-                v-if="[SINGLE, MULTIPLE].includes(formData.type)"
-                v-model="formData"
-                :on-update="onUpdate"
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-grade">{{ $t("grade") }}</span>
+            <input
+              v-model.trim="formData.grade"
+              type="number"
+              min="0"
+              class="form-control mb-0"
+              required
+              aria-describedby="basic-grade"
             />
+          </div>
+        </div>
+      </div>
 
-            <ShortAnswer v-if="[SHORT].includes(formData.type)" v-model="formData" />
-            <FullAnswer v-if="[FULL].includes(formData.type)" v-model="formData" />
-            <ScriptAnswer v-if="[SCRIPT].includes(formData.type)" v-model="formData" />
+      <ChoiceAnswers
+        v-if="[SINGLE, MULTIPLE].includes(formData.type)"
+        v-model="formData"
+        :on-update="onUpdate"
+      />
 
-            <AnswerSimilarity
-                v-if="[SHORT, FULL, SCRIPT].includes(formData.type) && autoCheck"
-                v-model="formData"
-            />
-        </form>
-    </FormWrapper>
+      <ShortAnswer v-if="[SHORT].includes(formData.type)" v-model="formData" />
+      <FullAnswer v-else-if="[FULL].includes(formData.type)" v-model="formData" />
+      <ScriptAnswer v-else-if="[SCRIPT].includes(formData.type)" v-model="formData" />
+      <ScriptUnittestAnswer
+        v-else-if="[SCRIPT_UNITTEST].includes(formData.type)"
+        v-model="formData"
+        :on-update="onUpdate"
+      />
+
+      <AnswerSimilarity
+        v-if="[SHORT, FULL, SCRIPT].includes(formData.type) && autoCheck"
+        v-model="formData"
+      />
+    </form>
+  </FormWrapper>
 </template>
 
 <style scoped>
 button {
-    margin: 0;
+  margin: 0;
 }
 
 form {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 </style>

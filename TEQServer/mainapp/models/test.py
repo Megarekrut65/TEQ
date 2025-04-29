@@ -60,5 +60,6 @@ class UnitTest(me.EmbeddedDocument):
     type = me.StringField(required=True, max_length=50) # integer, float, string
 
 class ScriptUnitTestItem(ScriptItem):
+    function_structure = me.StringField(default="", max_length=500)
     public_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)
     private_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)

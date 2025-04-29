@@ -96,7 +96,7 @@ const updateGrade = () => {
       <div class="row">
         <h3 class="text-white col-12 col-md-6">{{ test.title }}</h3>
 
-        <div class="text-primary text-right col-12 col-md-6" v-if="answer.id">
+        <div class="text-primary text-right col-12 col-md-6" v-if="answer?.id">
           <button v-if="isOwner && !answer.checked" class="btn btn-success" @click="markChecked">
             {{ $t("markChecked") }}
           </button>
@@ -132,7 +132,7 @@ const updateGrade = () => {
         :readonly="readonly"
         :show-correct="(test.showCorrect && readonly && answer.checked) || isOwner"
         :auto-check="answer.autoChecked"
-        :answer-id="answer.id"
+        :answer-id="answer.id ?? ''"
         :is-owner="isOwner"
         :update-grade="updateGrade"
       />

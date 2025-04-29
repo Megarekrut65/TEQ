@@ -13,6 +13,11 @@ defineProps({
     required: false,
     default: false,
   },
+  onChanged: {
+    type: Function,
+    required: false,
+    default: () => {},
+  },
 });
 
 const language = defineModel("language", { required: false, default: languages[0] });
@@ -33,6 +38,7 @@ const run = (language, script) => {
         v-model:script="script"
         :readonly="readonly"
         :language-readonly="languageReadonly"
+        :on-changed="onChanged"
       ></AceScriptEditor>
     </div>
   </div>

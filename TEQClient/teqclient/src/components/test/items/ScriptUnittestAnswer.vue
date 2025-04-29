@@ -70,6 +70,7 @@ const onUnitRemoved = (index) => {
         :on-run="runTests"
         :script-on-change="scriptOnChange"
         :key="formData.type"
+        :on-changed="onUpdate"
       />
     </div>
     <div class="col-12 col-md-6">

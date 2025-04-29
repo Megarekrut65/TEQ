@@ -24,6 +24,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  onChanged: {
+    type: Function,
+    required: false,
+    default: () => {},
+  },
 });
 
 const editorRef = ref(null);
@@ -45,15 +50,9 @@ const getAceMode = (lang) => {
   }
 };
 
-watch(language, () => {
-  editor.value.session.setMode(getAceMode(language.value.ace));
-  script.value = props.scriptOnChange(language.value);
-});
-
-watch(script, () => {
-  if (script.value === editor.value.getValue()) return;
-
-  editor.value.session.setValue(script.value ?? language.value.script);
+watch(language, (newValue) => {
+  editor.value.session.setMode(getAceMode(newValue.ace));
+  editor.value.session.setValue(props.scriptOnChange(newValue));
 });
 
 onMounted(() => {
@@ -66,9 +65,8 @@ onMounted(() => {
   editor.value.setReadOnly(props.readonly);
 
   editor.value.session.on("change", () => {
-    if (script.value === editor.value.getValue()) return;
-
     script.value = editor.value.getValue();
+    props.onChanged();
   });
 });
 
@@ -91,7 +89,7 @@ const run = () => {
     <div class="card-header">
       <div class="input-group mb-3">
         <label class="input-group-text mb-0">{{ $t("language") }}</label>
-        <select class="form-select mb-0" v-model="language" :disabled="readonly">
+        <select class="form-select mb-0" v-model="language" :disabled="languageReadonly">
           <option v-for="lang in languages" :key="lang" :value="lang" selected>
             {{ lang.name }}
           </option>

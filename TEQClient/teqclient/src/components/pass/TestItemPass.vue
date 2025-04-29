@@ -1,8 +1,9 @@
 <script setup>
-import { MULTIPLE, SINGLE, SHORT, FULL } from "@/js/types.js";
+import { FULL, MULTIPLE, SCRIPT, SHORT, SINGLE } from "@/js/types.js";
 import { answerItemUpdateApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
-import PassChoiceAnswers from "@/components/pass/pass_items/PassChoiceAnswers.vue";
+import PassChoiceAnswers from "@/components/pass/pass-items/PassChoiceAnswers.vue";
+import PassTextItem from "@/components/pass/pass-items/PassTextItem.vue";
 
 const props = defineProps({
   answerId: {
@@ -75,6 +76,14 @@ const updateGrade = () => {
 
       <PassChoiceAnswers
         v-if="[SINGLE, MULTIPLE].includes(item.type)"
+        :show-correct="showCorrect"
+        :readonly="readonly"
+        v-model="formData"
+        :item="item"
+        :index="index"
+      />
+      <PassTextItem
+        v-else-if="[FULL, SHORT, SCRIPT].includes(item.type)"
         :show-correct="showCorrect"
         :readonly="readonly"
         v-model="formData"

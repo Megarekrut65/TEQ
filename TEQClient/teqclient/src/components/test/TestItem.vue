@@ -143,7 +143,11 @@ const onPasteNew = () => {
 
       <ShortAnswer v-if="[SHORT].includes(formData.type)" v-model="formData" />
       <FullAnswer v-else-if="[FULL].includes(formData.type)" v-model="formData" />
-      <ScriptAnswer v-else-if="[SCRIPT].includes(formData.type)" v-model="formData" />
+      <ScriptAnswer
+        v-else-if="[SCRIPT].includes(formData.type)"
+        v-model="formData"
+        :on-update="onUpdate"
+      />
       <ScriptUnittestAnswer
         v-else-if="[SCRIPT_UNITTEST].includes(formData.type)"
         v-model="formData"

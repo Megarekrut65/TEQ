@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watch } from "vue";
 import { getLanguage } from "@/js/languages.js";
-import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
 import UnittestItem from "@/components/test/items/UnittestItem.vue";
 import { defaultUnitTest } from "@/js/data-types.js";
 import { RETURN_TYPES } from "@/js/types.js";
+import ScriptEditorTest from "@/components/script/ScriptEditorTest.vue";
 
 const props = defineProps({
   onUpdate: {
@@ -16,26 +16,11 @@ const props = defineProps({
 const formData = defineModel({ required: true });
 const language = ref(getLanguage(formData.value.language));
 
-watch(
-  () => formData.value.language,
-  () => {
-    if (language.value != null) return;
-
-    language.value = getLanguage(formData.value.language);
-  },
-);
-
 watch(language, () => {
   if (formData.value.language === language.value?.type) return;
 
   formData.value.language = language.value?.type;
 });
-
-const runTests = () => {};
-
-const scriptOnChange = (lang) => {
-  return lang.testFun;
-};
 
 const publicOn = ref(true);
 
@@ -44,7 +29,7 @@ const addTest = () => {
     ? formData.value.publicUnittests
     : formData.value.privateUnittests;
 
-  container.push(defaultUnitTest(container.length));
+  container.push(defaultUnitTest());
   props.onUpdate();
 };
 
@@ -58,20 +43,32 @@ const onUnitRemoved = (index) => {
   container.splice(index, 1);
   props.onUpdate();
 };
+
+const testData = () => {
+  const unittests = publicOn.value
+    ? formData.value.publicUnittests
+    : formData.value.privateUnittests;
+
+  return {
+    functionStructure: formData.value.functionStructure,
+    functionType: formData.value.functionType,
+    unittests,
+  };
+};
 </script>
 
 <template>
   <div class="mb-3 row unit-item">
     <div class="col-12 col-md-6">
       <label for="correctAnswer" class="form-label">{{ $t("tryTesting") }}</label>
-      <AceScriptEditor
+      <ScriptEditorTest
         v-model:language="language"
         v-model:script="formData.correctAnswer"
-        :on-run="runTests"
-        :script-on-change="scriptOnChange"
         :key="formData.type"
         :on-changed="onUpdate"
-      />
+        :test-data="testData()"
+      >
+      </ScriptEditorTest>
     </div>
     <div class="col-12 col-md-6">
       <div class="mb-3">

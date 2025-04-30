@@ -54,12 +54,11 @@ class ScriptItem(TextItem):
     language = me.StringField(required=True, max_length=50)
 
 class UnitTest(me.EmbeddedDocument):
-    name = me.StringField(required=True, max_length=200)
     in_test = me.StringField(required=True, max_length=500)
     out_test = me.StringField(required=True, max_length=200)
 
 class ScriptUnitTestItem(ScriptItem):
     function_structure = me.StringField(default="", max_length=500)
-    function_type = me.StringField(required=True, max_length=50) # integer, float, string
+    function_type = me.StringField(required=True, max_length=50) # integer, float, string, bool
     public_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)
     private_unittests = me.EmbeddedDocumentListField(UnitTest, required=True)

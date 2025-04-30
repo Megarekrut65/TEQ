@@ -36,8 +36,6 @@ const editor = ref(null);
 
 const language = defineModel("language", { default: languages[0], required: true });
 const script = defineModel("script", { default: "" });
-const output = ref(null);
-const error = ref(null);
 
 const getAceMode = (lang) => {
   const mode = `ace/mode/${lang.toLowerCase()}`;
@@ -70,17 +68,17 @@ onMounted(() => {
   });
 });
 
+const runned = ref(false);
+
 const run = () => {
-  output.value = null;
-  error.value = null;
+  runned.value = true;
 
   props
     .onRun(language.value, script.value ?? "")
-    .then((res) => {
-      output.value = res.output;
-      error.value = res.error;
-    })
-    .catch(errorAlert);
+    .catch(errorAlert)
+    .finally(() => {
+      runned.value = false;
+    });
 };
 </script>
 
@@ -94,7 +92,12 @@ const run = () => {
             {{ lang.name }}
           </option>
         </select>
-        <button class="btn btn-outline-secondary my-0" type="button" @click="run">
+        <button
+          class="btn btn-outline-secondary my-0"
+          type="button"
+          @click="run"
+          :disabled="runned"
+        >
           {{ $t("run") }}
         </button>
       </div>
@@ -102,15 +105,7 @@ const run = () => {
     <div class="card-body">
       <div ref="editorRef" class="editor"></div>
     </div>
-    <div class="card-footer" v-if="output || error">
-      <div v-if="output">
-        <h2 class="my-0">{{ $t("output") }}</h2>
-        <div>{{ output }}</div>
-      </div>
-      <div v-if="error" class="text-danger">
-        {{ error }}
-      </div>
-    </div>
+    <div class="card-footer"><slot></slot></div>
   </div>
 </template>
 

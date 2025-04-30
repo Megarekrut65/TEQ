@@ -1,9 +1,10 @@
 <script setup>
-import { FULL, MULTIPLE, SCRIPT, SHORT, SINGLE } from "@/js/types.js";
+import { FULL, MULTIPLE, SCRIPT, SCRIPT_UNITTEST, SHORT, SINGLE } from "@/js/types.js";
 import { answerItemUpdateApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import PassChoiceAnswers from "@/components/pass/pass-items/PassChoiceAnswers.vue";
 import PassTextItem from "@/components/pass/pass-items/PassTextItem.vue";
+import PassScriptUnittestItem from "@/components/pass/pass-items/PassScriptUnittestItem.vue";
 
 const props = defineProps({
   answerId: {
@@ -89,6 +90,13 @@ const updateGrade = () => {
         v-model="formData"
         :item="item"
         :index="index"
+      />
+      <PassScriptUnittestItem
+        v-else-if="[SCRIPT_UNITTEST].includes(item.type)"
+        :show-correct="showCorrect"
+        :readonly="readonly"
+        v-model="formData"
+        :item="item"
       />
     </div>
   </div>

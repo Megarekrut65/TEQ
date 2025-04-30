@@ -1,6 +1,4 @@
 <script setup>
-import { RETURN_TYPES } from "@/js/types.js";
-
 defineProps({
   index: {
     type: Number,

@@ -12,6 +12,7 @@ import AnswerSimilarity from "@/components/test/items/AnswerSimilarity.vue";
 import ScriptAnswer from "@/components/test/items/ScriptAnswer.vue";
 import ScriptUnittestAnswer from "@/components/test/items/ScriptUnittestAnswer.vue";
 import { formatItem } from "@/js/utility/item-formatter.js";
+import { ref } from "vue";
 
 const props = defineProps({
   index: {
@@ -46,10 +47,17 @@ const props = defineProps({
 });
 
 const formData = defineModel({ required: true });
+const currentType = ref(formData.value.type);
 
 const onUpdate = () => {
   formatItem(formData.value);
-  props.updateApi(props.testId, props.index - 1, formData.value).catch(errorAlert);
+  props
+    .updateApi(props.testId, props.index - 1, formData.value)
+    .then((res) => {
+      if (res.type !== currentType.value) formData.value = res;
+      currentType.value = res.type;
+    })
+    .catch(errorAlert);
 };
 
 const onAddToPool = () => {

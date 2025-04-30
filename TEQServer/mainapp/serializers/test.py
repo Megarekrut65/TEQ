@@ -14,7 +14,6 @@ class ChoiceSerializer(CamelCaseSerializer):
     is_correct = serializers.BooleanField(default=False)
 
 class UnitTestSerializer(CamelCaseSerializer):
-    name = serializers.CharField(required=True, max_length=200)
     in_test = serializers.CharField(required=True, max_length=500)
     out_test = serializers.CharField(required=True, max_length=200)
 

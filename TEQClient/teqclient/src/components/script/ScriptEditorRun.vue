@@ -1,6 +1,7 @@
 <script setup>
 import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
 import { languages } from "@/js/languages.js";
+import { ref } from "vue";
 
 defineProps({
   readonly: {
@@ -21,11 +22,21 @@ defineProps({
 });
 
 const language = defineModel("language", { required: false, default: languages[0] });
-const script = defineModel("script", { required: false });
+const script = defineModel("script", { required: false, default: languages[0].script });
+
+const output = ref(null);
+const error = ref(null);
 
 const run = (language, script) => {
+  output.value = null;
+  error.value = null;
+
   const runner = language.runner;
-  return runner(script ?? "");
+
+  return runner(script ?? "").then((res) => {
+    output.value = res.output;
+    error.value = res.error;
+  });
 };
 </script>
 
@@ -39,7 +50,15 @@ const run = (language, script) => {
         :readonly="readonly"
         :language-readonly="languageReadonly"
         :on-changed="onChanged"
-      ></AceScriptEditor>
+      >
+        <div v-if="output">
+          <h2 class="my-0">{{ $t("output") }}</h2>
+          <div>{{ output }}</div>
+        </div>
+        <div v-if="error" class="text-danger">
+          {{ error }}
+        </div>
+      </AceScriptEditor>
     </div>
   </div>
 </template>

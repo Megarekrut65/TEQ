@@ -19,14 +19,13 @@ export const defaultChoices = () => {
   ];
 };
 
-export const defaultUnitTest = (index) => {
+export const defaultUnitTest = () => {
   return {
-    name: `unittest_${index}`,
     in_test: '"Hello", "World"',
     out_test: '"Hello World"',
   };
 };
 
-export const defaultUnitTests = (index) => {
-  return [defaultUnitTest(index)];
+export const defaultUnitTests = () => {
+  return [defaultUnitTest()];
 };

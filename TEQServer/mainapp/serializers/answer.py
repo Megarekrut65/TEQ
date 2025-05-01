@@ -10,6 +10,9 @@ from mainapp.serializers.test import get_test_grade, ItemSerializer
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
+class AnswerUnitTestFailureSerializer(CamelCaseSerializer):
+    test_name = serializers.CharField(max_length=200, read_only=True)
+    reason = serializers.CharField(max_length=500, read_only=True)
 
 class AnswerItemSerializer(CamelCaseSerializer):
     type = serializers.ChoiceField(choices=ITEM_TYPES)
@@ -20,6 +23,10 @@ class AnswerItemSerializer(CamelCaseSerializer):
     grade = serializers.FloatField(read_only=True)
     similarity = serializers.FloatField(read_only=True, required=False, allow_null=True)
 
+    total_tests = serializers.IntegerField(read_only=True, required=False, allow_null=True)
+    passed = serializers.BooleanField(read_only=True, required=False, allow_null=True)
+    failures = AnswerUnitTestFailureSerializer(many=True, read_only=True, allow_null=True, required=False)
+    error = serializers.CharField(max_length=1000, read_only=True, allow_null=True, required=False)
 
     def __get_item(self, validated_data):
         item = None

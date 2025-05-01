@@ -44,11 +44,11 @@ class AnswerScriptItem(AnswerTextItem):
     pass
 
 class AnswerUnitTestFailure(me.EmbeddedDocument):
-    fun_name = me.StringField(required=True, max_length=200)
+    test_name = me.StringField(required=True, max_length=200)
     reason = me.StringField(max_length=500, default="")
 
 class AnswerScriptUnitTestItem(AnswerTextItem):
     total_tests = me.IntField(default=0)
     passed = me.BooleanField(default=False)
-    failure = me.EmbeddedDocumentListField(AnswerUnitTestFailure)
+    failures = me.EmbeddedDocumentListField(AnswerUnitTestFailure)
     error = me.StringField(max_length=1000, null=True, default=None)

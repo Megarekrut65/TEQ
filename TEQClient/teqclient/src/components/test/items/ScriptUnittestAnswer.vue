@@ -29,7 +29,9 @@ const addTest = () => {
     ? formData.value.publicUnittests
     : formData.value.privateUnittests;
 
-  container.push(defaultUnitTest());
+  const prefix = publicOn.value ? "public" : "private";
+
+  container.push(defaultUnitTest(prefix));
   props.onUpdate();
 };
 

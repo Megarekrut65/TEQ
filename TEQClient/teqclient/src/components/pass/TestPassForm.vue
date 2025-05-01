@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 
 import TestItemPass from "@/components/pass/TestItemPass.vue";
-import { MULTIPLE, SINGLE } from "@/js/types.js";
+import { MULTIPLE, SCRIPT_UNITTEST, SINGLE } from "@/js/types.js";
 import { answerCheckUpdateApi, testPassPostApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import { getUser } from "@/js/utility/auth.js";
@@ -38,10 +38,12 @@ const createChoices = (type) => {
 };
 
 const createAnswerItem = (item) => {
+  const text = item.type === SCRIPT_UNITTEST ? item.functionStructure : "";
+
   return {
     type: item.type,
     choices: createChoices(item.type),
-    answer: "",
+    answer: text,
   };
 };
 

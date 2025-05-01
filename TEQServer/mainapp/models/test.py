@@ -56,6 +56,7 @@ class ScriptItem(TextItem):
 class UnitTest(me.EmbeddedDocument):
     in_test = me.StringField(required=True, max_length=500)
     out_test = me.StringField(required=True, max_length=200)
+    prefix = me.StringField(required=False, default="", max_length=50)
 
 class ScriptUnitTestItem(ScriptItem):
     function_structure = me.StringField(default="", max_length=500)

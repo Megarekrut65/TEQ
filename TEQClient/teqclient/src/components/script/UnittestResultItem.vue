@@ -6,7 +6,7 @@ defineProps({
   },
   failure: {
     type: Object,
-    required: true,
+    required: false,
   },
 });
 </script>

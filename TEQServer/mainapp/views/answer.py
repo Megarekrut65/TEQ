@@ -48,12 +48,12 @@ class AnswerRetrieveApiView(RetrieveAPIView):
     permission_classes = [CanAccessAnswer]
 
     def get_queryset(self):
-        return Answer.objects.filter(owner=self.request.user)
+        return Answer.objects.all()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         obj = self.get_object()
-        context["is_owner"] = obj.owner == self.request.user
+        context["is_owner"] = obj.test.owner == self.request.user
 
         return context
 

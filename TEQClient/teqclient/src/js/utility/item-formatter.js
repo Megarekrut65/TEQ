@@ -33,8 +33,8 @@ export const formatItem = (item) => {
   if ([SCRIPT_UNITTEST].includes(item.type)) {
     if (!item.language) item.language = languages[0].type;
     if (!item.publicUnittests || !item.privateUnittests) {
-      item.privateUnittests = defaultUnitTests();
-      item.publicUnittests = defaultUnitTests();
+      item.privateUnittests = defaultUnitTests("private");
+      item.publicUnittests = defaultUnitTests("public");
       const lang = getLanguage(item.language);
       item.correctAnswer = lang.testFun;
       item.functionStructure = lang.testFunStruct;

@@ -19,13 +19,14 @@ export const defaultChoices = () => {
   ];
 };
 
-export const defaultUnitTest = () => {
+export const defaultUnitTest = (prefix) => {
   return {
-    in_test: '"Hello", "World"',
-    out_test: '"Hello World"',
+    inTest: '"Hello", "World"',
+    outTest: '"Hello World"',
+    prefix: prefix,
   };
 };
 
-export const defaultUnitTests = () => {
-  return [defaultUnitTest()];
+export const defaultUnitTests = (prefix) => {
+  return [defaultUnitTest(prefix)];
 };

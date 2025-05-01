@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from mainapp.item_types import ITEM_TYPES, SHORT, FULL, SINGLE, MULTIPLE, SCRIPT, SCRIPT_UNITTEST
+from mainapp.languages import LANGUAGES
 from mainapp.models.test import Test, TestDocument, ChoiceItem, Choice, TextItem, ScriptItem, ScriptUnitTestItem, \
     UnitTest
 from mainapp.unit_types import UNIT_TYPES
@@ -16,6 +17,7 @@ class ChoiceSerializer(CamelCaseSerializer):
 class UnitTestSerializer(CamelCaseSerializer):
     in_test = serializers.CharField(required=True, max_length=500)
     out_test = serializers.CharField(required=True, max_length=200)
+    prefix = serializers.CharField(required=False, max_length=50, allow_blank=True)
 
 class BaseItemSerializer(CamelCaseSerializer):
     text = serializers.CharField(max_length=500, allow_blank=True)
@@ -30,7 +32,7 @@ class BaseItemSerializer(CamelCaseSerializer):
     min_similar_percent = serializers.FloatField(required=False, min_value=0, max_value=100)
     correct_answer = serializers.CharField(max_length=5000, required=False, allow_blank=True, allow_null=True)
 
-    language = serializers.CharField(max_length=50, required=False, allow_blank=True, allow_null=True)
+    language = serializers.ChoiceField(choices=LANGUAGES, required=False, allow_blank=True, allow_null=True)
 
     #For unittest script item
     public_unittests = UnitTestSerializer(many=True, required=False)

@@ -26,7 +26,7 @@ export const uk = {
   title: "Заголовок",
   description: "Опис",
   isPublic: "Публічний тест",
-  public: "Тест буде доступний усім охочим користувачам",
+  publicHint: "Тест буде доступний усім охочим користувачам",
   allowAccess: "Дозволити доступ за посиланням",
   create: "Створити",
   update: "Зберегти",
@@ -87,6 +87,9 @@ export const uk = {
   tryTesting: "Функція для тестування",
   funInput: "Вхідні дані функції",
   funOutput: "Вихідні дані функції",
+  public: "Публічний",
+  private: "Приватний",
+  tests: "Тести",
 
   testId: "ID тесту",
   text: "Текст",

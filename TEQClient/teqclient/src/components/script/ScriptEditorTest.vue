@@ -26,22 +26,30 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  testResult: {
+    type: Object,
+    required: false,
+    default: null,
+  },
 });
 
 const language = defineModel("language", { required: false, default: languages[0] });
 const script = defineModel("script", { required: false, default: languages[0].script });
 
-const testingResult = ref(null);
+const testingResult = ref(props.testResult);
+const error = ref(null);
 
 watch(
   () => props.testData,
   () => {
     testingResult.value = null;
+    error.value = null;
   },
 );
 
 const run = () => {
   testingResult.value = null;
+  error.value = null;
 
   return testPythonCode({
     script: script.value,
@@ -49,6 +57,11 @@ const run = () => {
     functionStructure: props.testData.functionStructure,
     functionType: props.testData.functionType,
   }).then((res) => {
+    if ("status_code" in res && res.status_code !== 200) {
+      error.value = res.detail;
+      return;
+    }
+
     testingResult.value = res;
     console.log(res);
   });
@@ -57,11 +70,15 @@ const run = () => {
 const scriptOnChange = (lang) => {
   return lang.testFun;
 };
+const get_name = (fail, index) => {
+  if (fail.testPrefix) return `${fail.testPrefix}${index}`;
+  return `${index}`;
+};
 
 const getFailure = (index) => {
   const fails = testingResult.value?.failures ?? [];
 
-  return fails.find((fail) => extractNumber(fail.testName) === index);
+  return fails.find((fail) => `${extractNumber(fail.testName)}` === get_name(fail, index)) ?? null;
 };
 </script>
 
@@ -81,13 +98,21 @@ const getFailure = (index) => {
           <UnittestResultItem
             v-for="(test, index) in testData.unittests"
             :key="test"
-            :test-name="`${$t('test')} #${index + 1}`"
+            :test-name="`${$t(test.prefix)} ${$t('test')} #${index + 1}`"
             :failure="getFailure(index + 1)"
           ></UnittestResultItem>
+        </div>
+
+        <div v-if="error" class="error text-danger">
+          {{ error }}
         </div>
       </AceScriptEditor>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.error {
+  white-space: pre-wrap;
+}
+</style>

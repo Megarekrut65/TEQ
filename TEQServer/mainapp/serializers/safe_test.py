@@ -3,6 +3,7 @@ from rest_framework import serializers
 from mainapp.item_types import ITEM_TYPES
 from mainapp.models.test import Test, TestDocument
 from mainapp.serializers.test import UnitTestSerializer
+from mainapp.unit_types import UNIT_TYPES
 from userapp.serializers import UserProfileSerializer
 from utility.case_serializers import CamelCaseSerializer, CamelCaseModelSerializer
 
@@ -21,7 +22,7 @@ class SafeItemSerializer(CamelCaseSerializer):
 
     public_unittests = UnitTestSerializer(many=True, required=False)
     function_structure = serializers.CharField(max_length=500, required=False, allow_blank=True, allow_null=True)
-
+    function_type = serializers.ChoiceField(choices=UNIT_TYPES, required=False, allow_blank=True, allow_null=True)
 
 class SafeTestSerializer(CamelCaseModelSerializer):
     owner = UserProfileSerializer(read_only=True, source="owner.userprofile")

@@ -68,16 +68,16 @@ onMounted(() => {
   });
 });
 
-const runned = ref(false);
+const ran = ref(false);
 
 const run = () => {
-  runned.value = true;
+  ran.value = true;
 
   props
     .onRun(language.value, script.value ?? "")
     .catch(errorAlert)
     .finally(() => {
-      runned.value = false;
+      ran.value = false;
     });
 };
 </script>
@@ -87,7 +87,11 @@ const run = () => {
     <div class="card-header">
       <div class="input-group mb-3">
         <label class="input-group-text mb-0">{{ $t("language") }}</label>
-        <select class="form-select mb-0" v-model="language" :disabled="languageReadonly">
+        <select
+          class="form-select mb-0"
+          v-model="language"
+          :disabled="languageReadonly || readonly"
+        >
           <option v-for="lang in languages" :key="lang" :value="lang" selected>
             {{ lang.name }}
           </option>
@@ -96,7 +100,7 @@ const run = () => {
           class="btn btn-outline-secondary my-0"
           type="button"
           @click="run"
-          :disabled="runned"
+          :disabled="ran || readonly"
         >
           {{ $t("run") }}
         </button>

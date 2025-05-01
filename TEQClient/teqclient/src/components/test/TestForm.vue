@@ -107,6 +107,9 @@ const onOpenPool = (item, pasteMode) => {
     </template>
     <form @change="updateTest">
       <div>
+        <span v-if="formData.autoCheck" class="badge text-dark bg-warning">{{
+          $t("autoChecked")
+        }}</span>
         <label class="form-label" for="title">{{ $t("title") }}</label>
         <input
           v-model.trim="formData.title"

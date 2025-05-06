@@ -68,4 +68,8 @@ const formData = defineModel({ required: true });
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.hide {
+  display: none;
+}
+</style>

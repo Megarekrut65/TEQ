@@ -12,7 +12,7 @@ const props = defineProps({
   scriptOnChange: {
     type: Function,
     required: false,
-    default: (lang) => lang.script,
+    default: (lang) => lang?.script ?? languages[0].testFun,
   },
   readonly: {
     type: Boolean,
@@ -35,7 +35,7 @@ const editorRef = ref(null);
 const editor = ref(null);
 
 const language = defineModel("language", { default: languages[0], required: true });
-const script = defineModel("script", { default: "" });
+const script = defineModel("script", { required: true });
 
 const getAceMode = (lang) => {
   const mode = `ace/mode/${lang.toLowerCase()}`;
@@ -100,7 +100,7 @@ const run = () => {
           class="btn btn-outline-secondary my-0"
           type="button"
           @click="run"
-          :disabled="ran || readonly"
+          :disabled="ran || readonly || script.length === 0"
         >
           {{ $t("run") }}
         </button>

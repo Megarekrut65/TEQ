@@ -34,7 +34,7 @@ const props = defineProps({
 });
 
 const language = defineModel("language", { required: false, default: languages[0] });
-const script = defineModel("script", { required: false, default: languages[0].script });
+const script = defineModel("script", { required: true });
 
 const testingResult = ref(props.testResult);
 const error = ref(null);
@@ -68,9 +68,11 @@ const run = () => {
 };
 
 const scriptOnChange = (lang) => {
-  return lang.testFun;
+  if (lang) return lang.testFun;
+
+  return languages[0].testFun;
 };
-const get_name = (fail, index) => {
+const getName = (fail, index) => {
   if (fail.testPrefix) return `${fail.testPrefix}${index}`;
   return `${index}`;
 };
@@ -78,7 +80,7 @@ const get_name = (fail, index) => {
 const getFailure = (index) => {
   const fails = testingResult.value?.failures ?? [];
 
-  return fails.find((fail) => `${extractNumber(fail.testName)}` === get_name(fail, index)) ?? null;
+  return fails.find((fail) => `${extractNumber(fail.testName)}` === getName(fail, index)) ?? null;
 };
 </script>
 

@@ -1,19 +1,32 @@
 <script setup>
 import { ref, watch } from "vue";
-import { getLanguage } from "@/js/languages.js";
+import { getLanguage, languages } from "@/js/languages.js";
 import UnittestItem from "@/components/test/items/UnittestItem.vue";
-import { defaultUnitTest } from "@/js/data-types.js";
+import { defaultUnitTest, defaultUnitTests } from "@/js/data-types.js";
 import { RETURN_TYPES } from "@/js/types.js";
 import ScriptEditorTest from "@/components/script/ScriptEditorTest.vue";
 
 const props = defineProps({
   onUpdate: {
     type: Function,
-    required: true,
+    required: false,
+    default: () => {},
   },
 });
 
-const formData = defineModel({ required: true });
+const formData = defineModel({
+  required: false,
+  default: {
+    language: languages[0].type,
+    publicUnittests: defaultUnitTests("public"),
+    privateUnittests: defaultUnitTests("private"),
+    functionType: RETURN_TYPES[0],
+    functionStructure: languages[0].testFunStruct,
+  },
+});
+
+const script = defineModel("script", { required: false, default: languages[0].testFun });
+
 const language = ref(getLanguage(formData.value.language));
 
 watch(language, () => {
@@ -65,7 +78,7 @@ const testData = () => {
       <label for="correctAnswer" class="form-label">{{ $t("tryTesting") }}</label>
       <ScriptEditorTest
         v-model:language="language"
-        v-model:script="formData.correctAnswer"
+        v-model:script="script"
         :key="formData.type"
         :on-changed="onUpdate"
         :test-data="testData()"

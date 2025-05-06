@@ -3,7 +3,7 @@ import { API } from "@/js/api/api.js";
 import { getToken } from "@/js/utility/token.js";
 
 export const itemCreateApi = (
-  testId,
+  containerId,
   {
     text,
     type,
@@ -18,6 +18,7 @@ export const itemCreateApi = (
     functionStructure = null,
     functionType = null,
   },
+  endpoint = "test",
 ) => {
   const payload = {
     text,
@@ -43,10 +44,10 @@ export const itemCreateApi = (
     body: JSON.stringify(payload),
   };
 
-  return sendAsync(`${API}item/${testId}/`, request);
+  return sendAsync(`${API}${endpoint}/item/${containerId}/`, request);
 };
 
-export const itemDeleteApi = (testId, index) => {
+export const itemDeleteApi = (containerId, index, endpoint = "test") => {
   const request = {
     method: "DELETE",
     headers: {
@@ -54,11 +55,11 @@ export const itemDeleteApi = (testId, index) => {
       Authorization: `Token ${getToken()}`,
     },
   };
-  return sendAsync(API + `item/${index}/${testId}/`, request);
+  return sendAsync(API + `${endpoint}/item/${index}/${containerId}/`, request);
 };
 
 export const itemUpdateApi = (
-  testId,
+  containerId,
   index,
   {
     text,
@@ -74,6 +75,7 @@ export const itemUpdateApi = (
     functionStructure = null,
     functionType = null,
   },
+  endpoint = "test",
 ) => {
   const payload = {
     text,
@@ -99,5 +101,5 @@ export const itemUpdateApi = (
     body: JSON.stringify(payload),
   };
 
-  return sendAsync(API + `item/${index}/${testId}/`, request);
+  return sendAsync(API + `${endpoint}/item/${index}/${containerId}/`, request);
 };

@@ -1,16 +1,26 @@
 import { alertBus } from "@/js/utility/alert-bus.js";
 
+const formatErrors = (errorObj) => {
+  let messages = [];
+
+  for (const [field, errors] of Object.entries(errorObj)) {
+    let fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+
+    let combinedErrors = errors.join(" ");
+
+    messages.push(`${fieldName}: ${combinedErrors}`);
+  }
+
+  return messages.join("\n");
+};
+
 export const errorToString = (err) => {
-  if (typeof err === "object" && "detail" in err) {
-    const detail = err.detail;
-    if (typeof detail === "string") return detail;
+  console.log(typeof err);
+  if (typeof err === "object") {
+    if ("detail" in err) err = err.detail;
+    if (typeof err === "string") return err;
 
-    let res = "";
-    detail.forEach((error) => {
-      res += error + " ";
-    });
-
-    return res;
+    return formatErrors(err);
   }
 
   return err;

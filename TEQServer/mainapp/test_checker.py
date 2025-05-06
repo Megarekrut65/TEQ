@@ -123,7 +123,6 @@ def check_test(answer:Answer):
         answer_item = items[i]
 
         CHECK[test_item.type](answer_item, test_item)
-        print(answer_item.error)
 
     answer.checked = answer.test.show_result
     answer.auto_checked = True

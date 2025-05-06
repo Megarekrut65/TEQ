@@ -8,15 +8,14 @@ import { truncate } from "../../js/utility/utility.js";
 const user = ref(getUser());
 
 window.addEventListener("auth", (data) => {
-    user.value = data.detail;
-    if (!data.detail) {
-        window.location.reload();
-    }
+  user.value = data.detail;
+  if (!data.detail) {
+    window.location.reload();
+  }
 });
 </script>
 
 <template>
-
   <div class="collapse navbar-collapse main-menu" id="navbarSupportedContent">
     <ul class="navbar-nav mb-2 mb-lg-0 menu-list">
       <li class="nav-item menu-item">
@@ -26,7 +25,7 @@ window.addEventListener("auth", (data) => {
         <LocalizedLink to="/" class="nav-link">{{ $t("home") }}</LocalizedLink>
       </li>
       <li class="nav-item">
-        <LocalizedLink to="/public" class="nav-link">{{ $t("publicTests")  }}</LocalizedLink>
+        <LocalizedLink to="/public" class="nav-link">{{ $t("publicTests") }}</LocalizedLink>
       </li>
       <li class="nav-item">
         <LocalizedLink to="/public" class="nav-link">{{ $t("contacts") }}</LocalizedLink>
@@ -48,30 +47,36 @@ window.addEventListener("auth", (data) => {
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" href="#"
-              ><i class="fa-regular fa-user"></i> {{ $t("account") }}</a
+                ><i class="fa-regular fa-user"></i> {{ $t("account") }}</a
               >
             </li>
             <li>
               <LocalizedLink class="dropdown-item" to="/editor/new"
-              ><i class="fa-solid fa-file-circle-plus"></i>
+                ><i class="fa-solid fa-file-circle-plus"></i>
                 {{ $t("createTest") }}
               </LocalizedLink>
             </li>
             <li>
               <LocalizedLink class="dropdown-item" to="/account/tests"
-              ><i class="fa-solid fa-newspaper"></i>
+                ><i class="fa-solid fa-newspaper"></i>
                 {{ $t("myTests") }}
               </LocalizedLink>
             </li>
             <li>
               <LocalizedLink class="dropdown-item" to="/account/pool"
-              ><i class="fa-solid fa-layer-group"></i>
+                ><i class="fa-solid fa-layer-group"></i>
                 {{ $t("pool") }}
               </LocalizedLink>
             </li>
             <li>
+              <LocalizedLink class="dropdown-item" to="/account/tools"
+                ><i class="fa-solid fa-screwdriver-wrench"></i>
+                {{ $t("tools") }}
+              </LocalizedLink>
+            </li>
+            <li>
               <LocalizedLink class="dropdown-item" to="/account/answers"
-              ><i class="fa-solid fa-comments"></i>
+                ><i class="fa-solid fa-comments"></i>
                 {{ $t("myAnswers") }}
               </LocalizedLink>
             </li>
@@ -80,8 +85,7 @@ window.addEventListener("auth", (data) => {
             </li>
             <li>
               <a class="dropdown-item" href="#" @click="logout"
-              ><i class="fa-solid fa-arrow-right-from-bracket"></i>
-                {{ $t("logout") }}</a
+                ><i class="fa-solid fa-arrow-right-from-bracket"></i> {{ $t("logout") }}</a
               >
             </li>
           </ul>
@@ -91,25 +95,23 @@ window.addEventListener("auth", (data) => {
         <LocalizedLink to="/auth" class="nav-link">{{ $t("singInUp") }}</LocalizedLink>
       </li>
     </ul>
-
   </div>
 </template>
 
 <style scoped>
-
-.nav-link:hover{
+.nav-link:hover {
   color: rgb(242, 137, 63);
 }
-.nav-link{
+.nav-link {
   padding-bottom: 0;
   font-size: inherit;
   font-family: inherit;
 }
-.menu-list{
+.menu-list {
   justify-content: end;
   width: 100%;
 }
-.dropdown>ul{
+.dropdown > ul {
   background: rgba(221, 221, 221, 1);
 }
 </style>

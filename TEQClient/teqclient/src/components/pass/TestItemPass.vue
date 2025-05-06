@@ -111,9 +111,6 @@ form {
   margin-bottom: 0;
 }
 
-.hide {
-  display: none;
-}
 .badge {
   height: min-content;
 }

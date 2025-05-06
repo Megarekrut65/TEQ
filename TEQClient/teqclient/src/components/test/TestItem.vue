@@ -124,7 +124,7 @@ const onPasteNew = () => {
 
       <div class="row mb-3">
         <ChoiceProportion
-          v-if="[SINGLE, MULTIPLE].includes(formData.type) && autoCheck"
+          v-if="[MULTIPLE, SCRIPT_UNITTEST].includes(formData.type) && autoCheck"
           v-model="formData"
         />
 
@@ -159,6 +159,7 @@ const onPasteNew = () => {
       <ScriptUnittestAnswer
         v-else-if="[SCRIPT_UNITTEST].includes(formData.type)"
         v-model="formData"
+        v-model:script="formData.correctAnswer"
         :on-update="onUpdate"
       />
 

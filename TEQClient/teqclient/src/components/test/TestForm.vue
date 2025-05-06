@@ -56,9 +56,7 @@ const answerActive = ref(false);
 const poolActive = ref(false);
 
 const onItemPaste = (data) => {
-  data.testId = formData.value.id;
-
-  itemCreateApi(data)
+  itemCreateApi(formData.value.id, data)
     .then((res) => {
       formData.value.items.push(res);
     })

@@ -125,4 +125,13 @@ export const uk = {
   language: "Мова програмування",
   run: "Запустити",
   output: "Вивід",
+  runCode: "Виконати код",
+  testCode: "Протестувати код",
+  similarityCode: "Порівняти код на подібність",
+  similarityText: "Порівняти текст на подібність",
+  firstText: "Перший текст",
+  secondText: "Другий текст",
+  similarity: "Подібність",
+  check: "Почати перевірку",
+  tools: "Інструменти",
 };

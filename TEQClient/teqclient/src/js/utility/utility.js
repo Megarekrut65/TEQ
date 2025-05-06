@@ -15,7 +15,6 @@ const formatErrors = (errorObj) => {
 };
 
 export const errorToString = (err) => {
-  console.log(typeof err);
   if (typeof err === "object") {
     if ("detail" in err) err = err.detail;
     if (typeof err === "string") return err;

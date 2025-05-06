@@ -1,14 +1,12 @@
 <script setup>
-
-const formData = defineModel({required:true});
-
+const formData = defineModel({ required: true });
 </script>
 
 <template>
-  <div  class="mb-3">
+  <div class="mb-3">
     <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
     <textarea
-      v-model="formData.correctAnswer"
+      v-model.trim="formData.correctAnswer"
       class="form-control"
       rows="3"
       maxlength="5000"
@@ -16,6 +14,4 @@ const formData = defineModel({required:true});
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

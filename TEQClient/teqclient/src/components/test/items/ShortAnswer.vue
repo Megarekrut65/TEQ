@@ -1,21 +1,12 @@
 <script setup>
-
-const formData = defineModel({required:true});
-
+const formData = defineModel({ required: true });
 </script>
 
 <template>
-  <div  class="mb-3">
+  <div class="mb-3">
     <label for="correctAnswer" class="form-label">{{ $t("correctAnswer") }}</label>
-    <input
-      v-model="formData.correctAnswer"
-      class="form-control"
-      maxlength="500"
-      type="text"
-    />
+    <input v-model.trim="formData.correctAnswer" class="form-control" maxlength="500" type="text" />
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

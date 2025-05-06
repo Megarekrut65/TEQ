@@ -18,14 +18,20 @@ const formData = defineModel({
   required: false,
   default: {
     language: languages[0].type,
-    publicUnittests: defaultUnitTests("public"),
-    privateUnittests: defaultUnitTests("private"),
     functionType: RETURN_TYPES[0],
     functionStructure: languages[0].testFunStruct,
   },
 });
 
 const script = defineModel("script", { required: false, default: languages[0].testFun });
+const publicUnittests = defineModel("publicUnittests", {
+  required: false,
+  default: () => defaultUnitTests("public"),
+});
+const privateUnittests = defineModel("privateUnittests", {
+  required: false,
+  default: () => defaultUnitTests("private"),
+});
 
 const language = ref(getLanguage(formData.value.language));
 
@@ -38,9 +44,7 @@ watch(language, () => {
 const publicOn = ref(true);
 
 const addTest = () => {
-  const container = publicOn.value
-    ? formData.value.publicUnittests
-    : formData.value.privateUnittests;
+  const container = publicOn.value ? publicUnittests.value : privateUnittests.value;
 
   const prefix = publicOn.value ? "public" : "private";
 
@@ -49,9 +53,7 @@ const addTest = () => {
 };
 
 const onUnitRemoved = (index) => {
-  const container = publicOn.value
-    ? formData.value.publicUnittests
-    : formData.value.privateUnittests;
+  const container = publicOn.value ? publicUnittests.value : privateUnittests.value;
 
   if (index < 0 || index >= container.length) return;
 
@@ -60,9 +62,7 @@ const onUnitRemoved = (index) => {
 };
 
 const testData = () => {
-  const unittests = publicOn.value
-    ? formData.value.publicUnittests
-    : formData.value.privateUnittests;
+  const unittests = publicOn.value ? publicUnittests.value : privateUnittests.value;
 
   return {
     functionStructure: formData.value.functionStructure,
@@ -126,22 +126,22 @@ const testData = () => {
       <div v-if="publicOn" class="unittests">
         <div class="mb-1 btn-hover" @click="addTest"><i class="fa-solid fa-plus"></i></div>
         <UnittestItem
-          v-for="(item, index) in formData.publicUnittests"
+          v-for="(item, index) in publicUnittests"
           :key="item"
-          v-model="formData.publicUnittests[index]"
+          v-model="publicUnittests[index]"
           :index="index"
-          :count="formData.publicUnittests.length"
+          :count="publicUnittests.length"
           :on-removed="() => onUnitRemoved(item)"
         />
       </div>
       <div v-else class="unittests">
         <div class="mb-1 btn-hover" @click="addTest"><i class="fa-solid fa-plus"></i></div>
         <UnittestItem
-          v-for="(item, index) in formData.privateUnittests"
+          v-for="(item, index) in privateUnittests"
           :key="item"
-          v-model="formData.privateUnittests[index]"
+          v-model="privateUnittests[index]"
           :index="index"
-          :count="formData.privateUnittests.length"
+          :count="privateUnittests.length"
           :on-removed="() => onUnitRemoved(item)"
         />
       </div>

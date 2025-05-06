@@ -101,7 +101,6 @@ DATABASES = {
     'default': dj_database_url.parse(decouple.config("SQL_DATABASE_URL"))
 }
 
-#For test items
 mongoengine.connect(host=decouple.config("NOSQL_DATABASE_URL"))
 
 # Password validation

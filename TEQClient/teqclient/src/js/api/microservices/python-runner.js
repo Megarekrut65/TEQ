@@ -1,15 +1,15 @@
-
 import { sendAsync } from "@/js/utility/request.js";
+import { GATEWAY } from "@/js/api/microservices/gateway.js";
 
-const API = "http://127.0.0.1:8006/python/run/"
+const API = `${GATEWAY}/python/run/`;
 
-export const runPythonCode = (script) =>{
+export const runPythonCode = (script) => {
   const request = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({script})
+    body: JSON.stringify({ script }),
   };
 
   return sendAsync(API, request);

@@ -1,8 +1,9 @@
 import { sendAsync } from "@/js/utility/request.js";
+import { GATEWAY } from "@/js/api/microservices/gateway.js";
 
-const API = "http://127.0.0.1:8006/python/similarity/";
+const API = `${GATEWAY}/pl/similarity/`;
 
-export const findPythonSimilarity = (code1, code2) => {
+export const findScriptSimilarity = (code1, code2) => {
   const request = {
     method: "POST",
     headers: {

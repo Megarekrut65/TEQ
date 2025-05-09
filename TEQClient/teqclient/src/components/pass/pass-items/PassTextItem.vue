@@ -20,6 +20,10 @@ defineProps({
     type: Boolean,
     required: true,
   },
+  autoCheck: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const formData = defineModel({ required: true });

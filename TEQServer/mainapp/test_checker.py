@@ -122,7 +122,10 @@ def check_test(answer:Answer):
         test_item = test_items[i]
         answer_item = items[i]
 
-        CHECK[test_item.type](answer_item, test_item)
+        try:
+            CHECK[test_item.type](answer_item, test_item)
+        except Exception as e:
+            print(e)
 
     answer.checked = answer.test.show_result
     answer.auto_checked = True

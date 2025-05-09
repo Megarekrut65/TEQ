@@ -134,4 +134,6 @@ export const uk = {
   similarity: "Подібність",
   check: "Почати перевірку",
   tools: "Інструменти",
+  firstCode: "Перший код",
+  secondCode: "Другий код",
 };

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import { getLanguage, languages } from "@/js/languages.js";
+import { getLanguage, isDefaultStructure, languages } from "@/js/languages.js";
 import UnittestItem from "@/components/test/items/UnittestItem.vue";
 import { defaultUnitTest, defaultUnitTests } from "@/js/data-types.js";
 import { RETURN_TYPES } from "@/js/types.js";
@@ -39,6 +39,9 @@ watch(language, () => {
   if (formData.value.language === language.value?.type) return;
 
   formData.value.language = language.value?.type;
+  if (isDefaultStructure(formData.value.functionStructure)) {
+    formData.value.functionStructure = language.value?.testFunStruct;
+  }
 });
 
 const publicOn = ref(true);
@@ -131,7 +134,7 @@ const testData = () => {
           v-model="publicUnittests[index]"
           :index="index"
           :count="publicUnittests.length"
-          :on-removed="() => onUnitRemoved(item)"
+          :on-removed="() => onUnitRemoved(index)"
         />
       </div>
       <div v-else class="unittests">
@@ -142,7 +145,7 @@ const testData = () => {
           v-model="privateUnittests[index]"
           :index="index"
           :count="privateUnittests.length"
-          :on-removed="() => onUnitRemoved(item)"
+          :on-removed="() => onUnitRemoved(index)"
         />
       </div>
     </div>

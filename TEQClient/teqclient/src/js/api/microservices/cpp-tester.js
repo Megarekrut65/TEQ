@@ -1,9 +1,9 @@
 import { sendAsync } from "@/js/utility/request.js";
 import { GATEWAY } from "@/js/api/microservices/gateway.js";
 
-const API = `${GATEWAY}/python/test/`;
+const API = `${GATEWAY}/cpp/test/`;
 
-export const testPythonCode = ({ script, functionStructure, functionType, unittests }) => {
+export const testCppCode = ({ script, functionStructure, functionType, unittests }) => {
   const request = {
     method: "POST",
     headers: {

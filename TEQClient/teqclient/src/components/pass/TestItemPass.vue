@@ -86,6 +86,7 @@ const updateGrade = () => {
       <PassTextItem
         v-else-if="[FULL, SHORT, SCRIPT].includes(item.type)"
         :show-correct="showCorrect"
+        :auto-check="autoCheck"
         :readonly="readonly"
         v-model="formData"
         :item="item"

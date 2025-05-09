@@ -160,6 +160,8 @@ const onPasteNew = () => {
         v-else-if="[SCRIPT_UNITTEST].includes(formData.type)"
         v-model="formData"
         v-model:script="formData.correctAnswer"
+        v-model:public-unittests="formData.publicUnittests"
+        v-model:private-unittests="formData.privateUnittests"
         :on-update="onUpdate"
       />
 

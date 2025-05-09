@@ -1,7 +1,6 @@
 <script setup>
 import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
 import { languages } from "@/js/languages.js";
-import { testPythonCode } from "@/js/api/microservices/python-tester.js";
 import { ref, watch } from "vue";
 import UnittestResultItem from "@/components/script/UnittestResultItem.vue";
 import { extractNumber } from "@/js/utility/utility.js";
@@ -51,7 +50,14 @@ const run = () => {
   testingResult.value = null;
   error.value = null;
 
-  return testPythonCode({
+  const tester = language.value.tester;
+
+  if (!tester) {
+    error.value = "Testing error";
+    return Promise.reject(error);
+  }
+
+  return tester({
     script: script.value,
     unittests: props.testData.unittests,
     functionStructure: props.testData.functionStructure,
@@ -102,6 +108,7 @@ const getFailure = (index) => {
             :key="test"
             :test-name="`${$t(test.prefix)} ${$t('test')} #${index + 1}`"
             :failure="getFailure(index + 1)"
+            :passed="testingResult.passed || testingResult.failures?.length > 0"
           ></UnittestResultItem>
         </div>
 

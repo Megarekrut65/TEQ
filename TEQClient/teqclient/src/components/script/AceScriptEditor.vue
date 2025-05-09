@@ -1,7 +1,7 @@
 <script setup>
 import ace from "ace-builds/src-noconflict/ace";
 import { onMounted, ref, watch } from "vue";
-import { languages } from "@/js/languages.js";
+import { isDefaultScript, languages } from "@/js/languages.js";
 import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
@@ -50,7 +50,9 @@ const getAceMode = (lang) => {
 
 watch(language, (newValue) => {
   editor.value.session.setMode(getAceMode(newValue.ace));
-  editor.value.session.setValue(props.scriptOnChange(newValue));
+  if (isDefaultScript(script.value)) {
+    editor.value.session.setValue(props.scriptOnChange(newValue));
+  }
 });
 
 onMounted(() => {

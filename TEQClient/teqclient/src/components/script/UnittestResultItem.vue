@@ -8,12 +8,16 @@ defineProps({
     type: Object,
     required: false,
   },
+  passed: {
+    type: Boolean,
+    required: true,
+  },
 });
 </script>
 
 <template>
   <div>
-    <details v-if="failure">
+    <details v-if="failure || !passed">
       <summary class="text-danger">
         <strong>{{ testName }} <i class="fa-solid fa-xmark"></i></strong>
       </summary>

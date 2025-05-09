@@ -1,6 +1,7 @@
 import { sendAsync } from "@/js/utility/request.js";
+import { GATEWAY } from "@/js/api/microservices/gateway.js";
 
-const API = "http://127.0.0.1:8005/uk/similarity/";
+const API = `${GATEWAY}/nl/similarity/`;
 
 export const findTextSimilarity = (text1, text2) => {
   const request = {

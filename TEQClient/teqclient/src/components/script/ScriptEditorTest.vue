@@ -4,6 +4,7 @@ import { languages } from "@/js/languages.js";
 import { ref, watch } from "vue";
 import UnittestResultItem from "@/components/script/UnittestResultItem.vue";
 import { extractNumber } from "@/js/utility/utility.js";
+import { testCode } from "@/js/api/microservices/tester.js";
 
 const props = defineProps({
   readonly: {
@@ -50,14 +51,14 @@ const run = () => {
   testingResult.value = null;
   error.value = null;
 
-  const tester = language.value.tester;
+  const type = language.value?.type;
 
-  if (!tester) {
+  if (!type) {
     error.value = "Testing error";
     return Promise.reject(error);
   }
 
-  return tester({
+  return testCode(type, {
     script: script.value,
     unittests: props.testData.unittests,
     functionStructure: props.testData.functionStructure,

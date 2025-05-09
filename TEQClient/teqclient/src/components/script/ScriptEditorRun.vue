@@ -2,6 +2,7 @@
 import AceScriptEditor from "@/components/script/AceScriptEditor.vue";
 import { languages } from "@/js/languages.js";
 import { ref } from "vue";
+import { runCode } from "@/js/api/microservices/runner.js";
 
 defineProps({
   readonly: {
@@ -31,9 +32,7 @@ const run = (language, script) => {
   output.value = null;
   error.value = null;
 
-  const runner = language.runner;
-
-  return runner(script ?? "").then((res) => {
+  return runCode(language.type, script ?? "").then((res) => {
     output.value = res.output;
     error.value = res.error;
   });

@@ -1,9 +1,7 @@
 import { sendAsync } from "@/js/utility/request.js";
 import { GATEWAY } from "@/js/api/microservices/gateway.js";
 
-const API = `${GATEWAY}/python/test/`;
-
-export const testPythonCode = ({ script, functionStructure, functionType, unittests }) => {
+export const testCode = (language, { script, functionStructure, functionType, unittests }) => {
   const request = {
     method: "POST",
     headers: {
@@ -12,5 +10,5 @@ export const testPythonCode = ({ script, functionStructure, functionType, unitte
     body: JSON.stringify({ script, functionStructure, functionType, unittests }),
   };
   console.log({ script, functionStructure, functionType, unittests });
-  return sendAsync(API, request);
+  return sendAsync(`${GATEWAY}/${language}/test/`, request);
 };

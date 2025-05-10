@@ -6,3 +6,9 @@ python-decouple==3.8
 dj-database-url==2.3.0
 django-rest-framework-mongoengine==3.4.1
 requests==2.32.3
+celery==5.5.2
+gevent==25.4.2
+redis==6.0.0
+asgiref~=3.8.1
+psycopg2==2.9.10
+gunicorn==23.0.0

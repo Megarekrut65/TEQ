@@ -1,5 +1,5 @@
-from mainapp.api.python_tester import python_run_tests
-from mainapp.api.similarity import calculate_similarity
+from mainapp.api.code_tester import run_code_tests
+from mainapp.api.pl_similarity import calculate_similarity
 from mainapp.models.answer import AnswerScriptUnitTestItem, AnswerUnitTestFailure, AnswerScriptItem
 from mainapp.models.test import ScriptUnitTestItem, ScriptItem
 from mainapp.test_checker.text import check_text_item
@@ -8,24 +8,22 @@ from mainapp.test_checker.text import check_text_item
 def convert_unittests(unittests_field):
     return [{"inTest":unittest.in_test, "outTest": unittest.out_test, "prefix":unittest.prefix} for unittest in unittests_field]
 
-def check_unittests(unittests_field, test_runner, function_structure, function_type, script):
+def check_unittests(unittests_field, language, function_structure, function_type, script):
     unittests = convert_unittests(unittests_field)
 
-    data = test_runner(function_structure, function_type, unittests, script)
+    data = run_code_tests(language, function_structure, function_type, unittests, script)
     failures = [AnswerUnitTestFailure(test_name=fail["testName"], reason=fail["reason"])
                 for fail in data["failures"]]
 
     return data["passed"], failures, data["totalTests"]
 
 def check_script_unittest_item(answer_item:AnswerScriptUnitTestItem, test_item: ScriptUnitTestItem):
-    test_runner = python_run_tests
-
     structure =test_item.function_structure
     type_ = test_item.function_type
     script = answer_item.answer
 
     try:
-        data = check_unittests(test_item.public_unittests+test_item.private_unittests, test_runner, structure, type_, script)
+        data = check_unittests(test_item.public_unittests+test_item.private_unittests, test_item.language, structure, type_, script)
     except Exception as e:
         answer_item.grade = 0
         answer_item.error = str(e)

@@ -6,7 +6,7 @@ from mainapp.models.test import Test
 from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner, IsAnswerTestOwner
 from mainapp.serializers.answer import AnswerSerializer, AnswerItemGradeSerializer, AnswerCheckSerializer
 from mainapp.serializers.safe_test import PassTestSerializer
-from mainapp.test_checker import check_test
+from mainapp.tasks import handle_auto_check_task
 
 
 class TestRetrieveApiView(RetrieveAPIView):
@@ -29,7 +29,7 @@ class AnswerCreateApiView(CreateAPIView):
         test.save()
 
         if test.auto_check:
-            check_test(answer)
+            handle_auto_check_task.delay_on_commit(answer.id)
 
 
 class LastAnswerRetrieveApiView(RetrieveAPIView):

@@ -1,4 +1,4 @@
-from mainapp.api.similarity import calculate_similarity
+from mainapp.api.nl_similarity import calculate_similarity
 from mainapp.models.answer import AnswerTextItem
 from mainapp.models.test import TextItem
 

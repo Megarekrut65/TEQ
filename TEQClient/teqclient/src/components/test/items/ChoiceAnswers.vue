@@ -46,7 +46,7 @@ const onChoiceRemoved = (index) => {
       <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span
     ></label>
 
-    <div class="row" v-for="choice in formData.choices" :key="choice">
+    <div class="row" v-for="(choice, i) in formData.choices" :key="choice">
       <div class="col-4 col-md-3 col-lg-2">
         <div class="form-check form-switch">
           <input
@@ -67,7 +67,7 @@ const onChoiceRemoved = (index) => {
           v-model.trim="choice.text"
           :placeholder="$t('choiceText')"
         />
-        <div class="btn-hover ms-3" @click="onChoiceRemoved" v-if="allowRemove(choice)">
+        <div class="btn-hover ms-3" @click="() => onChoiceRemoved(i)" v-if="allowRemove(choice)">
           <i class="fa-solid fa-trash-can"></i>
         </div>
       </div>

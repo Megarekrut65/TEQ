@@ -13,6 +13,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  showTests: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 });
 
 const language = ref(getLanguage(props.item.language));
@@ -46,6 +51,7 @@ const testResult = ref(
         language-readonly
         :readonly="readonly"
         :test-result="testResult"
+        :show-tests="showTests"
       >
       </ScriptEditorTest>
     </div>

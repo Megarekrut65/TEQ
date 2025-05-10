@@ -102,7 +102,7 @@ const run = () => {
           class="btn btn-outline-secondary my-0"
           type="button"
           @click="run"
-          :disabled="ran || readonly || script.length === 0"
+          :disabled="ran || script?.length === 0"
         >
           {{ $t("run") }}
         </button>

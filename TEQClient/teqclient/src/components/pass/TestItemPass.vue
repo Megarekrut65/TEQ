@@ -98,6 +98,7 @@ const updateGrade = () => {
         :readonly="readonly"
         v-model="formData"
         :item="item"
+        :show-tests="autoCheck"
       />
     </div>
   </div>

@@ -112,6 +112,8 @@ export const uk = {
   publish: "Опублікувати",
   answers: "Відповіді",
   markChecked: "Позначити роботу перевіреною",
+  markAgree: "Погодитися з результатами",
+  notAgreed: "Не погодився з результатами",
 
   pool: "Колекції",
   missingCategory: "Колекції відсутні",

@@ -5,7 +5,7 @@ import LoadingWindow from "@/components/LoadingWindow.vue";
 
 import TestItemPass from "@/components/pass/TestItemPass.vue";
 import { MULTIPLE, SCRIPT_UNITTEST, SINGLE } from "@/js/types.js";
-import { answerCheckUpdateApi, testPassPostApi } from "@/js/api/answer.js";
+import { answerAgreeUpdateApi, answerCheckUpdateApi, testPassPostApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 import { getUser } from "@/js/utility/auth.js";
 
@@ -66,17 +66,32 @@ const onSubmit = () => {
     });
 };
 
-const userIsOwner = () => {
+const userIsTestOwner = () => {
   const user = getUser();
   if (user) return user.id === props.answer?.test?.owner?.id;
   return false;
 };
-const isOwner = ref(userIsOwner());
+const isTestOwner = ref(userIsTestOwner());
+
+const userIsAnswerOwner = () => {
+  const user = getUser();
+  if (user) return user.id === props.answer?.owner?.id && answer.value?.id;
+  return false;
+};
+const isAnswerOwner = ref(userIsAnswerOwner());
 
 const markChecked = () => {
   answerCheckUpdateApi(answer.value.id)
     .then(() => {
       answer.value.checked = true;
+    })
+    .catch(errorAlert);
+};
+
+const markAgree = () => {
+  answerAgreeUpdateApi(answer.value.id)
+    .then(() => {
+      answer.value.agree = true;
     })
     .catch(errorAlert);
 };
@@ -99,27 +114,44 @@ const updateGrade = () => {
         <h3 class="text-white col-12 col-md-6">{{ test.title }}</h3>
 
         <div class="text-primary text-right col-12 col-md-6" v-if="answer?.id">
-          <button v-if="isOwner && !answer.checked" class="btn btn-success" @click="markChecked">
-            {{ $t("markChecked") }}
-          </button>
           <div>{{ answer.owner.fullname }}</div>
           <div>{{ answer.owner.email }}</div>
         </div>
-        <div class="col-12 mt-2">
-          <span v-if="answer.checked || isOwner" class="badge text-dark bg-primary me-2"
+        <div class="col-12 mt-2" v-if="answer.id">
+          <span v-if="answer.checked || isTestOwner" class="badge text-dark bg-primary me-2"
             >{{ answer.grade }}/{{ answer.maxGrade }}</span
           >
-          <span v-if="answer.checked" class="badge text-dark bg-info me-2">{{
-            $t("checked")
-          }}</span>
-          <span v-if="answer.autoChecked" class="badge text-dark bg-warning">{{
-            $t("autoChecked")
-          }}</span>
+          <span v-if="answer.checked" class="badge text-dark bg-info me-2">
+            {{ $t("checked") }}</span
+          >
+          <span v-if="answer.autoChecked" class="badge text-dark bg-warning me-2">
+            {{ $t("autoChecked") }}</span
+          >
+          <span v-if="!answer.agree" class="badge text-dark bg-danger">{{ $t("notAgreed") }}</span>
         </div>
       </div>
     </div>
-    <div class="card-body" v-if="test.description">
+    <div class="card-body">
       {{ test.description }}
+    </div>
+
+    <div class="card-footer" v-if="answer.id">
+      <button
+        v-if="isTestOwner"
+        :disabled="answer.checked"
+        class="btn btn-success"
+        @click="markChecked"
+      >
+        {{ $t("markChecked") }}
+      </button>
+      <button
+        v-if="isAnswerOwner"
+        :disabled="answer.agree"
+        class="btn btn-danger"
+        @click="markAgree"
+      >
+        {{ $t("markAgree") }}
+      </button>
     </div>
   </div>
 
@@ -132,10 +164,10 @@ const updateGrade = () => {
         v-model="answer.items[index]"
         :item="item"
         :readonly="readonly"
-        :show-correct="(test.showCorrect && readonly && answer.checked) || isOwner"
-        :auto-check="answer.autoChecked"
+        :show-correct="(test.showCorrect && readonly && answer.checked) || isTestOwner"
+        :auto-check="answer.autoChecked && answer.checked"
         :answer-id="answer.id ?? ''"
-        :is-owner="isOwner"
+        :is-owner="isTestOwner"
         :update-grade="updateGrade"
       />
     </div>

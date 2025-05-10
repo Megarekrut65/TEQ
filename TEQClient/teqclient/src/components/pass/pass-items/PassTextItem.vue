@@ -54,9 +54,15 @@ const formData = defineModel({ required: true });
 
     <div v-if="showCorrect && item.correctAnswer">
       <span class="text-success">{{ $t("answer") }}</span>
-      <p>{{ item.correctAnswer }}</p>
+      <p class="correct-answer">{{ item.correctAnswer }}</p>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.correct-answer {
+  white-space: pre-wrap;
+  max-height: 35vh;
+  overflow-y: auto;
+}
+</style>

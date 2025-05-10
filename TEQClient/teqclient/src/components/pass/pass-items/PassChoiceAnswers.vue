@@ -59,7 +59,7 @@ const formData = defineModel({ required: true });
       </div>
     </div>
     <input
-      class="form-check-input hide"
+      class="hide"
       type="radio"
       :name="`radio_${index}`"
       v-model="formData.choices[0]"

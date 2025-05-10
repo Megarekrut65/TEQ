@@ -31,6 +31,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  showTests: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 });
 
 const language = defineModel("language", { required: false, default: languages[0] });
@@ -70,7 +75,6 @@ const run = () => {
     }
 
     testingResult.value = res;
-    console.log(res);
   });
 };
 
@@ -103,7 +107,7 @@ const getFailure = (index) => {
         :on-changed="onChanged"
         :script-on-change="scriptOnChange"
       >
-        <div v-if="testingResult">
+        <div v-if="testingResult && showTests">
           <UnittestResultItem
             v-for="(test, index) in testData.unittests"
             :key="test"

@@ -1,1 +1,1 @@
-export const GATEWAY = "http://localhost:8080";
+export const GATEWAY = import.meta.env.VITE_SERVICE_GATEWAY;

@@ -1,6 +1,5 @@
 import { sendAsync } from "@/js/utility/request.js";
-import { API } from "@/js/api/api.js";
-import { getToken } from "@/js/utility/token.js";
+import { API, getRequest } from "@/js/api/api.js";
 
 export const itemCreateApi = (
   containerId,
@@ -34,27 +33,14 @@ export const itemCreateApi = (
     functionStructure,
     functionType,
   };
-
-  const request = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${getToken()}`,
-    },
-    body: JSON.stringify(payload),
-  };
+  const request = getRequest("POST", payload, true);
 
   return sendAsync(`${API}${endpoint}/item/${containerId}/`, request);
 };
 
 export const itemDeleteApi = (containerId, index, endpoint = "test") => {
-  const request = {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${getToken()}`,
-    },
-  };
+  const request = getRequest("DELETE", null, true);
+
   return sendAsync(API + `${endpoint}/item/${index}/${containerId}/`, request);
 };
 
@@ -92,14 +78,7 @@ export const itemUpdateApi = (
     functionType,
   };
 
-  const request = {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${getToken()}`,
-    },
-    body: JSON.stringify(payload),
-  };
+  const request = getRequest("PUT", payload, true);
 
   return sendAsync(API + `${endpoint}/item/${index}/${containerId}/`, request);
 };

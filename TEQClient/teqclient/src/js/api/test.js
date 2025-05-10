@@ -1,74 +1,54 @@
 import { sendAsync } from "@/js/utility/request.js";
-import { API } from "@/js/api/api.js";
-import { getToken } from "@/js/utility/token.js";
+import { API, getRequest } from "@/js/api/api.js";
 
 export const testCreateApi = ({ title, description }) => {
-    const request = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${getToken()}`,
-        },
-        body: JSON.stringify({ title, description }),
-    };
-    return sendAsync(API + "test/", request);
+  const request = getRequest("POST", { title, description }, true);
+
+  return sendAsync(API + "test/", request);
 };
 
 const testGetDeleteApi = (testId, method) => {
-    const request = {
-        method: method,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${getToken()}`,
-        },
-    };
-    return sendAsync(API + `test/${testId}/`, request);
+  const request = getRequest(method, null, true);
+  return sendAsync(API + `test/${testId}/`, request);
 };
 
 export const testGetApi = (testId) => {
-    return testGetDeleteApi(testId, "GET");
+  return testGetDeleteApi(testId, "GET");
 };
 
 export const testDeleteApi = (testId) => {
-    return testGetDeleteApi(testId, "DELETE");
+  return testGetDeleteApi(testId, "DELETE");
 };
 
 export const testUpdateApi = (
-    testId,
-    { title, description, isPublic, canShare, autoCheck, showResult, showCorrect },
+  testId,
+  { title, description, isPublic, canShare, autoCheck, showResult, showCorrect },
 ) => {
-    const request = {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${getToken()}`,
-        },
-        body: JSON.stringify({ title, description, isPublic, canShare, autoCheck, showResult, showCorrect }),
-    };
+  const request = getRequest(
+    "PUT",
+    {
+      title,
+      description,
+      isPublic,
+      canShare,
+      autoCheck,
+      showResult,
+      showCorrect,
+    },
+    true,
+  );
 
-    return sendAsync(API + `test/${testId}/`, request);
+  return sendAsync(API + `test/${testId}/`, request);
 };
 
 export const testListApi = () => {
-    const request = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${getToken()}`,
-        },
-    };
+  const request = getRequest("GET", null, true);
 
-    return sendAsync(API + `tests/`, request);
+  return sendAsync(API + `tests/`, request);
 };
 
 export const publicTestListApi = () => {
-  const request = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${getToken()}`,
-    },
-  };
+  const request = getRequest("GET");
 
   return sendAsync(API + `public/tests/`, request);
 };

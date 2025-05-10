@@ -81,6 +81,11 @@ class AnswerCheckSerializer(CamelCaseModelSerializer):
         model = Answer
         fields = ["checked"]
 
+class AnswerAgreeSerializer(CamelCaseModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ["agree"]
+
 class AnswerSerializer(CamelCaseModelSerializer):
     items = serializers.SerializerMethodField()
     test_items = serializers.SerializerMethodField()

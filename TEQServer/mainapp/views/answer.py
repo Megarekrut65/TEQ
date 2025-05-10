@@ -3,8 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from mainapp.models.answer import Answer, AnswerDocument
 from mainapp.models.test import Test
-from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner, IsAnswerTestOwner
-from mainapp.serializers.answer import AnswerSerializer, AnswerItemGradeSerializer, AnswerCheckSerializer
+from mainapp.permitions import CanAccessTest, CanAccessAnswer, IsTestOwner, IsAnswerTestOwner, IsAnswerOwner
+from mainapp.serializers.answer import AnswerSerializer, AnswerItemGradeSerializer, AnswerCheckSerializer, \
+    AnswerAgreeSerializer
 from mainapp.serializers.safe_test import PassTestSerializer
 from mainapp.tasks import handle_auto_check_task
 
@@ -88,7 +89,12 @@ class AnswerItemUpdateAPIView(UpdateAPIView):
     def get_object(self):
         return AnswerDocument.objects.get(pk=self.kwargs["pk"])
 
-class AnswerUpdateAPIView(UpdateAPIView):
+class AnswerCheckUpdateAPIView(UpdateAPIView):
     serializer_class = AnswerCheckSerializer
     permission_classes = [IsAnswerTestOwner]
+    queryset = Answer.objects.all()
+
+class AnswerAgreeUpdateAPIView(UpdateAPIView):
+    serializer_class = AnswerAgreeSerializer
+    permission_classes = [IsAnswerOwner]
     queryset = Answer.objects.all()

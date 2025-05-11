@@ -42,14 +42,17 @@ export const testUpdateApi = (
   return sendAsync(API + `test/${testId}/`, request);
 };
 
-export const testListApi = () => {
+export const testListApi = (page = 1) => {
   const request = getRequest("GET", null, true);
 
-  return sendAsync(API + `tests/`, request);
+  return sendAsync(API + `tests/?page=${page}`, request);
 };
 
-export const publicTestListApi = (category) => {
+export const publicTestListApi = (category, page = 1) => {
   const request = getRequest("GET");
 
-  return sendAsync(API + `public/tests/${category ? "?category=" + category : ""}`, request);
+  return sendAsync(
+    API + `public/tests/?page=${page}${category ? "&category=" + category : ""}`,
+    request,
+  );
 };

@@ -20,13 +20,17 @@ import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
             <h5>{{ $t("menu") }}</h5>
             <ul class="menu-list">
               <li class="menu-item">
-                <a href="#">{{ $t("publicTests") }}</a>
+                <LocalizedLink to="/">{{ $t("home") }}</LocalizedLink>
               </li>
               <li class="menu-item">
-                <a href="#">{{ $t("savedTests") }}</a>
+                <LocalizedLink to="/public">{{ $t("publicTests") }}</LocalizedLink>
+              </li>
+
+              <li class="menu-item">
+                <LocalizedLink to="/contacts">{{ $t("contacts") }}</LocalizedLink>
               </li>
               <li class="menu-item">
-                <a href="#">{{ $t("contacts") }}</a>
+                <LocalizedLink to="/privacy">{{ $t("privacy.title") }}</LocalizedLink>
               </li>
             </ul>
           </div>

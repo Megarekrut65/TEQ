@@ -31,7 +31,7 @@ window.addEventListener("auth", (data) => {
         <LocalizedLink to="/contacts" class="nav-link">{{ $t("contacts") }}</LocalizedLink>
       </li>
       <li class="nav-item">
-        <LocalizedLink to="/privacy" class="nav-link">{{ $t("privacy") }}</LocalizedLink>
+        <LocalizedLink to="/privacy" class="nav-link">{{ $t("privacy.title") }}</LocalizedLink>
       </li>
       <li v-if="user" class="nav-item dropdown dropstart">
         <div class="dropdown">

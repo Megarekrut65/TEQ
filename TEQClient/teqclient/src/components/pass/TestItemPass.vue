@@ -58,7 +58,7 @@ const updateGrade = () => {
   <div class="card mt-3">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <label>{{ index }}. {{ item.text }}</label>
+        <label class="wrap">{{ index }}. {{ item.text.trim() }}</label>
         <div v-if="isOwner" class="badge">
           <label class="form-label text-dark"
             >{{ $t("grade") }}({{ formData.grade }}/{{ item.grade }})</label
@@ -115,5 +115,8 @@ form {
 
 .badge {
   height: min-content;
+}
+.wrap {
+  white-space: pre-wrap;
 }
 </style>

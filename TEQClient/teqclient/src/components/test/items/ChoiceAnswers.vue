@@ -43,7 +43,8 @@ const onChoiceRemoved = (index) => {
   <div class="mb-3">
     <label class="form-label"
       >{{ $t("choices") }}
-      <span class="btn btn-link" @click="addChoice"><i class="fa-solid fa-plus"></i></span
+      <span class="btn btn-link" @click="addChoice" v-if="formData.choices.length < 10"
+        ><i class="fa-solid fa-plus"></i></span
     ></label>
 
     <div class="row" v-for="(choice, i) in formData.choices" :key="choice">
@@ -65,6 +66,7 @@ const onChoiceRemoved = (index) => {
           type="text"
           class="form-control"
           v-model.trim="choice.text"
+          maxlength="200"
           :placeholder="$t('choiceText')"
         />
         <div class="btn-hover ms-3" @click="() => onChoiceRemoved(i)" v-if="allowRemove(choice)">

@@ -12,7 +12,7 @@ import AnswerSimilarity from "@/components/test/items/AnswerSimilarity.vue";
 import ScriptAnswer from "@/components/test/items/ScriptAnswer.vue";
 import ScriptUnittestAnswer from "@/components/test/items/ScriptUnittestAnswer.vue";
 import { formatItem } from "@/js/utility/item-formatter.js";
-import { ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 
 const props = defineProps({
   index: {
@@ -83,6 +83,29 @@ const onPasteNew = () => {
     props.onItemPaste(data);
   }
 };
+
+const textareaRef = ref(null);
+const inputRef = ref(null);
+
+const pressedEnter = computed(() => formData.value.text.includes("\n"));
+const onPressed = () => {
+  formData.value.text += "\n";
+
+  nextTick(() => {
+    textareaRef.value?.focus();
+  });
+};
+
+watch(
+  () => formData.value.text,
+  () => {
+    if (!formData.value.text.includes("\n")) {
+      nextTick(() => {
+        inputRef.value?.focus();
+      });
+    }
+  },
+);
 </script>
 
 <template>
@@ -103,13 +126,29 @@ const onPasteNew = () => {
             </div>
           </DotsMenu>
         </div>
-        <label class="form-label" for="text">{{ index }}. {{ formData.text }}</label>
+        <label class="form-label" for="text">
+          {{ index }}. <span class="wrap">{{ formData.text.trim() }}</span></label
+        >
+        <textarea
+          ref="textareaRef"
+          v-if="pressedEnter"
+          v-model="formData.text"
+          class="form-control"
+          :placeholder="$t('questionText')"
+          required
+          maxlength="500"
+          rows="4"
+        ></textarea>
         <input
-          v-model.trim="formData.text"
+          ref="inputRef"
+          v-else
+          @keydown.enter="onPressed"
+          v-model="formData.text"
           type="text"
           class="form-control"
           :placeholder="$t('questionText')"
           required
+          maxlength="500"
         />
       </div>
 
@@ -180,5 +219,8 @@ button {
 
 form {
   margin-bottom: 0;
+}
+.wrap {
+  white-space: pre-wrap;
 }
 </style>

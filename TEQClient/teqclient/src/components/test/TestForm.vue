@@ -152,7 +152,7 @@ const onOpenPool = (item, pasteMode) => {
         :open-pool="onOpenPool"
       />
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" v-if="formData.items.length < 100">
       <img src="@/assets/images/plus.png" class="btn-img" alt="plus" @click="addNewAnswer" />
     </div>
   </div>

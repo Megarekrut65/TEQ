@@ -18,6 +18,7 @@ const activeModel = defineModel("active");
         role="switch"
         :title="$t('publicHint')"
         v-model="model.isPublic"
+        :disabled="model.items.length === 0"
       />
       <label class="form-check-label">{{ $t("isPublic") }}</label>
     </div>

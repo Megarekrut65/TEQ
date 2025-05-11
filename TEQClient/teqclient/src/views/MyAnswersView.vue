@@ -49,7 +49,8 @@ updatePage(1);
             <LocalizedLink :to="`/pass/${answer.test.id}`">{{ answer.test.title }}</LocalizedLink>
           </td>
           <td>{{ new Date(answer.passDate).toLocaleString() }}</td>
-          <td>{{ answer.grade }}/{{ answer.maxGrade }}</td>
+          <td v-if="answer.checked">{{ answer.grade }}/{{ answer.maxGrade }}</td>
+          <td v-else>-/-</td>
           <td>
             <LocalizedLink :to="`/answer/${answer.id}`">{{ $t("goTo") }}</LocalizedLink>
           </td>

@@ -43,8 +43,8 @@ export const answerItemUpdateApi = (answerId, index, { grade }) => {
   return sendAsync(API + `answer/item/${index}/${answerId}/`, request);
 };
 
-export const answerCheckUpdateApi = (answerId) => {
-  const request = getRequest("PUT", { checked: true }, true);
+export const answerCheckUpdateApi = (answerId, checked = true) => {
+  const request = getRequest("PUT", { checked }, true);
 
   return sendAsync(API + `answer/check/${answerId}/`, request);
 };

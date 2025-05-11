@@ -1,8 +1,8 @@
 <script setup>
 import ModalWindow from "@/components/ModalWindow.vue";
 import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
-import { ref } from "vue";
-import { answerTestGetListApi } from "@/js/api/answer.js";
+import { onMounted, onUnmounted, ref } from "vue";
+import { answerCheckUpdateApi, answerTestGetListApi } from "@/js/api/answer.js";
 import { errorAlert } from "@/js/utility/utility.js";
 
 const props = defineProps({
@@ -26,7 +26,22 @@ const refreshAnswers = () => {
 
 refreshAnswers();
 
-setInterval(refreshAnswers, 10000);
+const interval = ref(null);
+onMounted(() => {
+  interval.value = setInterval(refreshAnswers, 10000);
+});
+
+onUnmounted(() => {
+  if (interval.value) {
+    clearInterval(interval.value);
+  }
+});
+
+const onCheck = (index, checked) => {
+  const answer = answers.value[index];
+  answer.checked = checked;
+  answerCheckUpdateApi(answer.id, checked).catch(errorAlert);
+};
 </script>
 
 <template>
@@ -45,8 +60,9 @@ setInterval(refreshAnswers, 10000);
             <th>{{ $t("passDate") }}</th>
             <th>{{ $t("grade") }}</th>
             <th>{{ $t("autoCheckedTh") }}</th>
-            <th>{{ $t("goTo") }}</th>
-            <th>{{ $t("publishResultTh") }}</th>
+            <th><i class="fa-solid fa-handshake"></i></th>
+            <th><i class="fa-solid fa-arrow-right"></i></th>
+            <th><i class="fa-solid fa-eye"></i></th>
           </tr>
         </thead>
         <tbody>
@@ -58,12 +74,35 @@ setInterval(refreshAnswers, 10000);
             <td>{{ answer.grade.toFixed(2) }}/{{ answer.maxGrade.toFixed(2) }}</td>
             <td>{{ answer.autoChecked ? $t("yes") : $t("no") }}</td>
             <td>
-              <LocalizedLink :to="`/answer/${answer.id}`" target="_blank">{{
-                $t("goTo")
-              }}</LocalizedLink>
+              <i
+                v-if="answer.agree"
+                class="fa-solid fa-handshake text-success"
+                :title="$t('agreed')"
+              ></i>
+              <i v-else class="fa-solid fa-handshake text-danger" :title="$t('notAgreed')"></i>
             </td>
             <td>
-              <a href="#">{{ $t("publish") }}</a>
+              <LocalizedLink :to="`/answer/${answer.id}`" target="_blank">
+                <i class="fa-solid fa-arrow-right" :title="$t('goTo')"></i
+              ></LocalizedLink>
+            </td>
+            <td>
+              <div
+                class="btn-hover"
+                :title="$t('published')"
+                v-if="answer.checked"
+                @click="() => onCheck(index, false)"
+              >
+                <i class="fa-solid fa-eye text-success"></i>
+              </div>
+              <div
+                class="btn-hover"
+                :title="$t('publishResultTh')"
+                v-else
+                @click="() => onCheck(index, true)"
+              >
+                <i class="fa-solid fa-eye-slash text-danger"></i>
+              </div>
             </td>
           </tr>
         </tbody>

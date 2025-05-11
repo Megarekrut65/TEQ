@@ -13,6 +13,7 @@ import TestSettings from "@/components/test/TestSettings.vue";
 import TestShare from "@/components/test/TestShare.vue";
 import TestAnswers from "@/components/test/TestAnswers.vue";
 import PoolWindow from "@/components/pool/PoolWindow.vue";
+import { CATEGORIES } from "@/js/categories.js";
 
 const props = defineProps({
   instance: {
@@ -116,6 +117,19 @@ const onOpenPool = (item, pasteMode) => {
           maxlength="255"
           required
         />
+      </div>
+      <div>
+        <label class="form-label" for="category">{{ $t("categoryType") }}</label>
+        <select class="form-select" v-model="formData.category">
+          <option
+            v-for="(category, i) in CATEGORIES"
+            :key="i"
+            :value="category"
+            :selected="i === 0"
+          >
+            {{ $t(category) }}
+          </option>
+        </select>
       </div>
       <div>
         <label class="form-label" for="description">{{ $t("description") }}</label>

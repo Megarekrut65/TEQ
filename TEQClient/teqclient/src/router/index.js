@@ -23,6 +23,16 @@ const router = createRouter({
           component: () => import("../views/PublicTestsView.vue"),
         },
         {
+          path: "contacts",
+          name: "contacts",
+          component: () => import("../views/ContactsView.vue"),
+        },
+        {
+          path: "privacy",
+          name: "privacy",
+          component: () => import("../views/ContactsView.vue"),
+        },
+        {
           path: "auth",
           name: "auth",
           component: () => import("../views/AuthView.vue"),

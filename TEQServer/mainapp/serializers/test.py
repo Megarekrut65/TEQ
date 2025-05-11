@@ -163,7 +163,7 @@ class TestSerializer(CamelCaseModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "is_public", "can_share", "auto_check",
+        fields = ["id", "owner", "created_date", "title", "description", "category", "is_public", "can_share", "auto_check",
                   "items", "show_result", "show_correct", "grade"]
         read_only_fields = ["id", "created_date"]
 

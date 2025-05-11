@@ -147,7 +147,7 @@ const updateGrade = () => {
       <button
         v-if="isAnswerOwner"
         :disabled="answer.agree"
-        class="btn btn-danger"
+        class="btn btn-danger ms-2"
         @click="markAgree"
       >
         {{ $t("markAgree") }}

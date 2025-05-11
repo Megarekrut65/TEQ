@@ -86,4 +86,9 @@ class PublicTestListAPIView(ListAPIView):
     serializer_class = PassTestSerializer
 
     def get_queryset(self):
-        return Test.objects.filter(is_public=True).order_by("-answer_count", "-id")
+        queryset = Test.objects.filter(is_public=True)
+        category = self.request.GET.get("category")
+        if category:
+            queryset = queryset.filter(category=category)
+
+        return queryset.order_by("-answer_count", "-id")

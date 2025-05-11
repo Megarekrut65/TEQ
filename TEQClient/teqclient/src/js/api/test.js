@@ -1,8 +1,8 @@
 import { sendAsync } from "@/js/utility/request.js";
 import { API, getRequest } from "@/js/api/api.js";
 
-export const testCreateApi = ({ title, description }) => {
-  const request = getRequest("POST", { title, description }, true);
+export const testCreateApi = ({ title, description, category }) => {
+  const request = getRequest("POST", { title, description, category }, true);
 
   return sendAsync(API + "test/", request);
 };
@@ -22,13 +22,14 @@ export const testDeleteApi = (testId) => {
 
 export const testUpdateApi = (
   testId,
-  { title, description, isPublic, canShare, autoCheck, showResult, showCorrect },
+  { title, description, category, isPublic, canShare, autoCheck, showResult, showCorrect },
 ) => {
   const request = getRequest(
     "PUT",
     {
       title,
       description,
+      category,
       isPublic,
       canShare,
       autoCheck,
@@ -47,8 +48,8 @@ export const testListApi = () => {
   return sendAsync(API + `tests/`, request);
 };
 
-export const publicTestListApi = () => {
+export const publicTestListApi = (category) => {
   const request = getRequest("GET");
 
-  return sendAsync(API + `public/tests/`, request);
+  return sendAsync(API + `public/tests/${category ? "?category=" + category : ""}`, request);
 };

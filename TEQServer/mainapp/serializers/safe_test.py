@@ -31,7 +31,7 @@ class SafeTestSerializer(CamelCaseModelSerializer):
 
     class Meta:
         model = Test
-        fields = ["id", "owner", "created_date", "title", "description", "show_correct", "items", "answer_count"]
+        fields = ["id", "owner", "created_date", "title", "description", "category", "show_correct", "items", "answer_count"]
         read_only_fields = ["id", "created_date"]
 
     def get_items(self, obj):

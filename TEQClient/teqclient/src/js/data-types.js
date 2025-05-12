@@ -7,7 +7,7 @@ export const defaultAnswer = () => {
     allowProportion: false,
     grade: 1,
     choices: defaultChoices(),
-    minSimilarPercent: 100,
+    minSimilarPercent: 90,
     language: languages[0].type,
   };
 };

@@ -104,6 +104,10 @@ const updateGrade = () => {
 
   answer.value.grade = grade;
 };
+
+const refresh = () => {
+  window.location.reload();
+};
 </script>
 
 <template>
@@ -111,7 +115,12 @@ const updateGrade = () => {
   <div class="card">
     <div class="card-header bg-secondary">
       <div class="row">
-        <h3 class="text-white col-12 col-md-6">{{ test.title }}</h3>
+        <h3 class="text-white col-12 col-md-6">
+          <span class="btn-hover" v-if="answer?.id && answer?.checked === false"
+            ><i class="fa-solid fa-arrows-rotate" @click="refresh"></i
+          ></span>
+          {{ test.title }}
+        </h3>
 
         <div class="text-primary text-right col-12 col-md-6" v-if="answer?.id">
           <div>{{ answer.owner.fullname }}</div>
@@ -185,5 +194,8 @@ button {
 
 form {
   margin-bottom: 0;
+}
+span.btn-hover:hover {
+  color: black;
 }
 </style>

@@ -2,7 +2,11 @@ import { sendAsync } from "@/js/utility/request.js";
 import { API, getRequest } from "@/js/api/api.js";
 
 export const testCreateApi = ({ title, description, category }) => {
-  const request = getRequest("POST", { title, description, category }, true);
+  const request = getRequest(
+    "POST",
+    { title, description, category, autoCheck: true, showResult: true },
+    true,
+  );
 
   return sendAsync(API + "test/", request);
 };

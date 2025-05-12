@@ -36,7 +36,7 @@ updatePage(1);
       <thead class="table-dark">
         <tr>
           <th class="text-center">#</th>
-          <th>{{ $t("title") }}</th>
+          <th class="test-title">{{ $t("test") }}</th>
           <th>{{ $t("passDate") }}</th>
           <th>{{ $t("grade") }}</th>
           <th>{{ $t("goTo") }}</th>
@@ -69,4 +69,8 @@ updatePage(1);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.test-title {
+  text-transform: capitalize;
+}
+</style>

@@ -23,7 +23,7 @@ export const formatItem = (item) => {
   }
 
   if ([SCRIPT, SHORT, FULL].includes(item.type) && !item.minSimilarPercent) {
-    item.minSimilarPercent = 99;
+    item.minSimilarPercent = 90;
   }
 
   if ([SCRIPT].includes(item.type) && !item.language) {

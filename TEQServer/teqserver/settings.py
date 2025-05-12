@@ -146,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173','http://localhost:8001'
+    decouple.config("ORIGIN")
 ]
 
 CORS_ALLOW_HEADERS = '*'

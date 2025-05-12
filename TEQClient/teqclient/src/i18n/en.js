@@ -171,4 +171,5 @@ export const en = {
   prev: "Previous",
   published: "Published",
   agreed: "Agreed with the results",
+  checking: "Checking...",
 };

@@ -133,6 +133,8 @@ const refresh = () => {
           <span v-if="answer.checked" class="badge text-dark bg-info me-2">
             {{ $t("checked") }}</span
           >
+          <span v-else class="badge text-dark bg-info me-2"> {{ $t("checking") }}</span>
+
           <span v-if="answer.autoChecked" class="badge text-dark bg-warning me-2">
             {{ $t("autoChecked") }}</span
           >
@@ -154,7 +156,7 @@ const refresh = () => {
         {{ $t("markChecked") }}
       </button>
       <button
-        v-if="isAnswerOwner"
+        v-if="isAnswerOwner && answer.checked"
         :disabled="answer.agree"
         class="btn btn-danger ms-2"
         @click="markAgree"

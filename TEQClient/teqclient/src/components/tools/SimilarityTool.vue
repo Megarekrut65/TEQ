@@ -60,11 +60,23 @@ const lang = ref(languages[0]);
   <div class="row" v-if="type === 'Text'">
     <div class="col-12 col-md-6 mt-2">
       <label for="correctAnswer" class="form-label">{{ $t("first" + type) }}</label>
-      <textarea v-model.trim="text1" class="form-control" rows="3" maxlength="5000"></textarea>
+      <textarea
+        v-model.trim="text1"
+        class="form-control"
+        rows="3"
+        maxlength="5000"
+        :readonly="isRunning"
+      ></textarea>
     </div>
     <div class="col-12 col-md-6 mt-2">
       <label for="correctAnswer" class="form-label">{{ $t("second" + type) }}</label>
-      <textarea v-model.trim="text2" class="form-control" rows="3" maxlength="5000"></textarea>
+      <textarea
+        v-model.trim="text2"
+        class="form-control"
+        rows="3"
+        maxlength="5000"
+        :readonly="isRunning"
+      ></textarea>
     </div>
   </div>
   <div class="row" v-else>

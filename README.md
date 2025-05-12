@@ -22,7 +22,10 @@ A full-stack platform for creating and evaluating diverse types of educational o
 
 ## Setup
 
-1. Configure `.env` files for each service
+1. Configure `.env` files for frontend and backend
 2. Start all services:
    ```bash
    docker-compose up --build
+3. Migrate database
+    ```bash
+   docker exec -it django-server python manage.py migrate

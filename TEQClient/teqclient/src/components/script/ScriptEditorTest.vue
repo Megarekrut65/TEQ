@@ -120,6 +120,9 @@ const getFailure = (index) => {
         <div v-if="error" class="error text-danger">
           {{ error }}
         </div>
+        <div v-if="testingResult?.error" class="error text-danger">
+          {{ testingResult.error }}
+        </div>
       </AceScriptEditor>
     </div>
   </div>

@@ -18,6 +18,7 @@ class SafeItemSerializer(CamelCaseSerializer):
     type = serializers.ChoiceField(choices=ITEM_TYPES)
     choices = SafeChoiceSerializer(many=True, required=False)
 
+    grade = serializers.FloatField(min_value=0.0)
     language = serializers.CharField(max_length=50, required=False, allow_blank=True, allow_null=True)
 
     public_unittests = UnitTestSerializer(many=True, required=False)

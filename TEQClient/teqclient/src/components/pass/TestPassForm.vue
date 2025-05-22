@@ -138,7 +138,7 @@ const refresh = () => {
           <span v-if="answer.autoChecked" class="badge text-dark bg-warning me-2">
             {{ $t("autoChecked") }}</span
           >
-          <span v-if="!answer.agree" class="badge text-dark bg-danger">{{ $t("notAgreed") }}</span>
+          <span v-if="!answer.agree && answer.checked" class="badge text-dark bg-danger">{{ $t("notAgreed") }}</span>
         </div>
       </div>
     </div>

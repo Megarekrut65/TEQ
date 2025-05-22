@@ -1,6 +1,6 @@
 <script setup>
 import Menu from "@/components/app/MenuItem.vue";
-
+import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 
 const isFixedTop = ref(false);
@@ -25,9 +25,9 @@ onUnmounted(() => {
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
           <div class="main-logo navbar-brand">
-            <RouterLink to="/">
+            <LocalizedLink to="/">
               <img src="@/assets/images/main-logo.png" alt="logo" />
-            </RouterLink>
+            </LocalizedLink>
           </div>
           <button
             class="navbar-toggler"

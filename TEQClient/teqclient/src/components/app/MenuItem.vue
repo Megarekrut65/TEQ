@@ -3,7 +3,7 @@ import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
 import LanguageSelect from "@/components/l10n/LanguageSelect.vue";
 import { ref } from "vue";
 import { getUser, logout } from "@/js/utility/auth.js";
-import { truncate } from "../../js/utility/utility.js";
+import { truncate } from "@/js/utility/utility.js";
 
 const user = ref(getUser());
 

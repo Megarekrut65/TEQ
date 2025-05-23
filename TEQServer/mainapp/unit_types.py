@@ -1,1 +1,1 @@
-UNIT_TYPES = ["integer", "float", "string", "bool"]
+UNIT_TYPES = ["integer", "float", "string", "bool", "sequence"]

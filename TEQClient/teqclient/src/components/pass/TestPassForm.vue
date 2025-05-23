@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import {ref, watch} from "vue";
 import { useRouter } from "vue-router";
 import LoadingWindow from "@/components/LoadingWindow.vue";
 
@@ -53,6 +53,22 @@ const answer = ref(
     : { items: props.test.items.map(createAnswerItem), testItems: props.test.items },
 );
 
+if(!props.answer){
+  const savedAnswer = localStorage.getItem(props.test.id);
+  if (savedAnswer) {
+    try{
+      answer.value = JSON.parse(savedAnswer);
+      // eslint-disable-next-line no-unused-vars
+    } catch(error) { /* empty */ }
+
+  }
+
+  watch(()=>answer, ()=>{
+    localStorage.setItem(props.test.id, JSON.stringify(answer.value));
+  }, {deep: true});
+}
+
+
 const onSubmit = () => {
   loading.value = true;
 
@@ -63,6 +79,7 @@ const onSubmit = () => {
     .catch(errorAlert)
     .finally(() => {
       loading.value = false;
+      localStorage.removeItem(props.test.id);
     });
 };
 

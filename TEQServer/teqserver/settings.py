@@ -145,9 +145,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    decouple.config("ORIGIN")
-]
+ORIGINS = decouple.config("ORIGINS")
+CORS_ALLOWED_ORIGINS = ORIGINS.split(",")
 
 CORS_ALLOW_HEADERS = '*'
 

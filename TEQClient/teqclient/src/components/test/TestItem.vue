@@ -44,6 +44,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  showMenu:{
+    type: Boolean,
+    required: false,
+    default: true
+  }
 });
 
 const formData = defineModel({ required: true });
@@ -112,7 +117,7 @@ watch(
   <FormWrapper class="mb-3">
     <form @change="onUpdate">
       <div>
-        <div class="float-right">
+        <div class="float-right" v-if="showMenu">
           <DotsMenu>
             <div class="dropdown-item" @click="onItemRemoved">{{ $t("delete") }}</div>
             <div class="dropdown-item" @click="onCopy">{{ $t("copy") }}</div>

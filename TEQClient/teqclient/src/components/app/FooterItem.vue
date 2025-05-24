@@ -50,6 +50,9 @@ import LocalizedLink from "@/components/l10n/LocalizedLink.vue";
                 <LocalizedLink to="/account/tools">{{ $t("tools") }}</LocalizedLink>
               </li>
               <li class="menu-item">
+                <LocalizedLink to="/account/tips">{{ $t("tips") }}</LocalizedLink>
+              </li>
+              <li class="menu-item">
                 <LocalizedLink to="/account/pool">{{ $t("pool") }}</LocalizedLink>
               </li>
             </ul>

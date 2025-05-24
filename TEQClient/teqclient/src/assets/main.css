@@ -71,3 +71,8 @@
     color: rgb(242, 137, 63);
     cursor: pointer;
 }
+
+.tip-title{
+    color: rgb(242, 137, 63);
+    font-weight: bold;
+}

@@ -167,6 +167,81 @@ export const en = {
     ],
   },
 
+  singleTip:{
+    title:"Single-answer questions",
+    description:"Typical questions with one correct answer. You can mark multiple answers as correct, but for a 100% score, choosing one will be enough.",
+    text:"2+2?",
+    choice1:"5",
+    choice2:"4",
+    choice3:"6",
+  },
+  multiTip:{
+    title:"Multiple-answer questions",
+    description:"May contain 0 or more correct answers. To get 100% points, you need to choose only all correct ones." +
+      "If proportional scoring is active, you can get some points if at least some of the correct options are selected. " +
+      "If incorrect options are selected, the total score will be reduced, but not less than 0.",
+    text:"Select all data types for fractional numbers",
+    choice1:"float",
+    choice2:"string",
+    choice3:"double",
+    choice4:"int",
+  },
+  shortTip:{
+    title:"Short answer task",
+    description:"Short text answer. You need to specify the correct answer for automatic verification. " +
+      "The verification is carried out with a certain accuracy, so sometimes the results may be incorrect. " +
+      "To pass the task, you need to specify a minimum % of similarity.",
+    text:"List the basic data structures",
+    answer:"List, queue, stack, array",
+  },
+  fullTip:{
+    title:"Full answer task",
+    description:"Full text answer. You must specify the correct answer for automatic verification. " +
+      "The verification is performed with a certain accuracy, so sometimes the results may be incorrect. " +
+      "To pass the task, you must specify a minimum % similarity.",
+    text:"Describe merge sort in words",
+    answer:"Merge sort divides an array in half into elements one at a time, then merges these parts back together in the correct order, comparing the elements and building a sorted array.",
+  },
+  scriptTip: {
+    title: "Code task",
+    description: "Text answer in the form of code. You must choose a programming language and " +
+      "specify the correct answer for automatic verification. " +
+      "The verification is performed with a certain accuracy, so sometimes the results may be incorrect. " +
+      "To pass the task, you must specify a minimum % similarity.",
+    text: "Implement the basic bubble sort algorithm",
+
+  },
+  unittestTip: {
+    title: "Code Task (Testing)",
+    description: "The answer is given in the form of a function that will be tested. " +
+      "For the task, you need to define the structure of the function (return type, name, arguments)." +
+      "You also need to add tests in the form of input and output data. You don't need to add the implementation itself." +
+      "Public tests are visible to all users. Private tests are not. " +
+      "If you allow proportional scoring, even some of the passed tests will give some points for the task.",
+    text: "Create a function to find the factorial",
+
+  },
+  pythonListTip: {
+    title: "Python, lists",
+    description: "To check the result as a list, you need to choose the type 'sequence' and specify the list as [1, 2, 3].",
+    text: "Create a function to combine lists",
+
+  },
+  cppListTip: {
+    title: "C++, arrays",
+    description: "To check the result as an array, you need to choose the type 'sequence' and specify the array as (std::vector<int>{1, 2, 3}).",
+    text: "Create a function to combine arrays of integers",
+
+  },
+  javaListTip: {
+    title: "Java, arrays",
+    description: "Support not yet available import, so you need to explicitly specify the packages. " +
+      "To check the result as an array, you need to choose the type 'sequence' and specify the array as java.util.Arrays.asList(1, 2, 3).",
+    text: "Create a function to combine arrays of integers",
+
+  },
+  tips: "Tips",
+
   next: "Next",
   prev: "Previous",
   published: "Published",

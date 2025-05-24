@@ -1742,6 +1742,9 @@ img.post-image {
 #header-wrap {
     height: var(--header-height);
 }
+.page{
+    margin-top: 50px;
+}
 
 #header-wrap .action-menu span.opennav.openicon {
     cursor: pointer;

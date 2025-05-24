@@ -25,7 +25,7 @@ const model = defineModel({ required: true });
 <template>
   <div class="unit">
     <div class="ms-1">{{ index + 1 }}.</div>
-    <div>
+    <div class="in-out">
       <div class="input-group">
         <input
           type="text"
@@ -60,5 +60,8 @@ const model = defineModel({ required: true });
   border: 1px solid rgb(242, 137, 63);
   padding: 5px;
   margin-top: 5px;
+}
+.in-out{
+  width: 90%;
 }
 </style>

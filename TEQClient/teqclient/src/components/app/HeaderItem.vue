@@ -11,7 +11,7 @@ const initScrollNav = () => {
 
 onMounted(() => {
   window.addEventListener("scroll", initScrollNav);
-  initScrollNav(); // Ensure the header state is updated on mount
+  initScrollNav();
 });
 
 onUnmounted(() => {
@@ -20,7 +20,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :class="{ 'wrapper-fixed': isFixedTop }">
     <header id="header" :class="{ 'fixed-top': isFixedTop }">
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -48,7 +48,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.wrapper {
-  margin-bottom: 50px;
+.wrapper-fixed {
+  height: 120px;
 }
 </style>

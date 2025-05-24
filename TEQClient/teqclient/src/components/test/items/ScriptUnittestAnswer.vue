@@ -14,6 +14,8 @@ const props = defineProps({
   },
 });
 
+const expand = ref(false);
+
 const formData = defineModel({
   required: false,
   default: {
@@ -76,9 +78,10 @@ const testData = () => {
 </script>
 
 <template>
-  <div class="mb-3 row unit-item">
-    <div class="col-12 col-md-6">
-      <label for="correctAnswer" class="form-label">{{ $t("tryTesting") }}</label>
+  <div class="mb-3 row unit-item" >
+    <div :class="{'col-12':true, 'col-md-6':!expand, 'mb-3':expand}">
+      <label for="correctAnswer" class="form-label">{{ $t("tryTesting") }}
+        <i :class="{'fa-solid btn-hover':true, 'fa-maximize':!expand, 'fa-minimize':expand }" @click="expand=!expand"></i></label>
       <ScriptEditorTest
         v-model:language="language"
         v-model:script="script"
@@ -88,7 +91,7 @@ const testData = () => {
       >
       </ScriptEditorTest>
     </div>
-    <div class="col-12 col-md-6">
+    <div :class="{'col-12':true, 'col-md-6':!expand}">
       <div class="mb-3">
         <label class="form-label">{{ $t("testFunStruct") }}</label>
         <input

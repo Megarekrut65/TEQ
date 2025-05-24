@@ -26,10 +26,6 @@ export const formatItem = (item) => {
     item.minSimilarPercent = 90;
   }
 
-  if ([SCRIPT].includes(item.type) && !item.language) {
-    item.language = languages[0].type;
-  }
-
   if ([SCRIPT_UNITTEST].includes(item.type)) {
     if (!item.language) item.language = languages[0].type;
     if (!item.publicUnittests || !item.privateUnittests) {

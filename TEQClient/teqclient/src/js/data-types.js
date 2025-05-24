@@ -1,9 +1,10 @@
 import { languages } from "@/js/languages.js";
+import {SINGLE} from "@/js/types.js";
 
-export const defaultAnswer = () => {
+export const defaultAnswer = (type=SINGLE) => {
   return {
     text: "",
-    type: "SINGLE",
+    type: type,
     allowProportion: false,
     grade: 1,
     choices: defaultChoices(),

@@ -38,6 +38,12 @@ const router = createRouter({
           component: () => import("../views/AuthView.vue"),
         },
         {
+          path: "account",
+          name: "account",
+          component: () => import("../views/AccountView.vue"),
+          beforeEnter: ifAuthenticated,
+        },
+        {
           path: "account/tips",
           name: "tips",
           component: () => import("../views/TipsView.vue"),

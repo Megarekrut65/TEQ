@@ -247,4 +247,6 @@ export const en = {
   published: "Published",
   agreed: "Agreed with the results",
   checking: "Checking...",
+
+  accountTitle: "User Information",
 };

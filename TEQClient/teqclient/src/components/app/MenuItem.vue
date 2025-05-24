@@ -45,8 +45,8 @@ window.addEventListener("auth", (data) => {
 
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="#"
-                ><i class="fa-regular fa-user"></i> {{ $t("account") }}</a
+              <LocalizedLink class="dropdown-item" to="/account"
+              ><i class="fa-regular fa-user"></i> {{ $t("account") }}</LocalizedLink
               >
             </li>
             <li>

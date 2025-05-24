@@ -43,7 +43,7 @@ const onChoiceRemoved = (index) => {
   <div class="mb-3">
     <label class="form-label"
       >{{ $t("choices") }}
-      <span class="btn btn-link" @click="addChoice" v-if="formData.choices.length < 10"
+      <span class="btn btn-link" @click="addChoice" v-if="formData.choices?.length < 10"
         ><i class="fa-solid fa-plus"></i></span
     ></label>
 

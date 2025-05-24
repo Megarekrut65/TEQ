@@ -13,7 +13,7 @@ import { getLanguage, languages } from "@/js/languages.js";
 export const formatItem = (item) => {
   if (
     [SINGLE, MULTIPLE].includes(item.type) &&
-    (item.choices == null || item.choices.length === 0)
+    (!item.choices || item.choices.length === 0)
   ) {
     item.choices = defaultChoices();
   }

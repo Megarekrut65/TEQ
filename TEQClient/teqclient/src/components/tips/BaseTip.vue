@@ -24,7 +24,8 @@ const props = defineProps({
 
 const item = ref(props.item);
 
-const empty = ()=>{};
+const empty = ()=>Promise.resolve(item.value);
+
 </script>
 
 <template>

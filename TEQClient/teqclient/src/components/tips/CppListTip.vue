@@ -59,7 +59,7 @@ std::vector<int> concat(const std::vector<int>& a, const std::vector<int>& b) {
     :index="index"
     :item="item"
     :title="$t('cppListTip.title')"
-    :description="$t('cppListTip.description')"
+    :description="$t('cppListTip.description').replace('#arr', '(std::vector<int>{1, 2, 3})')"
   ></BaseTip>
 </template>
 

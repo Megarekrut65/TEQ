@@ -229,7 +229,7 @@ export const en = {
   },
   cppListTip: {
     title: "C++, arrays",
-    description: "To check the result as an array, you need to choose the type 'sequence' and specify the array as (std::vector<int>{1, 2, 3}).",
+    description: "To check the result as an array, you need to choose the type 'sequence' and specify the array as #arr.",
     text: "Create a function to combine arrays of integers",
 
   },

@@ -45,12 +45,12 @@ const onCheck = (index, checked) => {
 </script>
 
 <template>
-  <ModalWindow v-model="model" size="large">
+  <ModalWindow v-model="model" size="large" margin-top="50px">
     <template v-slot:header>
       <h3 class="mb-0 mt-0">{{ $t("answers") }}</h3>
     </template>
 
-    <div v-if="answers.length > 0">
+    <div v-if="answers.length > 0" class="answer-table">
       <table class="table table-bordered table-striped table-responsive">
         <thead class="table-dark">
           <tr>
@@ -112,4 +112,9 @@ const onCheck = (index, checked) => {
   </ModalWindow>
 </template>
 
-<style scoped></style>
+<style scoped>
+.answer-table{
+  max-height: 60vh;
+  overflow-y: auto;
+}
+</style>

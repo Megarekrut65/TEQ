@@ -89,8 +89,8 @@ window.addEventListener("auth", (data) => {
               <hr class="dropdown-divider" />
             </li>
             <li>
-              <a class="dropdown-item" href="#" @click="logout"
-                ><i class="fa-solid fa-arrow-right-from-bracket"></i> {{ $t("logout") }}</a
+              <div class="dropdown-item" @click="logout"
+                ><i class="fa-solid fa-arrow-right-from-bracket"></i> {{ $t("logout") }}</div
               >
             </li>
           </ul>
